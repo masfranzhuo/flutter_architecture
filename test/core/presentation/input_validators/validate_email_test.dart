@@ -1,0 +1,44 @@
+import 'package:dartz/dartz.dart';
+import 'package:flutter_architecture/core/error/failure.dart';
+import 'package:flutter_architecture/core/presentation/input_validators/validate_email.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+void main() {
+  ValidateEmail validateEmail;
+
+  setUp(() {
+    validateEmail = ValidateEmail();
+  });
+
+  test('should return BadEmailFormatFailure', () {
+    final emailTest = 'email';
+
+    final result = validateEmail(Params(email: emailTest));
+
+    expect(result, Left(BadEmailFormatFailure()));
+  });
+
+  test('should return BadEmailFormatFailure', () {
+    final emailTest = 'email.com';
+
+    final result = validateEmail(Params(email: emailTest));
+
+    expect(result, Left(BadEmailFormatFailure()));
+  });
+
+  test('should return BadEmailFormatFailure', () {
+    final emailTest = 'email@email';
+
+    final result = validateEmail(Params(email: emailTest));
+
+    expect(result, Left(BadEmailFormatFailure()));
+  });
+
+  test('should return true', () {
+    final emailTest = 'email@email.com';
+
+    final result = validateEmail(Params(email: emailTest));
+
+    expect(result, Right(true));
+  });
+}

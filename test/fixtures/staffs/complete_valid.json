@@ -1,0 +1,9 @@
+{
+  "_id": "fake_id",
+  "name": "John Doe",
+  "email": "john@doe.com",
+  "accountStatus": "ACTIVE",
+  "role": "ADMIN",
+  "phoneNumber": "1234567890",
+  "photoUrl": "https://fakeimage.com/image.jpg"
+}

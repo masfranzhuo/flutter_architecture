@@ -12,14 +12,19 @@ abstract class Failure extends Equatable {
 
 /// Start of Exception Failures
 
-class UnauthenticatedFailure extends Failure {
-  UnauthenticatedFailure({String message = ''})
-      : super(code: 'UNAUTHENTICATED_ERROR', message: message);
-}
-
 class UnexpectedFailure extends Failure {
   UnexpectedFailure({String message = ''})
       : super(code: 'UNEXPECTED_ERROR', message: message);
+}
+
+class NotFoundFailure extends Failure {
+  NotFoundFailure({String message = ''})
+      : super(code: 'NOT_FOUND_FAILURE', message: message);
+}
+
+class UnauthenticatedFailure extends Failure {
+  UnauthenticatedFailure({String message = ''})
+      : super(code: 'UNAUTHENTICATED_ERROR', message: message);
 }
 
 /// End of Exception Failures

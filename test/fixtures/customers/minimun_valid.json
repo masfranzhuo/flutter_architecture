@@ -1,0 +1,6 @@
+{
+  "_id": "fake_id",
+  "name": "John Doe",
+  "email": "john@doe.com",
+  "accountStatus": "ACTIVE"
+}

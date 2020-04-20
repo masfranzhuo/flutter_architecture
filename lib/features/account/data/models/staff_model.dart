@@ -4,6 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'staff_model.g.dart';
 
+@Deprecated('unused model in data layer, use entity in domain layer instead')
 @JsonSerializable()
 class StaffModel extends Staff {
   const StaffModel({

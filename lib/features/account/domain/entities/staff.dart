@@ -1,5 +1,8 @@
 import 'package:flutter_architecture/features/account/domain/entities/account.dart';
 import 'package:meta/meta.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'staff.g.dart';
 
 class StaffRole {
   static const admin = 'ADMIN';
@@ -10,6 +13,7 @@ class StaffRole {
   ];
 }
 
+@JsonSerializable()
 class Staff extends Account {
   final String role;
 
@@ -40,4 +44,11 @@ class Staff extends Account {
         phoneNumber,
         photoUrl,
       ];
+
+  factory Staff.fromJson(Map<String, dynamic> json) => _$StaffFromJson(json);
+
+  Map<String, dynamic> toJson() => _$StaffToJson(this);
+
+  @override
+  String toString() => toJson().toString();
 }

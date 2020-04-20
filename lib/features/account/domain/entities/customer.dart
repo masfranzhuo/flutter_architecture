@@ -1,5 +1,9 @@
+import 'package:flutter_architecture/core/util/json_parsers/date_time.dart';
 import 'package:flutter_architecture/features/account/domain/entities/account.dart';
 import 'package:meta/meta.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'customer.g.dart';
 
 class Gender {
   static const male = 'MALE';
@@ -10,6 +14,7 @@ class Gender {
   ];
 }
 
+@JsonSerializable()
 class Customer extends Account {
   const Customer({
     @required String id,
@@ -45,4 +50,12 @@ class Customer extends Account {
         birthPlace,
         birthDate,
       ];
+
+  factory Customer.fromJson(Map<String, dynamic> json) =>
+      _$CustomerFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CustomerToJson(this);
+
+  @override
+  String toString() => toJson().toString();
 }

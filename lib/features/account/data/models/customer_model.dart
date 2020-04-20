@@ -5,6 +5,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'customer_model.g.dart';
 
+@Deprecated('unused model in data layer, use entity in domain layer instead')
 @JsonSerializable()
 class CustomerModel extends Customer {
   const CustomerModel({

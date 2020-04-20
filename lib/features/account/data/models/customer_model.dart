@@ -1,17 +1,13 @@
-import 'package:flutter_architecture/features/account/domain/entities/account.dart';
+import 'package:flutter_architecture/features/account/domain/entities/customer.dart';
+import 'package:flutter_architecture/core/util/json_parsers/date_time.dart';
 import 'package:meta/meta.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-class Gender {
-  static const male = 'MALE';
-  static const female = 'FEMALE';
-  static const genderLabel = [
-    {male: 'Male'},
-    {female: 'Female'},
-  ];
-}
+part 'customer_model.g.dart';
 
-class Customer extends Account {
-  const Customer({
+@JsonSerializable()
+class CustomerModel extends Customer {
+  const CustomerModel({
     @required String id,
     @required String name,
     @required String email,
@@ -33,16 +29,11 @@ class Customer extends Account {
           birthDate: birthDate,
         );
 
+  factory CustomerModel.fromJson(Map<String, dynamic> json) =>
+      _$CustomerModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CustomerModelToJson(this);
+
   @override
-  List<Object> get props => [
-        id,
-        name,
-        email,
-        accountStatus,
-        phoneNumber,
-        photoUrl,
-        gender,
-        birthPlace,
-        birthDate,
-      ];
+  String toString() => toJson().toString();
 }

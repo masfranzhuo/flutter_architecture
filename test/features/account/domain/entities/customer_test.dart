@@ -19,7 +19,7 @@ void main() {
     photoUrl: 'https://fakeimage.com/image.jpg',
     gender: Gender.male,
     birthPlace: 'Indonesia',
-    birthDate: DateTime.now(),
+    birthDate: DateTime(2020),
   );
 
   test('should be a subclass of Customer entity', () {

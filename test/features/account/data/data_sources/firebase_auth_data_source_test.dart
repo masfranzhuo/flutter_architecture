@@ -285,17 +285,17 @@ void main() {
     });
   });
   group('getCurrentUserIdToken', () {
-    final tokenTest = 'token';
+    final idTokenTest = 'idToken';
     test('should return token', () async {
       when(mockFirebaseAuth.currentUser())
           .thenAnswer((_) async => mockFirebaseUser);
       when(mockFirebaseUser.getIdToken())
           .thenAnswer((_) async => mockIdTokenResult);
-      when(mockIdTokenResult.token).thenReturn(tokenTest);
+      when(mockIdTokenResult.token).thenReturn(idTokenTest);
 
       final result = await dataSource.getCurrentUserIdToken();
 
-      expect(result, tokenTest);
+      expect(result, idTokenTest);
       verify(mockFirebaseAuth.currentUser());
       verify(mockFirebaseUser.getIdToken());
       verify(mockIdTokenResult.token);

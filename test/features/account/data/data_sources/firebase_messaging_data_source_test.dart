@@ -16,13 +16,13 @@ void main() {
   });
 
   test('return return device token', () async {
-    final token = 'token';
+    final deviceToken = 'deviceToken';
 
-    when(mockFirebaseMessaging.getToken()).thenAnswer((_) async => token);
+    when(mockFirebaseMessaging.getToken()).thenAnswer((_) async => deviceToken);
 
     final result = await dataSource.getDeviceToken();
     
     verify(dataSource.getDeviceToken());
-    expect(result, token);
+    expect(result, deviceToken);
   });
 }

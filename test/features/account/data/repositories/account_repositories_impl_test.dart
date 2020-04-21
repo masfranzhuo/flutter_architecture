@@ -331,15 +331,15 @@ void main() {
     });
   });
   group('getBearerToken', () {
-    final String token = 'token';
+    final String idToken = 'idToken';
 
     test('should return string token', () async {
       when(mockFirebaseAuthDataSource.getCurrentUserIdToken())
-          .thenAnswer((_) async => token);
+          .thenAnswer((_) async => idToken);
 
       final result = await repository.getBearerToken();
 
-      expect(result, Right(token));
+      expect(result, Right(idToken));
     });
 
     test('should return UnauthenticatedFailure', () async {

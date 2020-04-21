@@ -19,7 +19,12 @@ class UnexpectedFailure extends Failure {
 
 class NotFoundFailure extends Failure {
   NotFoundFailure({String message = ''})
-      : super(code: 'NOT_FOUND_FAILURE', message: message);
+      : super(code: 'NOT_FOUND_ERROR', message: message);
+}
+
+class InvalidIdTokenFailure extends Failure {
+  InvalidIdTokenFailure({String message = ''})
+      : super(code: 'INVALID_ID_TOKEN_ERROR', message: message);
 }
 
 class UnauthenticatedFailure extends Failure {

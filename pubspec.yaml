@@ -22,6 +22,8 @@ dependencies:
   equatable: ^1.1.1
   meta: ^1.1.8
   dartz: ^0.8.9
+  firebase_auth: ^0.16.0
+  firebase_messaging: ^6.0.13
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

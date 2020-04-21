@@ -7,6 +7,10 @@ Failure convertExceptionToFailure({@required Exception exception}) {
     return NotFoundFailure();
   }
 
+  if (exception is InvalidIdTokenException) {
+    return InvalidIdTokenFailure();
+  }
+
   if (exception is UnauthenticatedException) {
     return UnauthenticatedFailure();
   }

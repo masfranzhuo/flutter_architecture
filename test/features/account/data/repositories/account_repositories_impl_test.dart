@@ -54,6 +54,12 @@ void main() {
   final passwordTest = 'test';
 
   group('loginWithPassword', () {
+    setUpLoginThrowException(Exception exception) {
+      when(mockAccountDataSource.getUserProfile(
+        id: anyNamed('id'),
+      )).thenThrow(exception);
+    }
+
     test('should login as a staff', () async {
       when(mockAccountDataSource.getUserProfile(
         id: anyNamed('id'),
@@ -92,10 +98,105 @@ void main() {
       expect(result, Right(mockCustomer));
     });
 
-    // TODO: test if return Left()
+    test('should return InvalidEmailFailure', () async {
+      setUpLoginThrowException(InvalidEmailException());
+
+      final result = await repository.loginWithPassword(
+        email: emailTest,
+        password: passwordTest,
+      );
+
+      verify(mockFirebaseAuthDataSource.signInWithPassword(
+          email: emailTest, password: passwordTest));
+      expect((result as Left).value, isA<InvalidEmailFailure>());
+    });
+
+    test('should return WrongPasswordFailure', () async {
+      setUpLoginThrowException(WrongPasswordException());
+
+      final result = await repository.loginWithPassword(
+        email: emailTest,
+        password: passwordTest,
+      );
+
+      verify(mockFirebaseAuthDataSource.signInWithPassword(
+          email: emailTest, password: passwordTest));
+      expect((result as Left).value, isA<WrongPasswordFailure>());
+    });
+
+    test('should return UserNotFoundFailure', () async {
+      setUpLoginThrowException(UserNotFoundException());
+
+      final result = await repository.loginWithPassword(
+        email: emailTest,
+        password: passwordTest,
+      );
+
+      verify(mockFirebaseAuthDataSource.signInWithPassword(
+          email: emailTest, password: passwordTest));
+      expect((result as Left).value, isA<UserNotFoundFailure>());
+    });
+
+    test('should return UserDisabledFailure', () async {
+      setUpLoginThrowException(UserDisabledException());
+
+      final result = await repository.loginWithPassword(
+        email: emailTest,
+        password: passwordTest,
+      );
+
+      verify(mockFirebaseAuthDataSource.signInWithPassword(
+          email: emailTest, password: passwordTest));
+      expect((result as Left).value, isA<UserDisabledFailure>());
+    });
+
+    test('should return TooManyRequestsFailure', () async {
+      setUpLoginThrowException(TooManyRequestsException());
+
+      final result = await repository.loginWithPassword(
+        email: emailTest,
+        password: passwordTest,
+      );
+
+      verify(mockFirebaseAuthDataSource.signInWithPassword(
+          email: emailTest, password: passwordTest));
+      expect((result as Left).value, isA<TooManyRequestsFailure>());
+    });
+
+    test('should return OperationNotAllowedFailure', () async {
+      setUpLoginThrowException(OperationNotAllowedException());
+
+      final result = await repository.loginWithPassword(
+        email: emailTest,
+        password: passwordTest,
+      );
+
+      verify(mockFirebaseAuthDataSource.signInWithPassword(
+          email: emailTest, password: passwordTest));
+      expect((result as Left).value, isA<OperationNotAllowedFailure>());
+    });
+
+    test('should return UndefinedFirebaseAuthFailure', () async {
+      setUpLoginThrowException(UndefinedFirebaseAuthException());
+
+      final result = await repository.loginWithPassword(
+        email: emailTest,
+        password: passwordTest,
+      );
+
+      verify(mockFirebaseAuthDataSource.signInWithPassword(
+          email: emailTest, password: passwordTest));
+      expect((result as Left).value, isA<UndefinedFirebaseAuthFailure>());
+    });
   });
   group('registerWithPassword', () {
     final nameTest = 'John Doe';
+
+    setUpRegisterThrowException(Exception exception) {
+      when(mockAccountDataSource.getUserProfile(
+        id: anyNamed('id'),
+      )).thenThrow(exception);
+    }
 
     test('should register as a customer', () async {
       when(mockAccountDataSource.getUserProfile(
@@ -141,7 +242,61 @@ void main() {
       expect(result, Right(mockCustomer));
     });
 
-    // TODO: test if return Left()
+    test('should return InvalidEmailFailure', () async {
+      setUpRegisterThrowException(InvalidEmailException());
+
+      final result = await repository.registerWithPassword(
+        name: nameTest,
+        email: emailTest,
+        password: passwordTest,
+      );
+
+      verify(mockFirebaseAuthDataSource.signUpWithPassword(
+          email: emailTest, password: passwordTest));
+      expect((result as Left).value, isA<InvalidEmailFailure>());
+    });
+
+    test('should return WeakPasswordFailure', () async {
+      setUpRegisterThrowException(WeakPasswordException());
+
+      final result = await repository.registerWithPassword(
+        name: nameTest,
+        email: emailTest,
+        password: passwordTest,
+      );
+
+      verify(mockFirebaseAuthDataSource.signUpWithPassword(
+          email: emailTest, password: passwordTest));
+      expect((result as Left).value, isA<WeakPasswordFailure>());
+    });
+
+    test('should return EmailAlreadyInUseFailure', () async {
+      setUpRegisterThrowException(EmailAlreadyInUseException());
+
+      final result = await repository.registerWithPassword(
+        name: nameTest,
+        email: emailTest,
+        password: passwordTest,
+      );
+
+      verify(mockFirebaseAuthDataSource.signUpWithPassword(
+          email: emailTest, password: passwordTest));
+      expect((result as Left).value, isA<EmailAlreadyInUseFailure>());
+    });
+
+    test('should return UndefinedFirebaseAuthFailure', () async {
+      setUpRegisterThrowException(UndefinedFirebaseAuthException());
+
+      final result = await repository.registerWithPassword(
+        name: nameTest,
+        email: emailTest,
+        password: passwordTest,
+      );
+
+      verify(mockFirebaseAuthDataSource.signUpWithPassword(
+          email: emailTest, password: passwordTest));
+      expect((result as Left).value, isA<UndefinedFirebaseAuthFailure>());
+    });
   });
   group('logout', () {
     test('should call all dependencies in order', () async {

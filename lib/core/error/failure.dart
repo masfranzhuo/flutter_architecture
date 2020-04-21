@@ -10,7 +10,7 @@ abstract class Failure extends Equatable {
   List<Object> get props => [code, message];
 }
 
-/// Start of Exception Failures
+// Start of Exception Failures
 
 class UnexpectedFailure extends Failure {
   UnexpectedFailure({String message = ''})
@@ -32,9 +32,53 @@ class UnauthenticatedFailure extends Failure {
       : super(code: 'UNAUTHENTICATED_ERROR', message: message);
 }
 
-/// End of Exception Failures
+class InvalidEmailFailure extends Failure {
+  InvalidEmailFailure({String message = ''})
+      : super(code: 'INVALID_EMAIL_ERROR', message: message);
+}
 
-/// Start of Non-exception Failures
+class WrongPasswordFailure extends Failure {
+  WrongPasswordFailure({String message = ''})
+      : super(code: 'WRONG_PASSWORD_ERROR', message: message);
+}
+
+class UserNotFoundFailure extends Failure {
+  UserNotFoundFailure({String message = ''})
+      : super(code: 'USER_NOT_FOUND_ERROR', message: message);
+}
+
+class UserDisabledFailure extends Failure {
+  UserDisabledFailure({String message = ''})
+      : super(code: 'USER_DISABLED_ERROR', message: message);
+}
+
+class TooManyRequestsFailure extends Failure {
+  TooManyRequestsFailure({String message = ''})
+      : super(code: 'TOO_MANY_REQUESTS_ERROR', message: message);
+}
+
+class OperationNotAllowedFailure extends Failure {
+  OperationNotAllowedFailure({String message = ''})
+      : super(code: 'OPERATION_NOT_ALLOWED_ERROR', message: message);
+}
+
+class UndefinedFirebaseAuthFailure extends Failure {
+  UndefinedFirebaseAuthFailure({String message = ''})
+      : super(code: 'UNDEFINED_FIREBASE_AUTH_ERROR', message: message);
+}
+
+class WeakPasswordFailure extends Failure {
+  WeakPasswordFailure({String message = ''})
+      : super(code: 'WEAK_PASSWORD_ERROR', message: message);
+}
+
+class EmailAlreadyInUseFailure extends Failure {
+  EmailAlreadyInUseFailure({String message = ''})
+      : super(code: 'EMAIL_ALREADY_IN_USE_ERROR', message: message);
+}
+// End of Exception Failures
+
+// Start of Non-exception Failures
 
 class BadEmailFormatFailure extends Failure {
   BadEmailFormatFailure({String message = ''})
@@ -46,4 +90,4 @@ class PasswordLessThanCharactersFailure extends Failure {
       : super(code: 'PASSWORD_LESS_THAN_CHARACTERS_ERROR', message: message);
 }
 
-/// End of Non-exception Failures
+// End of Non-exception Failures

@@ -596,4 +596,103 @@ void main() {
       expect(result, Left(PreconditionFailedFailure()));
     });
   });
+
+  group('changePassword', () {
+    final passwordTest = 'password';
+    final oldPasswordTest = 'oldPassword';
+
+    setUpThrowException(Exception exception) {
+      when(mockFirebaseAuthDataSource.changePassword(
+        password: anyNamed('password'),
+      )).thenThrow(exception);
+    }
+
+    test('should return true', () async {
+      when(mockFirebaseAuthDataSource.changePassword(
+        password: anyNamed('password'),
+      )).thenAnswer((_) async => Right(true));
+
+      final result = await repository.changePassword(
+        password: passwordTest,
+        oldPassword: oldPasswordTest,
+      );
+
+      expect(result, Right(true));
+    });
+
+    test('should return UserDisabledFailure', () async {
+      setUpThrowException(UserDisabledException());
+
+      final result = await repository.changePassword(
+        password: passwordTest,
+        oldPassword: oldPasswordTest,
+      );
+
+      expect(result, Left(UserDisabledFailure()));
+    });
+
+    test('should return WeakPasswordFailure', () async {
+      setUpThrowException(WeakPasswordException());
+
+      final result = await repository.changePassword(
+        password: passwordTest,
+        oldPassword: oldPasswordTest,
+      );
+
+      expect(result, Left(WeakPasswordFailure()));
+    });
+
+    test('should return UndefinedFirebaseAuthFailure', () async {
+      setUpThrowException(UndefinedFirebaseAuthException());
+
+      final result = await repository.changePassword(
+        password: passwordTest,
+        oldPassword: oldPasswordTest,
+      );
+
+      expect(result, Left(UndefinedFirebaseAuthFailure()));
+    });
+  });
+
+  group('resetPassword', () {
+    final emailTest = 'john@doe.com';
+
+    setUpThrowException(Exception exception) {
+      when(mockFirebaseAuthDataSource.resetPassword(
+        email: anyNamed('email'),
+      )).thenThrow(exception);
+    }
+
+    test('should return true', () async {
+      when(mockFirebaseAuthDataSource.resetPassword(
+        email: anyNamed('email'),
+      )).thenAnswer((_) async => Right(true));
+
+      final result = await repository.resetPassword(
+        email: emailTest,
+      );
+
+      expect(result, Right(true));
+    });
+
+    test('should return UserNotFoundFailure', () async {
+      setUpThrowException(UserNotFoundException());
+
+      final result = await repository.resetPassword(
+        email: emailTest,
+      );
+
+      expect(result, Left(UserNotFoundFailure()));
+    });
+
+    test('should return UndefinedFirebaseAuthFailure', () async {
+      setUpThrowException(UndefinedFirebaseAuthException());
+
+      final result = await repository.resetPassword(
+        email: emailTest,
+      );
+
+      expect(result, Left(UndefinedFirebaseAuthFailure()));
+    });
+  });
 }

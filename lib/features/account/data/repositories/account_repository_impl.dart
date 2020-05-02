@@ -114,4 +114,27 @@ class AccountRepositoryImpl extends AccountRepository {
       return Left(convertExceptionToFailure(exception: e));
     }
   }
+
+  @override
+  Future<Either<Failure, bool>> changePassword({
+    @required String password,
+    @required String oldPassword,
+  }) async {
+    try {
+      await firebaseAuthDataSource.changePassword(password: password);
+      return Right(true);
+    } on Exception catch (e) {
+      return Left(convertExceptionToFailure(exception: e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> resetPassword({@required String email}) async {
+    try {
+      await firebaseAuthDataSource.resetPassword(email: email);
+      return Right(true);
+    } on Exception catch (e) {
+      return Left(convertExceptionToFailure(exception: e));
+    }
+  }
 }

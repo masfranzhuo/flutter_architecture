@@ -18,7 +18,7 @@ void main() {
     getUserProfile = GetUserProfile(repository: mockAccountRepository);
   });
 
-  test('should return staff/customer', () async {
+  test('should return staff', () async {
     final idTest = 'idTest';
     final staffTest = Staff(
       id: 'fake_id',
@@ -34,7 +34,7 @@ void main() {
     expect(profile, Right(staffTest));
   });
 
-  test('should return staff/customer', () async {
+  test('should return customer', () async {
     final customerTest = Customer(
       id: 'fake_id',
       name: 'John Doe',

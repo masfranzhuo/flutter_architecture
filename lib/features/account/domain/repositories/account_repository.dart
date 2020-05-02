@@ -29,4 +29,11 @@ abstract class AccountRepository {
   /// * [id] If not provided will use uid in the request's idToken
   ///   (bearer token)
   Future<Either<Failure, Account>> getUserProfile({String id});
+
+  Future<Either<Failure, bool>> changePassword({
+    @required String password,
+    @required String oldPassword,
+  });
+
+  Future<Either<Failure, bool>> resetPassword({@required String email});
 }

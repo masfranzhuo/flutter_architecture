@@ -38,6 +38,10 @@ abstract class FirebaseAuthDataSource {
   Future<String> getCurrentUserId();
 
   Future<void> logout();
+
+  Future<void> changePassword({@required String password});
+
+  Future<void> resetPassword({@required String email});
 }
 
 class FirebaseAuthDataSourceImpl extends FirebaseAuthDataSource {
@@ -132,6 +136,37 @@ class FirebaseAuthDataSourceImpl extends FirebaseAuthDataSource {
 
   @override
   Future<void> logout() async {
-    return firebaseAuthInstance.signOut();
+    return await firebaseAuthInstance.signOut();
+  }
+
+  @override
+  Future<void> changePassword({@required String password}) async {
+    try {
+      final firebaseUser = await firebaseAuthInstance.currentUser();
+      await firebaseUser.updatePassword(password);
+    } on PlatformException catch (e) {
+      switch (e.code) {
+        case 'ERROR_USER_DISABLED':
+          throw UserDisabledException();
+        case 'ERROR_WEAK_PASSWORD':
+          throw WeakPasswordException();
+        default:
+          throw UndefinedFirebaseAuthException();
+      }
+    }
+  }
+
+  @override
+  Future<void> resetPassword({@required String email}) async {
+    try {
+      return await firebaseAuthInstance.sendPasswordResetEmail(email: email);
+    } on PlatformException catch (e) {
+      switch (e.code) {
+        case 'ERROR_USER_NOT_FOUND':
+          throw UserNotFoundException();
+        default:
+          throw UndefinedFirebaseAuthException();
+      }
+    }
   }
 }

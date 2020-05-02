@@ -345,4 +345,80 @@ void main() {
       verify(mockFirebaseAuth.signOut());
     });
   });
+
+  group('changePassword', () {
+    final passwordTest = 'password';
+    test('should call FirebaseAuthInstance updatePassword', () async {
+      when(mockFirebaseAuth.currentUser())
+          .thenAnswer((_) async => mockFirebaseUser);
+
+      await dataSource.changePassword(password: passwordTest);
+
+      verify(mockFirebaseAuth.currentUser());
+      verify(mockFirebaseUser.updatePassword(passwordTest));
+    });
+
+    test('should throw UserDisabledException', () async {
+      when(mockFirebaseAuth.currentUser()).thenThrow(UserDisabledException());
+
+      expect(
+        () => dataSource.changePassword(password: passwordTest),
+        throwsA(isA<UserDisabledException>()),
+      );
+      verify(mockFirebaseAuth.currentUser());
+    });
+
+    test('should throw WeakPasswordException', () async {
+      when(mockFirebaseAuth.currentUser()).thenThrow(WeakPasswordException());
+
+      expect(
+        () => dataSource.changePassword(password: passwordTest),
+        throwsA(isA<WeakPasswordException>()),
+      );
+      verify(mockFirebaseAuth.currentUser());
+    });
+
+    test('should throw UndefinedFirebaseAuthException', () async {
+      when(mockFirebaseAuth.currentUser())
+          .thenThrow(UndefinedFirebaseAuthException());
+
+      expect(
+        () => dataSource.changePassword(password: passwordTest),
+        throwsA(isA<UndefinedFirebaseAuthException>()),
+      );
+      verify(mockFirebaseAuth.currentUser());
+    });
+  });
+
+  group('resetPassword', () {
+    final emailTest = 'john@doe.com';
+    test('should call FirebaseAuthInstance sendPasswordResetEmail', () async {
+      await dataSource.resetPassword(email: emailTest);
+      verify(mockFirebaseAuth.sendPasswordResetEmail(email: emailTest));
+    });
+
+    test('should throw UserNotFoundException', () async {
+      when(mockFirebaseAuth.sendPasswordResetEmail(
+        email: anyNamed('email'),
+      )).thenThrow(UserNotFoundException());
+
+      expect(
+        () => dataSource.resetPassword(email: emailTest),
+        throwsA(isA<UserNotFoundException>()),
+      );
+      verify(mockFirebaseAuth.sendPasswordResetEmail(email: emailTest));
+    });
+
+    test('should throw UndefinedFirebaseAuthException', () async {
+      when(mockFirebaseAuth.sendPasswordResetEmail(
+        email: anyNamed('email'),
+      )).thenThrow(UndefinedFirebaseAuthException());
+
+      expect(
+        () => dataSource.resetPassword(email: emailTest),
+        throwsA(isA<UndefinedFirebaseAuthException>()),
+      );
+      verify(mockFirebaseAuth.sendPasswordResetEmail(email: emailTest));
+    });
+  });
 }

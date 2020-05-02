@@ -312,6 +312,33 @@ void main() {
       verifyNoMoreInteractions(mockFirebaseAuth);
     });
   });
+
+  group('getCurrentUserId', () {
+    final idTest = 'id';
+    test('should return id', () async {
+      when(mockFirebaseAuth.currentUser())
+          .thenAnswer((_) async => mockFirebaseUser);
+      when(mockFirebaseUser.uid).thenReturn(idTest);
+
+      final result = await dataSource.getCurrentUserId();
+
+      expect(result, idTest);
+      verify(mockFirebaseAuth.currentUser());
+      verify(mockFirebaseUser.uid);
+    });
+
+    test('should return UnauthenticatedException', () async {
+      when(mockFirebaseAuth.currentUser()).thenAnswer((_) async => null);
+
+      expect(
+        () => dataSource.getCurrentUserId(),
+        throwsA(isA<UnauthenticatedException>()),
+      );
+      verify(mockFirebaseAuth.currentUser());
+      verifyNoMoreInteractions(mockFirebaseAuth);
+    });
+  });
+
   group('logout', () {
     test('should call FirebaseAuthInstance signOut', () async {
       await dataSource.logout();

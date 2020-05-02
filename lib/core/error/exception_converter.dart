@@ -15,6 +15,22 @@ Failure convertExceptionToFailure({@required Exception exception}) {
     return UnauthenticatedFailure();
   }
 
+  if (exception is BadRequestException) {
+    return BadRequestFailure();
+  }
+
+  if (exception is InternalServerErrorException) {
+    return InternalServerErrorFailure();
+  }
+
+  if (exception is ServiceUnavailableException) {
+    return ServiceUnavailableFailure();
+  }
+
+  if (exception is PreconditionFailedException) {
+    return PreconditionFailedFailure();
+  }
+
   if (exception is InvalidEmailException) {
     return InvalidEmailFailure();
   }

@@ -12,6 +12,7 @@ class Url {
 
 class EndPoint {
   static const auth = '/auth';
+  static const users = '/users';
 }
 
 class HttpClient {
@@ -37,6 +38,75 @@ class HttpClient {
 
     try {
       final response = await dio.post(
+        endPoint,
+        data: formData,
+        options: Options(
+          headers: {
+            HttpHeaders.authorizationHeader: 'Bearer $idToken',
+          },
+        ),
+      );
+
+      return response;
+    } on DioError catch (e) {
+      return e.response;
+    }
+  }
+
+  Future<Response> getFirebaseData({
+    @required String endPoint,
+  }) async {
+    final idToken = await firebaseAuthDataSource.getCurrentUserIdToken();
+
+    if (idToken == null || idToken.isEmpty) {
+      throw InvalidIdTokenException();
+    }
+
+    try {
+      final response = await dio.get(
+        '$endPoint?${EndPoint.auth}=$idToken',
+      );
+
+      return response;
+    } on DioError catch (e) {
+      return e.response;
+    }
+  }
+
+  Future<Response> postFirebaseData({
+    @required String endPoint,
+    @required FormData formData,
+  }) async {
+    final idToken = await firebaseAuthDataSource.getCurrentUserIdToken();
+
+    if (idToken == null || idToken.isEmpty) {
+      throw InvalidIdTokenException();
+    }
+
+    try {
+      final response = await dio.post(
+        '$endPoint?${EndPoint.auth}=$idToken',
+        data: formData,
+      );
+
+      return response;
+    } on DioError catch (e) {
+      return e.response;
+    }
+  }
+
+  Future<Response> patchFirebaseData({
+    @required String endPoint,
+    @required FormData formData,
+  }) async {
+    final idToken = await firebaseAuthDataSource.getCurrentUserIdToken();
+
+    if (idToken == null || idToken.isEmpty) {
+      throw InvalidIdTokenException();
+    }
+
+    try {
+      final response = await dio.patch(
         endPoint,
         data: formData,
         options: Options(

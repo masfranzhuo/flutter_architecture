@@ -32,6 +32,26 @@ class UnauthenticatedFailure extends Failure {
       : super(code: 'UNAUTHENTICATED_ERROR', message: message);
 }
 
+class BadRequestFailure extends Failure {
+  BadRequestFailure({String message = ''})
+      : super(code: 'BAD_REQUEST_ERROR', message: message);
+}
+
+class InternalServerErrorFailure extends Failure {
+  InternalServerErrorFailure({String message = ''})
+      : super(code: 'INTERNAL_SERVER_ERROR', message: message);
+}
+
+class ServiceUnavailableFailure extends Failure {
+  ServiceUnavailableFailure({String message = ''})
+      : super(code: 'SERVICE_UNAVAILABLE_ERROR', message: message);
+}
+
+class PreconditionFailedFailure extends Failure {
+  PreconditionFailedFailure({String message = ''})
+      : super(code: 'PRECONDTION_FAILED_ERROR', message: message);
+}
+
 class InvalidEmailFailure extends Failure {
   InvalidEmailFailure({String message = ''})
       : super(code: 'INVALID_EMAIL_ERROR', message: message);

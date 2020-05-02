@@ -32,10 +32,10 @@ class AccountRepositoryImpl extends AccountRepository {
 
       final deviceToken = await firebaseMessagingDataSource.getDeviceToken();
 
-      final account =
-          await accountDataSource.getUserProfile(id: firebaseUser?.uid);
-      await accountDataSource.setDeviceToken(
-          deviceToken: deviceToken, id: firebaseUser?.uid);
+      final account = await accountDataSource.setUserProfile(
+        deviceToken: deviceToken,
+        id: firebaseUser?.uid,
+      );
 
       return Right(account);
     } on Exception catch (e) {
@@ -65,10 +65,13 @@ class AccountRepositoryImpl extends AccountRepository {
 
       final deviceToken = await firebaseMessagingDataSource.getDeviceToken();
 
-      final account =
-          await accountDataSource.getUserProfile(id: firebaseUser?.uid);
-      await accountDataSource.setDeviceToken(
-          deviceToken: deviceToken, id: firebaseUser?.uid);
+      final account = await accountDataSource.setUserProfile(
+        deviceToken: deviceToken,
+        id: firebaseUser?.uid,
+        name: name,
+        email: email,
+        photoUrl: photoUrl,
+      );
 
       return Right(account);
     } on Exception catch (e) {
@@ -79,13 +82,16 @@ class AccountRepositoryImpl extends AccountRepository {
   @override
   Future<Either<Failure, bool>> logout() async {
     try {
+      final id = await firebaseAuthDataSource.getCurrentUserId();
       final deviceToken = await firebaseMessagingDataSource.getDeviceToken();
-      final logoutResult =
-          await accountDataSource.removeDeviceToken(deviceToken: deviceToken);
+      final logoutResult = await accountDataSource.removeDeviceToken(
+        id: id,
+        deviceToken: deviceToken,
+      );
       await firebaseAuthDataSource.logout();
       return Right(logoutResult);
-    } on InvalidIdTokenException {
-      return Left(InvalidIdTokenFailure());
+    } on Exception catch (e) {
+      return Left(convertExceptionToFailure(exception: e));
     }
   }
 
@@ -104,10 +110,8 @@ class AccountRepositoryImpl extends AccountRepository {
     try {
       final account = await accountDataSource.getUserProfile(id: id);
       return Right(account);
-    } on NotFoundException {
-      return Left(NotFoundFailure());
-    } catch (e) {
-      return Left(UnexpectedFailure());
+    } on Exception catch (e) {
+      return Left(convertExceptionToFailure(exception: e));
     }
   }
 }

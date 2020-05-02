@@ -2,9 +2,18 @@ class UnexpectedException implements Exception {}
 
 class NotFoundException implements Exception {}
 
+// class UnauthorizedException implements Exception {}
 class InvalidIdTokenException implements Exception {}
 
 class UnauthenticatedException implements Exception {}
+
+class BadRequestException implements Exception {}
+
+class InternalServerErrorException implements Exception {}
+
+class ServiceUnavailableException implements Exception {}
+
+class PreconditionFailedException implements Exception {}
 
 // Start of Firebase exception
 

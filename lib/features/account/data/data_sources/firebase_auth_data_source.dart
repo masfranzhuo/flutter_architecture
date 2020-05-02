@@ -35,6 +35,8 @@ abstract class FirebaseAuthDataSource {
   /// Won't throw any exception
   Future<String> getCurrentUserIdToken();
 
+  Future<String> getCurrentUserId();
+
   Future<void> logout();
 }
 
@@ -118,6 +120,14 @@ class FirebaseAuthDataSourceImpl extends FirebaseAuthDataSource {
 
     if (currentUser == null) throw UnauthenticatedException();
     return (await currentUser.getIdToken()).token;
+  }
+
+  @override
+  Future<String> getCurrentUserId() async {
+    final currentUser = await firebaseAuthInstance.currentUser();
+
+    if (currentUser == null) throw UnauthenticatedException();
+    return currentUser.uid;
   }
 
   @override

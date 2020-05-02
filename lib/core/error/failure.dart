@@ -110,4 +110,21 @@ class PasswordLessThanCharactersFailure extends Failure {
       : super(code: 'PASSWORD_LESS_THAN_CHARACTERS_ERROR', message: message);
 }
 
+class PasswordAndRetypedMismatchFailure extends Failure {
+  PasswordAndRetypedMismatchFailure({String message = ''})
+      : super(code: 'PASSWORD_AND_RETYPED_MISMATCH_ERROR', message: message);
+}
+
+class PasswordAndCurrentPasswordMatchFailure extends Failure {
+  PasswordAndCurrentPasswordMatchFailure({String message = ''})
+      : super(
+            code: 'PASSWORD_AND_CURRENT_PASSWORD_MATCH_ERROR',
+            message: message);
+}
+
+class NameLessThanCharactersFailure extends Failure {
+  NameLessThanCharactersFailure({String message = ''})
+      : super(code: 'NAME_LESS_THAN_CHARACTERS_ERROR', message: message);
+}
+
 // End of Non-exception Failures

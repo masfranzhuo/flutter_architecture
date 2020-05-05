@@ -27,9 +27,7 @@ void main() {
     bloc?.close();
   });
 
-  blocTest(
-    'should emits [] when nothing is added',
-    build: () async => bloc,
-    expect: [],
-  );
+  test('initial state should be initial', () {
+    expect(bloc.initialState, isA<RegisterInitialState>());
+  });
 }

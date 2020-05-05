@@ -6,7 +6,8 @@ import 'package:flutter_architecture/core/error/failure.dart';
 import 'package:flutter_architecture/features/account/domain/entities/customer.dart';
 import 'package:flutter_architecture/features/account/domain/use_cases/register_with_password.dart';
 import 'package:flutter_architecture/features/account/presentation/bloc/register_bloc/register_bloc.dart';
-import 'package:flutter_architecture/features/account/presentation/input_validators/validate_register.dart';
+import 'package:flutter_architecture/features/account/presentation/input_validators/validate_register.dart'
+    as vr;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
@@ -14,7 +15,7 @@ import '../../../../../fixtures/fixtures_reader.dart';
 
 class MockRegisterWithPassword extends Mock implements RegisterWithPassword {}
 
-class MockValidateRegister extends Mock implements ValidateRegister {}
+class MockValidateRegister extends Mock implements vr.ValidateRegister {}
 
 void main() {
   RegisterBloc bloc;
@@ -70,10 +71,17 @@ void main() {
         retypedPassword: retypedPasswordTest,
       )),
       verify: (_) async {
-        verifyInOrder([
-          mockValidateRegister(any),
-          mockRegisterWithPassword(any),
-        ]);
+        verify(mockValidateRegister(vr.Params(
+          name: nameTest,
+          email: emailTest,
+          password: passwordTest,
+          retypedPassword: retypedPasswordTest,
+        )));
+        verify(mockRegisterWithPassword(Params(
+          name: nameTest,
+          email: emailTest,
+          password: passwordTest,
+        )));
       },
     );
 
@@ -112,6 +120,28 @@ void main() {
         RegisterLoadedState(account: customer),
       ],
     );
+
+    test(
+        'should emit [RegisterLoadingState,RegisterLoadedState] when RegisterWithPassword is successful',
+        () async {
+      setUpSuccessfulValidateRegister();
+      setUpSuccessfulRegister();
+
+      final expected = [
+        RegisterInitialState(),
+        RegisterLoadingState(),
+        RegisterLoadedState(account: customer),
+      ];
+
+      expectLater(bloc, emitsInOrder(expected));
+
+      bloc.add(RegisterWithPasswordEvent(
+        name: nameTest,
+        email: emailTest,
+        password: passwordTest,
+        retypedPassword: retypedPasswordTest,
+      ));
+    });
 
     blocTest(
       'should emit [RegisterLoadingState,RegisterErrorState] when RegisterWithPassword failed',

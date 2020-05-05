@@ -272,7 +272,7 @@ void main() {
       )).thenThrow(exception);
     }
 
-    test('should register as a customer', () async {
+    test('should return a staff', () async {
       when(mockAccountDataSource.setUserProfile(
         id: anyNamed('id'),
         deviceToken: anyNamed('deviceToken'),

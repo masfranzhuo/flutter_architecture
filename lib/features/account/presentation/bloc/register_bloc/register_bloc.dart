@@ -52,9 +52,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
           yield registerResult.fold(
             (failure) => _$mapFailureToError(failure),
-            (account) {
-              return RegisterLoadedState(account: account);
-            },
+            (account) => RegisterLoadedState(account: account),
           );
         },
       );

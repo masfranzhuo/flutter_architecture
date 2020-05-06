@@ -49,9 +49,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
           yield loginResult.fold(
             (failure) => _$mapFailureToError(failure),
-            (account) {
-              return LoginLoadedState(account: account);
-            },
+            (account) => LoginLoadedState(account: account),
           );
         },
       );

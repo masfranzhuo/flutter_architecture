@@ -23,7 +23,7 @@ void main() {
       photoUrl: 'https://fakeimage.com/image.jpg',
       gender: Gender.male,
       birthPlace: 'Indonesia',
-      birthDate: DateTime.parse("2019-09-01T13:00:00.000Z"),
+      birthDate: DateTime.parse("2020-04-20T13:00:00.000Z"),
     );
   });
 

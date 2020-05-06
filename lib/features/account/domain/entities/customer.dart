@@ -51,11 +51,11 @@ class Customer extends Account {
         birthDate,
       ];
 
+  @override
+  bool get stringify => true;
+
   factory Customer.fromJson(Map<String, dynamic> json) =>
       _$CustomerFromJson(json);
 
   Map<String, dynamic> toJson() => _$CustomerToJson(this);
-
-  @override
-  bool get stringify => true;
 }

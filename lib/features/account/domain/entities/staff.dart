@@ -45,10 +45,10 @@ class Staff extends Account {
         photoUrl,
       ];
 
+  @override
+  bool get stringify => true;
+
   factory Staff.fromJson(Map<String, dynamic> json) => _$StaffFromJson(json);
 
   Map<String, dynamic> toJson() => _$StaffToJson(this);
-
-  @override
-  String toString() => toJson().toString();
 }

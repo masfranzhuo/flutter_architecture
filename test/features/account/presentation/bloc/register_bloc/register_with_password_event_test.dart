@@ -18,18 +18,6 @@ void main() {
   MockRegisterWithPassword mockRegisterWithPassword;
   MockValidateRegister mockValidateRegister;
 
-  final customer = Customer(
-    id: "fake_id",
-    name: "John Doe",
-    email: "john@doe.com",
-    accountStatus: "ACTIVE",
-    phoneNumber: "1234567890",
-    photoUrl: "https://fakeimage.com/image.jpg",
-    gender: "MALE",
-    birthPlace: "Indonesia",
-    birthDate: DateTime.now(),
-  );
-
   setUp(() {
     mockRegisterWithPassword = MockRegisterWithPassword();
     mockValidateRegister = MockValidateRegister();
@@ -44,6 +32,17 @@ void main() {
   });
 
   group('RegisterWithPasswordEvent', () {
+    final customer = Customer(
+      id: "fake_id",
+      name: "John Doe",
+      email: "john@doe.com",
+      accountStatus: "ACTIVE",
+      phoneNumber: "1234567890",
+      photoUrl: "https://fakeimage.com/image.jpg",
+      gender: "MALE",
+      birthPlace: "Indonesia",
+      birthDate: DateTime.now(),
+    );
     final nameTest = customer?.name;
     final emailTest = customer?.email;
     final passwordTest = '123456';

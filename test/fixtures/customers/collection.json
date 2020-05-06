@@ -1,0 +1,24 @@
+[
+  {
+    "_id": "fake_id01",
+    "name": "John Doe",
+    "email": "john@doe.com",
+    "accountStatus": "ACTIVE",
+    "phoneNumber": "1234567890",
+    "photoUrl": "https://fakeimage.com/image.jpg",
+    "gender": "MALE",
+    "birthPlace": "Indonesia",
+    "birthDate": "2020-04-20T13:00:00.000Z"
+  },
+  {
+    "_id": "fake_id02",
+    "name": "Luffy",
+    "email": "luffy@onepiece.com",
+    "accountStatus": "ACTIVE",
+    "phoneNumber": "1234567890",
+    "photoUrl": "https://fakeimage.com/image.jpg",
+    "gender": "MALE",
+    "birthPlace": "Indonesia",
+    "birthDate": "2020-04-20T13:00:00.000Z"
+  }
+]

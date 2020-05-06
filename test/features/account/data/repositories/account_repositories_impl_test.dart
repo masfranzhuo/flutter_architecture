@@ -599,7 +599,7 @@ void main() {
 
   group('changePassword', () {
     final passwordTest = 'password';
-    final oldPasswordTest = 'oldPassword';
+    final currentPasswordTest = 'currentPassword';
 
     setUpThrowException(Exception exception) {
       when(mockFirebaseAuthDataSource.changePassword(
@@ -614,7 +614,7 @@ void main() {
 
       final result = await repository.changePassword(
         password: passwordTest,
-        oldPassword: oldPasswordTest,
+        currentPassword: currentPasswordTest,
       );
 
       expect(result, Right(true));
@@ -625,7 +625,7 @@ void main() {
 
       final result = await repository.changePassword(
         password: passwordTest,
-        oldPassword: oldPasswordTest,
+        currentPassword: currentPasswordTest,
       );
 
       expect(result, Left(UserDisabledFailure()));
@@ -636,7 +636,7 @@ void main() {
 
       final result = await repository.changePassword(
         password: passwordTest,
-        oldPassword: oldPasswordTest,
+        currentPassword: currentPasswordTest,
       );
 
       expect(result, Left(WeakPasswordFailure()));
@@ -647,7 +647,7 @@ void main() {
 
       final result = await repository.changePassword(
         password: passwordTest,
-        oldPassword: oldPasswordTest,
+        currentPassword: currentPasswordTest,
       );
 
       expect(result, Left(UndefinedFirebaseAuthFailure()));

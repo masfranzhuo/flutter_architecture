@@ -14,19 +14,19 @@ class ChangePassword extends UseCase<bool, Params> {
   Future<Either<Failure, bool>> call(Params params) async {
     return await repository.changePassword(
       password: params.password,
-      oldPassword: params.oldPassword,
+      currentPassword: params.currentPassword,
     );
   }
 }
 
 class Params extends Equatable {
-  final String password, oldPassword;
+  final String password, currentPassword;
 
   Params({
     @required this.password,
-    @required this.oldPassword,
+    @required this.currentPassword,
   });
 
   @override
-  List<Object> get props => [password, oldPassword];
+  List<Object> get props => [password, currentPassword];
 }

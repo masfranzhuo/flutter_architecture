@@ -118,7 +118,7 @@ class AccountRepositoryImpl extends AccountRepository {
   @override
   Future<Either<Failure, bool>> changePassword({
     @required String password,
-    @required String oldPassword,
+    @required String currentPassword,
   }) async {
     try {
       await firebaseAuthDataSource.changePassword(password: password);

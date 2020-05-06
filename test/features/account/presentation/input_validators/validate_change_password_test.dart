@@ -23,7 +23,7 @@ void main() {
     when(mockValidatePassword(any)).thenReturn(Right(true));
   }
 
-  final oldPasswordTest = 'abcdef';
+  final currentPasswordTest = 'abcdef';
 
   test('should return PasswordLessThanCharactersFailure', () {
     final passwordTest = '1234';
@@ -34,7 +34,7 @@ void main() {
 
     final result = validateChangePassword(Params(
       password: passwordTest,
-      oldPassword: oldPasswordTest,
+      currentPassword: currentPasswordTest,
     ));
 
     verify(mockValidatePassword(any));
@@ -48,7 +48,7 @@ void main() {
 
     final result = validateChangePassword(Params(
       password: passwordTest,
-      oldPassword: oldPasswordTest,
+      currentPassword: currentPasswordTest,
     ));
 
     verify(mockValidatePassword(any));
@@ -62,7 +62,7 @@ void main() {
 
     final result = validateChangePassword(Params(
       password: passwordTest,
-      oldPassword: oldPasswordTest,
+      currentPassword: currentPasswordTest,
     ));
 
     verify(mockValidatePassword(any));

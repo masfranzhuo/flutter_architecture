@@ -16,15 +16,15 @@ void main() {
 
   test('should call changePassword in repository', () async {
     final passwordTest = 'password';
-    final oldPasswordTest = 'oldPassword';
+    final currentPasswordTest = 'currentPassword';
 
     await changePassword(Params(
       password: passwordTest,
-      oldPassword: oldPasswordTest,
+      currentPassword: currentPasswordTest,
     ));
     verify(mockAccountRepository.changePassword(
       password: passwordTest,
-      oldPassword: oldPasswordTest,
+      currentPassword: currentPasswordTest,
     ));
   });
 }

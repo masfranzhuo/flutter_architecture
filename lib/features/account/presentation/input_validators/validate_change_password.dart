@@ -18,7 +18,7 @@ class ValidateChangePassword extends InputValidator<Params> {
     ));
     if (validatePasswordResult.isLeft()) return validatePasswordResult;
 
-    if (params.password == params.oldPassword) {
+    if (params.password == params.currentPassword) {
       return Left(PasswordAndCurrentPasswordMatchFailure());
     }
 
@@ -27,10 +27,10 @@ class ValidateChangePassword extends InputValidator<Params> {
 }
 
 class Params extends Equatable {
-  final String password, oldPassword;
+  final String password, currentPassword;
 
-  Params({this.password, this.oldPassword});
+  Params({this.password, this.currentPassword});
 
   @override
-  List<Object> get props => [password, oldPassword];
+  List<Object> get props => [password, currentPassword];
 }

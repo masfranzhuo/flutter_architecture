@@ -32,7 +32,7 @@ abstract class AccountRepository {
 
   Future<Either<Failure, bool>> changePassword({
     @required String password,
-    @required String oldPassword,
+    @required String currentPassword,
   });
 
   Future<Either<Failure, bool>> resetPassword({@required String email});

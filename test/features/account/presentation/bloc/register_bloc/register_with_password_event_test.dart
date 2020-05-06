@@ -1,6 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_architecture/core/error/failure.dart';
+import 'package:flutter_architecture/features/account/domain/entities/account.dart';
 import 'package:flutter_architecture/features/account/domain/entities/customer.dart';
 import 'package:flutter_architecture/features/account/domain/use_cases/register_with_password.dart';
 import 'package:flutter_architecture/features/account/presentation/bloc/register_bloc/register_bloc.dart';
@@ -33,14 +34,14 @@ void main() {
 
   group('RegisterWithPasswordEvent', () {
     final customer = Customer(
-      id: "fake_id",
-      name: "John Doe",
-      email: "john@doe.com",
-      accountStatus: "ACTIVE",
-      phoneNumber: "1234567890",
-      photoUrl: "https://fakeimage.com/image.jpg",
-      gender: "MALE",
-      birthPlace: "Indonesia",
+      id: 'fake_id',
+      name: 'John Doe',
+      email: 'john@doe.com',
+      accountStatus: AccountStatus.active,
+      phoneNumber: '1234567890',
+      photoUrl: 'https://fakeimage.com/image.jpg',
+      gender: Gender.male,
+      birthPlace: 'Indonesia',
       birthDate: DateTime.now(),
     );
     final nameTest = customer?.name;

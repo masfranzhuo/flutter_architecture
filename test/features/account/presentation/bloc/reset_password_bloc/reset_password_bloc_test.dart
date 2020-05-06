@@ -35,7 +35,7 @@ void main() {
     expect(bloc.initialState, isA<ResetPasswordInitialState>());
   });
 
-  group('', () {
+  group('AccountResetPasswordEvent', () {
     final emailTest = 'john@doe.com';
 
     void setUpSuccessfulValidateResetPassword() {
@@ -81,7 +81,7 @@ void main() {
     );
 
     blocTest(
-      'should emit [ResetPasswordLoadingState,ResetPasswordLoadedState] when LoginWithPassword is successful',
+      'should emit [ResetPasswordLoadingState,ResetPasswordLoadedState] when ResetPassword is successful',
       build: () async {
         setUpSuccessfulValidateResetPassword();
         setUpSuccessfulResetPassword();
@@ -97,7 +97,7 @@ void main() {
     );
 
     blocTest(
-      'should emit [ResetPasswordLoadingState,ResetPasswordErrorState] when LoginWithPassword failed',
+      'should emit [ResetPasswordLoadingState,ResetPasswordErrorState] when ResetPassword failed',
       build: () async {
         setUpSuccessfulValidateResetPassword();
         when(mockResetPassword(any))

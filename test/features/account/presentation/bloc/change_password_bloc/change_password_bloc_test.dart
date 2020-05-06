@@ -35,7 +35,7 @@ void main() {
     expect(bloc.initialState, isA<ChangePasswordInitialState>());
   });
 
-  group('', () {
+  group('AccountChangePasswordEvent', () {
     final passwordTest = 'password';
     final retypedPasswordTest = 'password';
     final currentPasswordTest = 'currentPassword';
@@ -89,7 +89,7 @@ void main() {
     );
 
     blocTest(
-      'should emit [ChangePasswordLoadingState,ChangePasswordLoadedState] when LoginWithPassword is successful',
+      'should emit [ChangePasswordLoadingState,ChangePasswordLoadedState] when ChangePassword is successful',
       build: () async {
         setUpSuccessfulValidateChangePassword();
         setUpSuccessfulChangePassword();
@@ -107,7 +107,7 @@ void main() {
     );
 
     blocTest(
-      'should emit [ChangePasswordLoadingState,ChangePasswordErrorState] when LoginWithPassword failed',
+      'should emit [ChangePasswordLoadingState,ChangePasswordErrorState] when ChangePassword failed',
       build: () async {
         setUpSuccessfulValidateChangePassword();
         when(mockChangePassword(any))

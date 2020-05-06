@@ -46,7 +46,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
           final registerResult = await registerWithPassword(Params(
             name: event.name,
-            email: event.name,
+            email: event.email,
             password: event.password,
           ));
 

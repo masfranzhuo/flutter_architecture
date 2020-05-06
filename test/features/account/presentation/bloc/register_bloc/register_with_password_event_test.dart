@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_architecture/core/error/failure.dart';
@@ -11,8 +9,6 @@ import 'package:flutter_architecture/features/account/presentation/input_validat
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../../../../fixtures/fixtures_reader.dart';
-
 class MockRegisterWithPassword extends Mock implements RegisterWithPassword {}
 
 class MockValidateRegister extends Mock implements vr.ValidateRegister {}
@@ -22,8 +18,17 @@ void main() {
   MockRegisterWithPassword mockRegisterWithPassword;
   MockValidateRegister mockValidateRegister;
 
-  Map<String, dynamic> customerFixture;
-  Customer customer;
+  final customer = Customer(
+    id: "fake_id",
+    name: "John Doe",
+    email: "john@doe.com",
+    accountStatus: "ACTIVE",
+    phoneNumber: "1234567890",
+    photoUrl: "https://fakeimage.com/image.jpg",
+    gender: "MALE",
+    birthPlace: "Indonesia",
+    birthDate: DateTime.now(),
+  );
 
   setUp(() {
     mockRegisterWithPassword = MockRegisterWithPassword();
@@ -32,10 +37,6 @@ void main() {
       registerWithPassword: mockRegisterWithPassword,
       validateRegister: mockValidateRegister,
     );
-
-    customerFixture =
-        json.decode(fixture('fixtures/customers/complete_valid.json'));
-    customer = Customer.fromJson(customerFixture);
   });
 
   tearDown(() {
@@ -120,28 +121,6 @@ void main() {
         RegisterLoadedState(account: customer),
       ],
     );
-
-    test(
-        'should emit [RegisterLoadingState,RegisterLoadedState] when RegisterWithPassword is successful',
-        () async {
-      setUpSuccessfulValidateRegister();
-      setUpSuccessfulRegister();
-
-      final expected = [
-        RegisterInitialState(),
-        RegisterLoadingState(),
-        RegisterLoadedState(account: customer),
-      ];
-
-      expectLater(bloc, emitsInOrder(expected));
-
-      bloc.add(RegisterWithPasswordEvent(
-        name: nameTest,
-        email: emailTest,
-        password: passwordTest,
-        retypedPassword: retypedPasswordTest,
-      ));
-    });
 
     blocTest(
       'should emit [RegisterLoadingState,RegisterErrorState] when RegisterWithPassword failed',

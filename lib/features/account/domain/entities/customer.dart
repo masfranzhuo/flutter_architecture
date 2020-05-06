@@ -57,5 +57,5 @@ class Customer extends Account {
   Map<String, dynamic> toJson() => _$CustomerToJson(this);
 
   @override
-  String toString() => toJson().toString();
+  bool get stringify => true;
 }

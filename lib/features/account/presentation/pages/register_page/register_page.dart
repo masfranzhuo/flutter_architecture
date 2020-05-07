@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_architecture/features/account/presentation/bloc/register_bloc/register_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/pages/login_page/login_page.dart';
+import 'package:flutter_architecture/features/account/presentation/widgets/account_header.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
@@ -34,8 +35,9 @@ class RegisterPage extends StatelessWidget {
         height: constraints.maxHeight,
         child: ListView(
           children: <Widget>[
-            Text('Title'),
-            Text('Form'),
+            AccountHeader(
+              headerText: 'Register Form',
+            ),
             FlatButton(
               child: Text('Login Page'),
               onPressed: () {

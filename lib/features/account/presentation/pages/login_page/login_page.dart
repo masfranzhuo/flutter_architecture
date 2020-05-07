@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_architecture/core/presentation/custom_page_route.dart';
 import 'package:flutter_architecture/features/account/presentation/bloc/login_bloc/login_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/pages/register_page/register_page.dart';
+import 'package:flutter_architecture/features/account/presentation/widgets/account_header.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+
+part 'login_form.w.dart';
+part 'login_footer.w.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -48,18 +53,19 @@ class LoginPage extends StatelessWidget {
         height: constraints.maxHeight,
         child: ListView(
           children: <Widget>[
-            Text('Title'),
-            Text('Form'),
-            FlatButton(
-              child: Text('Register Page'),
-              onPressed: () {
-                Navigator.of(context).push(CustomPageRoute.slide(
-                  page: RegisterPage(),
-                  pageType: AppPageType.register,
-                ));
-              },
+            AccountHeader(
+              headerText: 'Flutter Architecture',
+              subHeaderText: 'Login here',
             ),
-            Text('Forget Password'),
+            _$LoginForm(),
+            _$LoginFooter(),
+            Container(
+              padding: const EdgeInsets.all(32),
+              child: Text(
+                'Versi 0.0.1\n(C) Flutter Architecture, 2020',
+                style: Theme.of(context).textTheme.caption,
+              ),
+            )
           ],
         ),
       ),

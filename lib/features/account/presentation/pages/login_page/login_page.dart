@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_architecture/core/presentation/custom_page_route.dart';
+import 'package:flutter_architecture/core/presentation/widgets/custom_button.dart';
+import 'package:flutter_architecture/core/presentation/widgets/custom_snack_bar.dart';
+import 'package:flutter_architecture/core/presentation/widgets/custom_text_field.dart';
 import 'package:flutter_architecture/features/account/presentation/bloc/login_bloc/login_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/pages/register_page/register_page.dart';
 import 'package:flutter_architecture/features/account/presentation/widgets/account_header.dart';
+import 'package:flutter_architecture/features/account/presentation/widgets/application_version.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
@@ -17,6 +21,7 @@ class LoginPage extends StatelessWidget {
       create: (_) => GetIt.I(),
       child: SafeArea(
         child: Scaffold(
+          resizeToAvoidBottomPadding: false,
           body: LayoutBuilder(builder: _buildBody),
         ),
       ),
@@ -28,9 +33,11 @@ class LoginPage extends StatelessWidget {
       listener: (context, state) {
         if (state is LoginErrorState &&
             state.error == LoginErrorGroup.general) {
-          Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text(state.message),
-          ));
+          CustomSnackBar.showSnackBar(
+            context: context,
+            message: state.message,
+            mode: SnackBarMode.error,
+          );
         }
 
         if (state is LoginLoadedState) {
@@ -51,21 +58,26 @@ class LoginPage extends StatelessWidget {
       child: Container(
         width: constraints.maxWidth,
         height: constraints.maxHeight,
-        child: ListView(
+        child: Stack(
           children: <Widget>[
-            AccountHeader(
-              headerText: 'Flutter Architecture',
-              subHeaderText: 'Login here',
-            ),
-            _$LoginForm(),
-            _$LoginFooter(),
-            Container(
-              padding: const EdgeInsets.all(32),
-              child: Text(
-                'Versi 0.0.1\n(C) Flutter Architecture, 2020',
-                style: Theme.of(context).textTheme.caption,
+            Positioned(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: ApplicationVersion(),
               ),
-            )
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                AccountHeader(
+                  headerText: 'Flutter Architecture',
+                  subHeaderText: 'Login here',
+                ),
+                _$LoginForm(),
+                _$LoginFooter(),
+              ],
+            ),
           ],
         ),
       ),

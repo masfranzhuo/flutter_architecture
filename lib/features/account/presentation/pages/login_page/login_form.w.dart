@@ -6,8 +6,14 @@ class _$LoginForm extends StatefulWidget {
 }
 
 class __$LoginFormState extends State<_$LoginForm> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
   void login(BuildContext context) {
-    print('Login');
+    BlocProvider.of<LoginBloc>(context).add(LoginWithPasswordEvent(
+      email: _emailController.text,
+      password: _passwordController.text,
+    ));
   }
 
   @override
@@ -28,11 +34,20 @@ class __$LoginFormState extends State<_$LoginForm> {
       margin: const EdgeInsets.fromLTRB(32, 0, 32, 16),
       child: BlocBuilder<LoginBloc, LoginState>(
         builder: (context, state) {
-          return TextField(
+          String errorText;
+          if (state is LoginErrorState &&
+              state.error == LoginErrorGroup.email) {
+            errorText = state.message;
+          }
+
+          return CustomTextField(
+            context: context,
+            controller: _emailController,
+            hintText: 'Email',
             keyboardType: TextInputType.emailAddress,
-            decoration: new InputDecoration(
-              hintText: 'Email',
-            ),
+            readOnly: state is LoginLoadingState,
+            errorText: errorText,
+            iconData: Icons.email,
           );
         },
       ),
@@ -44,12 +59,21 @@ class __$LoginFormState extends State<_$LoginForm> {
       margin: const EdgeInsets.fromLTRB(32, 0, 32, 16),
       child: BlocBuilder<LoginBloc, LoginState>(
         builder: (context, state) {
-          return TextField(
-            keyboardType: TextInputType.visiblePassword,
+          String errorText;
+          if (state is LoginErrorState &&
+              state.error == LoginErrorGroup.password) {
+            errorText = state.message;
+          }
+
+          return CustomTextField(
+            context: context,
+            controller: _passwordController,
+            hintText: 'Password',
             obscureText: true,
-            decoration: new InputDecoration(
-              hintText: 'Password',
-            ),
+            keyboardType: TextInputType.visiblePassword,
+            readOnly: state is LoginLoadingState,
+            errorText: errorText,
+            iconData: Icons.lock,
           );
         },
       ),
@@ -59,9 +83,22 @@ class __$LoginFormState extends State<_$LoginForm> {
   Widget _buildLoginButton(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (context, state) {
-        return RaisedButton(
-          child: Text('Login'),
-          onPressed: () => login(context),
+        ButtonState buttonState = ButtonState.idle;
+        if (state is LoginLoadingState) {
+          buttonState = ButtonState.loading;
+        }
+
+        if (state is LoginLoadedState) {
+          buttonState = ButtonState.done;
+        }
+
+        return Container(
+          margin: const EdgeInsets.fromLTRB(32, 0, 32, 16),
+          child: CustomButton(
+            child: Text('Login'),
+            state: buttonState,
+            onPressed: () => login(context),
+          ),
         );
       },
     );

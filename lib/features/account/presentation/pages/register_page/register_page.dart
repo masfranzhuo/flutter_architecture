@@ -12,6 +12,7 @@ class RegisterPage extends StatelessWidget {
       create: (_) => GetIt.I(),
       child: SafeArea(
         child: Scaffold(
+          resizeToAvoidBottomPadding: false,
           body: LayoutBuilder(builder: _buildBody),
         ),
       ),
@@ -33,7 +34,9 @@ class RegisterPage extends StatelessWidget {
       child: Container(
         width: constraints.maxWidth,
         height: constraints.maxHeight,
-        child: ListView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             AccountHeader(
               headerText: 'Register Form',

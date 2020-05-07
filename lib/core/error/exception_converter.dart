@@ -2,6 +2,7 @@ import 'package:flutter_architecture/core/error/exception.dart';
 import 'package:flutter_architecture/core/error/failure.dart';
 import 'package:meta/meta.dart';
 
+// TODO: refactor this error module core
 Failure convertExceptionToFailure({@required Exception exception}) {
   if (exception is NotFoundException) {
     return NotFoundFailure();

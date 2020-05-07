@@ -22,7 +22,7 @@ class CustomButton extends StatelessWidget {
     this.height,
     this.width,
     this.color,
-    this.padding,
+    this.padding = const EdgeInsets.symmetric(horizontal: 16),
     this.margin,
     this.state = ButtonState.idle,
     this.isFullWidth = false,

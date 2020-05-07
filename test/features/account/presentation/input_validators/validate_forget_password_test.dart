@@ -2,19 +2,19 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_architecture/core/error/failure.dart';
 import 'package:flutter_architecture/core/presentation/input_validators/validate_email.dart'
     hide Params;
-import 'package:flutter_architecture/features/account/presentation/input_validators/validate_reset_password.dart';
+import 'package:flutter_architecture/features/account/presentation/input_validators/validate_forget_password.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 class MockValidateEmail extends Mock implements ValidateEmail {}
 
 void main() {
-  ValidateResetPassword validateResetPassword;
+  ValidateForgetPassword validateForgetPassword;
   MockValidateEmail mockValidateEmail;
 
   setUp(() {
     mockValidateEmail = MockValidateEmail();
-    validateResetPassword = ValidateResetPassword(
+    validateForgetPassword = ValidateForgetPassword(
       validateEmail: mockValidateEmail,
     );
   });
@@ -24,7 +24,7 @@ void main() {
 
     when(mockValidateEmail(any)).thenReturn(Left(BadEmailFormatFailure()));
 
-    final result = validateResetPassword(Params(email: emailTest));
+    final result = validateForgetPassword(Params(email: emailTest));
 
     verify(mockValidateEmail(any));
     expect(result, Left(BadEmailFormatFailure()));
@@ -35,7 +35,7 @@ void main() {
 
     when(mockValidateEmail(any)).thenReturn(Right(true));
 
-    final result = validateResetPassword(Params(email: emailTest));
+    final result = validateForgetPassword(Params(email: emailTest));
 
     verify(mockValidateEmail(any));
     expect(result, Right(true));

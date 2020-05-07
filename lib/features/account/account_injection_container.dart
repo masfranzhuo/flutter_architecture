@@ -17,11 +17,11 @@ import 'package:flutter_architecture/features/account/presentation/bloc/account_
 import 'package:flutter_architecture/features/account/presentation/bloc/change_password_bloc/change_password_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/bloc/login_bloc/login_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/bloc/register_bloc/register_bloc.dart';
-import 'package:flutter_architecture/features/account/presentation/bloc/reset_password_bloc/reset_password_bloc.dart';
+import 'package:flutter_architecture/features/account/presentation/bloc/forget_password_bloc/forget_password_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/input_validators/validate_change_password.dart';
 import 'package:flutter_architecture/features/account/presentation/input_validators/validate_login.dart';
 import 'package:flutter_architecture/features/account/presentation/input_validators/validate_register.dart';
-import 'package:flutter_architecture/features/account/presentation/input_validators/validate_reset_password.dart';
+import 'package:flutter_architecture/features/account/presentation/input_validators/validate_forget_password.dart';
 import 'package:get_it/get_it.dart';
 
 void init() {
@@ -39,9 +39,9 @@ void init() {
     ),
   );
   GetIt.I.registerFactory(
-    () => ResetPasswordBloc(
+    () => ForgetPasswordBloc(
       resetPassword: GetIt.I(),
-      validateResetPassword: GetIt.I(),
+      validateForgetPassword: GetIt.I(),
     ),
   );
   GetIt.I.registerFactory(
@@ -74,7 +74,7 @@ void init() {
     ),
   );
   GetIt.I.registerFactory(
-    () => ValidateResetPassword(validateEmail: GetIt.I()),
+    () => ValidateForgetPassword(validateEmail: GetIt.I()),
   );
   GetIt.I.registerFactory(
     () => ValidateChangePassword(validatePassword: GetIt.I()),

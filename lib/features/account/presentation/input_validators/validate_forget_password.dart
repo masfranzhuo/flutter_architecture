@@ -6,10 +6,10 @@ import 'package:flutter_architecture/core/presentation/input_validators/validate
 import 'package:flutter_architecture/core/util/input_validator.dart';
 import 'package:meta/meta.dart';
 
-class ValidateResetPassword extends InputValidator<Params> {
+class ValidateForgetPassword extends InputValidator<Params> {
   final ve.ValidateEmail validateEmail;
 
-  ValidateResetPassword({@required this.validateEmail});
+  ValidateForgetPassword({@required this.validateEmail});
 
   @override
   Either<Failure, bool> call(Params params) {

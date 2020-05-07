@@ -1,6 +1,6 @@
-part of 'register_page.dart';
+part of 'forget_password_page.dart';
 
-class _$RegisterFooter extends StatelessWidget {
+class _$ForgetPasswordFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(

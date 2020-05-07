@@ -5,6 +5,7 @@ import 'package:flutter_architecture/core/presentation/widgets/custom_button.dar
 import 'package:flutter_architecture/core/presentation/widgets/custom_snack_bar.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_text_field.dart';
 import 'package:flutter_architecture/features/account/presentation/bloc/login_bloc/login_bloc.dart';
+import 'package:flutter_architecture/features/account/presentation/pages/forget_password_page/forget_password_page.dart';
 import 'package:flutter_architecture/features/account/presentation/pages/register_page/register_page.dart';
 import 'package:flutter_architecture/features/account/presentation/widgets/account_header.dart';
 import 'package:flutter_architecture/features/account/presentation/widgets/application_version.dart';

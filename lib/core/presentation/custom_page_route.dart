@@ -3,6 +3,9 @@ import 'package:flutter/widgets.dart';
 enum AppPageType {
   login,
   register,
+  forgetPassword,
+  customerHome,
+  staffHome,
 }
 
 enum AppPageFormType { create, read, update }

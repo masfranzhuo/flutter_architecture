@@ -21,8 +21,8 @@ class _$LoginFooter extends StatelessWidget {
             child: Text('Forget Password'),
             onPressed: () {
               Navigator.of(context).pushReplacement(CustomPageRoute.slide(
-                page: RegisterPage(),
-                pageType: AppPageType.register,
+                page: ForgetPasswordPage(),
+                pageType: AppPageType.forgetPassword,
               ));
             },
           ),

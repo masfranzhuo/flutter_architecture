@@ -11,7 +11,7 @@ class _$LoginFooter extends StatelessWidget {
           FlatButton(
             child: Text('Register Here'),
             onPressed: () {
-              Navigator.of(context).push(CustomPageRoute.slide(
+              Navigator.of(context).pushReplacement(CustomPageRoute.slide(
                 page: RegisterPage(),
                 pageType: AppPageType.register,
               ));
@@ -20,7 +20,7 @@ class _$LoginFooter extends StatelessWidget {
           FlatButton(
             child: Text('Forget Password'),
             onPressed: () {
-              Navigator.of(context).push(CustomPageRoute.slide(
+              Navigator.of(context).pushReplacement(CustomPageRoute.slide(
                 page: RegisterPage(),
                 pageType: AppPageType.register,
               ));

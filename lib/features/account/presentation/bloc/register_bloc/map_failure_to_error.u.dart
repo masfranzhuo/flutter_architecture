@@ -1,12 +1,12 @@
 part of 'register_bloc.dart';
 
-enum RegisterErrorGroup { general, name, email, password, retypePassword }
+enum RegisterErrorGroup { general, name, email, password, retypedPassword }
 
 RegisterErrorState _$mapFailureToError(Failure failure) {
   RegisterErrorGroup errorGroup = RegisterErrorGroup.general;
   String message = 'Undefined Error. ${failure.code} - ${failure.message}';
 
-  if (Failure is NameLessThanCharactersFailure) {
+  if (failure is NameLessThanCharactersFailure) {
     errorGroup = RegisterErrorGroup.name;
     message = 'Name minimal 3 characters';
   }
@@ -32,7 +32,7 @@ RegisterErrorState _$mapFailureToError(Failure failure) {
   }
 
   if (failure is PasswordAndRetypedMismatchFailure) {
-    errorGroup = RegisterErrorGroup.retypePassword;
+    errorGroup = RegisterErrorGroup.retypedPassword;
     message = 'Retyped password is different from password';
   }
 

@@ -1,6 +1,6 @@
 part of 'reset_password_bloc.dart';
 
-enum ResetPasswordErrorGroup { general, name, email, password, retypePassword }
+enum ResetPasswordErrorGroup { general, email }
 
 ResetPasswordErrorState _$mapFailureToError(Failure failure) {
   ResetPasswordErrorGroup errorGroup = ResetPasswordErrorGroup.general;

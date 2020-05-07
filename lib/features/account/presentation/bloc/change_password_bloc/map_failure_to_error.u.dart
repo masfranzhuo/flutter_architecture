@@ -1,6 +1,6 @@
 part of 'change_password_bloc.dart';
 
-enum ChangePasswordErrorGroup { general, currentPassword, password, retypePassword }
+enum ChangePasswordErrorGroup { general, currentPassword, password, retypedPassword }
 
 ChangePasswordErrorState _$mapFailureToError(Failure failure) {
   ChangePasswordErrorGroup errorGroup = ChangePasswordErrorGroup.general;
@@ -22,7 +22,7 @@ ChangePasswordErrorState _$mapFailureToError(Failure failure) {
   }
 
   if (failure is PasswordAndRetypedMismatchFailure) {
-    errorGroup = ChangePasswordErrorGroup.retypePassword;
+    errorGroup = ChangePasswordErrorGroup.retypedPassword;
     message = 'Retyped password is different from password';
   }
 

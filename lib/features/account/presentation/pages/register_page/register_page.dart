@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_architecture/core/presentation/custom_page_route.dart';
+import 'package:flutter_architecture/core/presentation/widgets/custom_button.dart';
+import 'package:flutter_architecture/core/presentation/widgets/custom_snack_bar.dart';
+import 'package:flutter_architecture/core/presentation/widgets/custom_text_field.dart';
 import 'package:flutter_architecture/features/account/presentation/bloc/register_bloc/register_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/pages/login_page/login_page.dart';
 import 'package:flutter_architecture/features/account/presentation/widgets/account_header.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+
+part 'register_form.w.dart';
+part 'register_footer.w.dart';
 
 class RegisterPage extends StatelessWidget {
   @override
@@ -24,9 +31,11 @@ class RegisterPage extends StatelessWidget {
       listener: (context, state) {
         if (state is RegisterErrorState &&
             state.error == RegisterErrorGroup.general) {
-          Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text(state.message),
-          ));
+          CustomSnackBar.showSnackBar(
+            context: context,
+            message: state.message,
+            mode: SnackBarMode.error,
+          );
         }
 
         if (state is RegisterLoadedState) {}
@@ -41,14 +50,8 @@ class RegisterPage extends StatelessWidget {
             AccountHeader(
               headerText: 'Register Form',
             ),
-            FlatButton(
-              child: Text('Login Page'),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => LoginPage(),
-                ));
-              },
-            )
+            _$RegisterForm(),
+            _$RegisterFooter(),
           ],
         ),
       ),

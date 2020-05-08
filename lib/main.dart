@@ -11,7 +11,7 @@ void main() {
   runApp(MyApp());
 }
 
-const PRIMARY_COLOR = Colors.blueAccent;
+const PRIMARY_COLOR = Colors.blueGrey;
 const ACCENT_COLOR = Colors.yellow;
 const SUCCESS_COLOR = Colors.green;
 const WARNING_COLOR = Colors.orange;
@@ -76,6 +76,7 @@ class MyApp extends StatelessWidget {
           primaryColor: PRIMARY_COLOR,
           accentColor: ACCENT_COLOR,
           backgroundColor: DARK_BACKGROUND_COLOR,
+          canvasColor: PRIMARY_COLOR,
           snackBarTheme: SnackBarThemeData(
             backgroundColor: Colors.black,
           ),

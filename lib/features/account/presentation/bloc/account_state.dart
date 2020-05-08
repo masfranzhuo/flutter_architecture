@@ -16,6 +16,8 @@ class AccountLoadedState extends AccountState {
 
   AccountLoadedState({@required this.account});
 
+  bool get isLogin => account != null;
+
   @override
   List<Object> get props => [account];
 }

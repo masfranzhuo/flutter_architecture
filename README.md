@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/gh/masfranzhuo/flutter_architecture/branch/master/graph/badge.svg?token=TLY1AWZWHD)](https://codecov.io/gh/masfranzhuo/flutter_architecture)
+
 # flutter_architecture
 
 A new Flutter project.

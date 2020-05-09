@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - master
-      # - development
+      - development
 jobs:
   test:
     runs-on: macos-latest
@@ -22,6 +22,7 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
+      - run: flutter  config --enable-web
       - run: flutter pub get
       - run: flutter clean
       # build Android version
@@ -34,12 +35,12 @@ jobs:
       #     artifacts: "build/app/outputs/apk/debug/*.apk,build/macos/Build/Products/Release/*.app"
       #     token: ${{ secrets.GITHUB_TOKEN }}
       # build Flutter web version
-      # - run: flutter build web
+      - run: flutter build web
       # Handle the deploy process of your project to GitHub Pages.
       # https://github.com/JamesIves/github-pages-deploy-action
-      # - uses: JamesIves/github-pages-deploy-action@releases/v3
-      #   with:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
-      #     BASE_BRANCH: master
-      #     BRANCH: gh-pages
-      #     FOLDER: build/web
+      - uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+          BASE_BRANCH: master
+          BRANCH: gh-pages
+          FOLDER: build/web

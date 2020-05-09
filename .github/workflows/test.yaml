@@ -1,9 +1,5 @@
 name: Test
-on:
-  push:
-    branches:
-      - master
-      - development
+on: [push]
 jobs:
   test:
     runs-on: macos-latest

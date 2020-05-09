@@ -1,13 +1,18 @@
-name: Test
+name: test
 on: [push]
 jobs:
   test:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v1
-      - run: flutter pub get
-      - run: flutter test --coverage
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1.0.7
+      - uses: subosito/flutter-action@v1
         with:
-          file: coverage/lcov.info
+          flutter-version: "1.12.14"
+          channel: "dev"
+      - run: flutter pub get
+      # - run: flutter test --coverage
+      # - name: Upload coverage to Codecov
+      #   uses: codecov/codecov-action@v1
+      #   with:
+      #     token: ${{ secrets.CODECOV_TOKEN }}
+      #     file: coverage/lcov.info

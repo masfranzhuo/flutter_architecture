@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - master
-      - development
+      # - development
 jobs:
   test:
     runs-on: macos-latest
@@ -17,14 +17,14 @@ jobs:
       # https://github.com/marketplace/actions/flutter-action
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: '1.12.14'
+          flutter-version: '1.17'
           channel: 'dev'
       # This action sets up a java environment
       # https://github.com/actions/setup-java
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
-      - run: flutter  config --enable-web
+      # - run: flutter  config --enable-web
       - run: flutter pub get
       # build Android version
       # - run: flutter build apk --debug --split-per-abi
@@ -36,12 +36,12 @@ jobs:
       #     artifacts: "build/app/outputs/apk/debug/*.apk"
       #     token: ${{ secrets.GH_ACCESS_TOKEN }}
       # build Flutter web version
-      - run: flutter build web
+      # - run: flutter build web
       # Handle the deploy process of your project to GitHub Pages.
       # https://github.com/JamesIves/github-pages-deploy-action
-      - uses: JamesIves/github-pages-deploy-action@releases/v3
-        with:
-          GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
-          BASE_BRANCH: master
-          BRANCH: gh-pages
-          FOLDER: build/web
+      # - uses: JamesIves/github-pages-deploy-action@releases/v3
+      #   with:
+      #     GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+      #     BASE_BRANCH: master
+      #     BRANCH: gh-pages
+      #     FOLDER: build/web

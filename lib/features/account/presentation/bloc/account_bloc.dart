@@ -56,13 +56,16 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
         (failure) => _$mapFailureToError(failure),
         (_) => AccountLoadedState(account: null),
       );
+    } else if (event is LoginEvent) {
+      yield AccountLoadingState();
+      yield AccountLoadedState(account: event.account);
     }
   }
 
   @override
   Future<void> close() {
-    loginBlocSubscription.cancel();
-    registerBlocSubscription.cancel();
+    loginBlocSubscription?.cancel();
+    registerBlocSubscription?.cancel();
     return super.close();
   }
 }

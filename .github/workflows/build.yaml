@@ -7,6 +7,8 @@ on:
 jobs:
   test:
     runs-on: macos-latest
+    #Identifies any jobs that must complete successfully before this job will run.
+    # needs: [test]
     steps:
       # The branch or tag ref that triggered the workflow will be checked out.
       # https://github.com/actions/checkout
@@ -15,7 +17,7 @@ jobs:
       # https://github.com/marketplace/actions/flutter-action
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: '1.17'
+          flutter-version: '1.12.14'
           channel: 'dev'
       # This action sets up a java environment
       # https://github.com/actions/setup-java

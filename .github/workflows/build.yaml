@@ -1,7 +1,8 @@
 name: Build and deploy
 on:
   push:
-    branches: [master, development]
+    branches:
+      - master
 jobs:
   test:
     runs-on: macos-latest

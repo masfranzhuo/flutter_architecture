@@ -11,7 +11,7 @@ jobs:
       image:  google/dart:latest
     steps:
       - uses: actions/checkout@v2
-      - run: pub get
+      - run: flutter pub get
       # - run: flutter test --coverage
       # - name: Upload coverage to Codecov
       #   uses: codecov/codecov-action@v1

@@ -27,6 +27,13 @@ import 'package:get_it/get_it.dart';
 void init() {
   // Bloc
   GetIt.I.registerFactory(
+    () => AccountBloc(
+      logout: GetIt.I(),
+      loginBloc: GetIt.I(),
+      registerBloc: GetIt.I(),
+    ),
+  );
+  GetIt.I.registerFactory(
     () => RegisterBloc(
       registerWithPassword: GetIt.I(),
       validateRegister: GetIt.I(),
@@ -50,11 +57,11 @@ void init() {
       validateChangePassword: GetIt.I(),
     ),
   );
-  GetIt.I.registerFactory(() => AccountBloc(logout: GetIt.I()));
 
   // Use cases
-  GetIt.I
-      .registerLazySingleton(() => RegisterWithPassword(repository: GetIt.I()));
+  GetIt.I.registerLazySingleton(
+    () => RegisterWithPassword(repository: GetIt.I()),
+  );
   GetIt.I.registerLazySingleton(() => LoginWithPassword(repository: GetIt.I()));
   GetIt.I.registerLazySingleton(() => ResetPassword(repository: GetIt.I()));
   GetIt.I.registerLazySingleton(() => ChangePassword(repository: GetIt.I()));

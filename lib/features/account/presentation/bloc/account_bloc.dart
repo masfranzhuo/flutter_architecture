@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_architecture/core/error/failure.dart';
 import 'package:flutter_architecture/core/util/use_case.dart';
 import 'package:flutter_architecture/features/account/domain/entities/account.dart';
+import 'package:flutter_architecture/features/account/domain/entities/staff.dart';
 import 'package:flutter_architecture/features/account/domain/use_cases/logout.dart';
 import 'package:meta/meta.dart';
 

@@ -10,6 +10,7 @@ import 'package:flutter_architecture/features/account/presentation/bloc/login_bl
 import 'package:flutter_architecture/features/account/presentation/pages/customer_home_page/customer_home_page.dart';
 import 'package:flutter_architecture/features/account/presentation/pages/forget_password_page/forget_password_page.dart';
 import 'package:flutter_architecture/features/account/presentation/pages/register_page/register_page.dart';
+import 'package:flutter_architecture/features/account/presentation/pages/staff_home_page/staff_home_page.dart';
 import 'package:flutter_architecture/features/account/presentation/widgets/account_header.dart';
 import 'package:flutter_architecture/features/account/presentation/widgets/application_version.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -49,18 +50,19 @@ class LoginPage extends StatelessWidget {
             page: CustomerHomePage(),
             pageType: AppPageType.customerHome,
           ));
-          // Timer(Duration(milliseconds: 500), () {
-          //   if (state.isStaff) {
-          //     Navigator.of(context).pushReplacement(MaterialPageRoute(
-          //       builder: (context) => LoginPage(),
-          //     ));
-          //   } else {
-          //     Navigator.of(context).pushReplacement(CustomPageRoute.slide(
-          //       page: CustomerHomePage(),
-          //       pageType: AppPageType.customerHome,
-          //     ));
-          //   }
-          // });
+          Timer(Duration(milliseconds: 500), () {
+            if (state.isStaff) {
+              Navigator.of(context).pushReplacement(CustomPageRoute.slide(
+                page: StaffHomePage(),
+                pageType: AppPageType.staffHome,
+              ));
+            } else {
+              Navigator.of(context).pushReplacement(CustomPageRoute.slide(
+                page: CustomerHomePage(),
+                pageType: AppPageType.customerHome,
+              ));
+            }
+          });
         }
       },
       child: Container(

@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_architecture/core/error/failure.dart';
 import 'package:flutter_architecture/features/account/domain/entities/account.dart';
+import 'package:flutter_architecture/features/account/domain/entities/staff.dart';
 import 'package:flutter_architecture/features/account/domain/use_cases/login_with_password.dart';
 import 'package:flutter_architecture/features/account/presentation/input_validators/validate_login.dart'
     as vl;

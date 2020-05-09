@@ -20,27 +20,23 @@ class CustomerHomePage extends StatelessWidget {
       height: constraints.maxHeight,
       child: ListView(
         children: <Widget>[
-          Column(
-            children: <Widget>[
-              SizedBox(height: 32),
-              CustomButton(
-                state: ButtonState.done,
-                onPressed: () {},
-                child: Text('Home Page'),
-              ),
-              SizedBox(height: 32),
-              CustomButton(
-                state: ButtonState.loading,
-                onPressed: () {},
-                child: Text('Home Page'),
-              ),
-              SizedBox(height: 32),
-              CustomButton(
-                state: ButtonState.idle,
-                onPressed: () {},
-                child: Text('Home Page'),
-              ),
-            ],
+          SizedBox(height: 32),
+          CustomButton(
+            state: ButtonState.done,
+            onPressed: () {},
+            child: Text('Home Page'),
+          ),
+          SizedBox(height: 32),
+          CustomButton(
+            state: ButtonState.loading,
+            onPressed: () {},
+            child: Text('Home Page'),
+          ),
+          SizedBox(height: 32),
+          CustomButton(
+            state: ButtonState.idle,
+            onPressed: () {},
+            child: Text('Home Page'),
           ),
         ],
       ),

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_architecture/core/presentation/custom_page_route.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_snack_bar.dart';
+import 'package:flutter_architecture/features/account/domain/entities/staff.dart';
 import 'package:flutter_architecture/features/account/presentation/bloc/account_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/pages/login_page/login_page.dart';
+import 'package:flutter_architecture/features/account/presentation/widgets/menus/admin_menu.dart';
+import 'package:flutter_architecture/features/account/presentation/widgets/menus/customer_menu.dart';
+import 'package:flutter_architecture/features/account/presentation/widgets/menus/super_admin.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MenuDrawer extends StatelessWidget {
@@ -35,7 +39,7 @@ class MenuDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AccountBloc, AccountState>(
+    return BlocConsumer<AccountBloc, AccountState>(
       listener: (context, state) {
         if (state is AccountErrorState &&
             state.error == AccountErrorGroup.general) {
@@ -57,27 +61,40 @@ class MenuDrawer extends StatelessWidget {
           );
         }
       },
-      child: Drawer(
-        child: ListView(
-          children: <Widget>[
-            UserAccountsDrawerHeader(
-              accountName: Text('John Doe'),
-              accountEmail: Text('john@doe.com'),
-              currentAccountPicture: CircleAvatar(
-                child: Icon(Icons.person),
+      builder: (context, state) {
+        Widget _menuWidget = SizedBox();
+        if (state is AccountLoadedState) {
+          if (state.role == StaffRole.admin) {
+            _menuWidget = AdminMenu();
+          } else if (state.role == StaffRole.superAdmin) {
+            _menuWidget = SuperAdminMenu();
+          } else {
+            _menuWidget = CustomerMenu();
+          }
+        }
+        return Drawer(
+          child: ListView(
+            children: <Widget>[
+              UserAccountsDrawerHeader(
+                accountName: Text('John Doe'),
+                accountEmail: Text('john@doe.com'),
+                currentAccountPicture: CircleAvatar(
+                  child: Icon(Icons.person),
+                ),
+                onDetailsPressed: () {
+                  Navigator.of(context).pop();
+                },
               ),
-              onDetailsPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            ListTile(
-              title: Text('Logout'),
-              trailing: Icon(Icons.exit_to_app),
-              onTap: () => logout(context),
-            ),
-          ],
-        ),
-      ),
+              _menuWidget,
+              ListTile(
+                title: Text('Logout'),
+                trailing: Icon(Icons.exit_to_app),
+                onTap: () => logout(context),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

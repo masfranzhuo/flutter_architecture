@@ -19,6 +19,16 @@ class LoginLoadedState extends LoginState {
 
   LoginLoadedState({@required this.account});
 
+  String get role {
+    if (account is Staff) {
+      return (account as Staff).role;
+    }
+
+    return null;
+  }
+
+  bool get isStaff => role != null;
+
   @override
   List<Object> get props => [account];
 }

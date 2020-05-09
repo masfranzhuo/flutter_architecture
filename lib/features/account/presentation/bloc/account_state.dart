@@ -16,6 +16,15 @@ class AccountLoadedState extends AccountState {
 
   AccountLoadedState({@required this.account});
 
+  String get role {
+    if (account is Staff) {
+      return (account as Staff).role;
+    }
+
+    return null;
+  }
+
+  bool get isStaff => role != null;
   bool get isLogin => account != null;
 
   @override

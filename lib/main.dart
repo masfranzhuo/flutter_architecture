@@ -55,6 +55,7 @@ class MyApp extends StatelessWidget {
           ),
           cardColor: DARK_BACKGROUND_COLOR,
           textTheme: TextTheme(
+            // TODO: fix deprecated text theme in Flutter 1.17.0
             headline: TextStyle(fontSize: 36),
             subhead: TextStyle(fontSize: 18),
             title: TextStyle(fontSize: 24),

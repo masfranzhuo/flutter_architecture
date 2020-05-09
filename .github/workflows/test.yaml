@@ -3,7 +3,10 @@ on: [push]
 jobs:
   test:
     runs-on: macos-latest
+    container:
+      image:  google/dart:latest
     steps:
+      # - uses: actions/checkout@v2
       - run: flutter pub get
       # - run: flutter test --coverage
       # - name: Upload coverage to Codecov

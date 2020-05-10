@@ -43,7 +43,7 @@ jobs:
       #     allowUpdates: true
       #     tag: "flutter"
       #     token: ${{ secrets.GH_TOKEN }}
-      # - uses: actions/upload-artifact@v1
+      - uses: actions/upload-artifact@v1
         with:
           name: release-apk
           path: "**"

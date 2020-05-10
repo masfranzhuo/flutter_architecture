@@ -5,42 +5,49 @@ on:
       '*'
     branches:
       - master
-      - development
 jobs:
   build:
     runs-on: macos-latest
     #Identifies any jobs that must complete successfully before this job will run.
-    # TODO: uncomment needs
-    # needs: [test]
+    needs: [test]
     steps:
       # The branch or tag ref that triggered the workflow will be checked out.
       # https://github.com/actions/checkout
       - uses: actions/checkout@v1
-      # Setup a flutter environment.
-      # https://github.com/marketplace/actions/flutter-action
-      - uses: subosito/flutter-action@v1
-        with:
-          channel: 'stable'
       # This action sets up a java environment
       # https://github.com/actions/setup-java
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
-      # - run: flutter  config --enable-web
-      - run: flutter pub get
+      # Setup a flutter environment.
+      # https://github.com/marketplace/actions/flutter-action
+      - uses: subosito/flutter-action@v1.1.1
+        with:
+          channel: 'stable'
       # build Android version
-      - run: flutter build apk --debug --split-per-abi
-      # TODO: build release instead
+      - name: Run release app
+        env:
+          KEY_JKS: ${{ secrets.KEY_JKS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          ALIAS_PASSWORD: ${{ secrets.ALIAS_PASSWORD }}
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: |
+          echo $KEY_JKS | base64 --decode > ./android/key.jks
+          echo $GOOGLE_SERVICES_JSON | base64 --decode > ./android/app/google-services.json
+          flutter pub get
+          flutter build apk --release
+      # - run: flutter build appbundle --target-platform android-arm,android-arm64,android-x64
       # This action will create a github release and optionally upload an artifact to it.
       # https://github.com/ncipollo/release-action
-      - name: Create a Release APK
+      - name: Run release artifact
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/app/outputs/apk/debug/*.apk"
+          artifacts: "build/app/outputs/apk/release/*.apk"
           allowUpdates: true
-          tag: "v0.1"
+          tag: "flutter"
           token: ${{ secrets.GH_TOKEN }}
       # build Flutter web version
+      # - run: flutter  config --enable-web
       # - run: flutter build web
       # Handle the deploy process of your project to GitHub Pages.
       # https://github.com/JamesIves/github-pages-deploy-action

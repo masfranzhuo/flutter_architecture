@@ -9,7 +9,6 @@ jobs:
   build:
     runs-on: macos-latest
     #Identifies any jobs that must complete successfully before this job will run.
-    needs: [test]
     steps:
       # The branch or tag ref that triggered the workflow will be checked out.
       # https://github.com/actions/checkout

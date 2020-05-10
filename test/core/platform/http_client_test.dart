@@ -98,7 +98,7 @@ void main() {
       await httpClient.postFirebaseData(
         endPoint:
             '${EndPoint.users}/$idTest.json?${EndPoint.auth}=$idTokenTest',
-        formData: FormData(),
+        formData: {},
       );
 
       verify(mockFirebaseAuthDataSource.getCurrentUserIdToken());
@@ -121,7 +121,7 @@ void main() {
         await httpClient.postFirebaseData(
           endPoint:
               '${EndPoint.users}/$idTest.json?${EndPoint.auth}=$idTokenTest',
-          formData: FormData(),
+          formData: {},
         );
 
         verify(mockFirebaseAuthDataSource.getCurrentUserIdToken());
@@ -144,7 +144,7 @@ void main() {
         () async => await httpClient.postFirebaseData(
           endPoint:
               '${EndPoint.users}/$idTest.json?${EndPoint.auth}=$idTokenTest',
-          formData: FormData(),
+          formData: {},
         ),
         throwsA(isA<InvalidIdTokenException>()),
       );
@@ -164,7 +164,7 @@ void main() {
       await httpClient.patchFirebaseData(
         endPoint:
             '${EndPoint.users}/$idTest.json?${EndPoint.auth}=$idTokenTest',
-        formData: FormData(),
+        formData: {},
       );
 
       verify(mockFirebaseAuthDataSource.getCurrentUserIdToken());
@@ -187,7 +187,7 @@ void main() {
         await httpClient.patchFirebaseData(
           endPoint:
               '${EndPoint.users}/$idTest.json?${EndPoint.auth}=$idTokenTest',
-          formData: FormData(),
+          formData: {},
         );
 
         verify(mockFirebaseAuthDataSource.getCurrentUserIdToken());
@@ -210,7 +210,7 @@ void main() {
         () async => await httpClient.patchFirebaseData(
           endPoint:
               '${EndPoint.users}/$idTest.json?${EndPoint.auth}=$idTokenTest',
-          formData: FormData(),
+          formData: {},
         ),
         throwsA(isA<InvalidIdTokenException>()),
       );

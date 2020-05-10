@@ -41,18 +41,6 @@ void main() {
   final emailTest = 'john@doe.com';
 
   group('setDeviceToken', () {
-    setUpPostSuccessfully() {
-      when(mockHttpClient.postFirebaseData(
-        endPoint: anyNamed('endPoint'),
-        formData: anyNamed('formData'),
-      )).thenAnswer(
-        (_) async => Response<Map<String, dynamic>>(
-          data: staffFixture,
-          statusCode: 200,
-        ),
-      );
-    }
-
     setUpPatchSuccessfully() {
       when(mockHttpClient.patchFirebaseData(
         endPoint: anyNamed('endPoint'),
@@ -77,7 +65,7 @@ void main() {
     }
 
     test('should call postFirebaseData of HttpClient when register', () async {
-      setUpPostSuccessfully();
+      setUpPatchSuccessfully();
 
       await dataSource.setUserProfile(
         id: idTest,
@@ -86,7 +74,7 @@ void main() {
         email: emailTest,
       );
 
-      verify(mockHttpClient.postFirebaseData(
+      verify(mockHttpClient.patchFirebaseData(
         endPoint: anyNamed('endPoint'),
         formData: anyNamed('formData'),
       ));
@@ -116,7 +104,15 @@ void main() {
       expect(result, customer);
     });
     test('should return Staff', () async {
-      setUpPostSuccessfully();
+      when(mockHttpClient.patchFirebaseData(
+        endPoint: anyNamed('endPoint'),
+        formData: anyNamed('formData'),
+      )).thenAnswer(
+        (_) async => Response<Map<String, dynamic>>(
+          data: staffFixture,
+          statusCode: 200,
+        ),
+      );
 
       final result = await dataSource.setUserProfile(
         id: idTest,

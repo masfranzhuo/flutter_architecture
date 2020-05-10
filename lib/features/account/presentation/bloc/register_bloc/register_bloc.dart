@@ -29,7 +29,9 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   Stream<RegisterState> mapEventToState(
     RegisterEvent event,
   ) async* {
-    if (event is RegisterWithPasswordEvent) {
+    if (event is RegisterResetStateEvent) {
+      yield RegisterInitialState();
+    } else if (event is RegisterWithPasswordEvent) {
       final validateRegisterResult = validateRegister(vr.Params(
         name: event.name,
         email: event.email,

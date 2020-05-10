@@ -40,33 +40,31 @@ class AccountDataSourceImpl extends AccountDataSource {
     String email,
     String photoUrl,
   }) async {
-    FormData formData;
+    Map<String, dynamic> formData;
     Response<dynamic> response;
 
     if (name != null && email != null) {
       // Register
-      formData = FormData.fromMap(<String, dynamic>{
+      formData = <String, dynamic>{
+        '_id': id,
         'token': deviceToken,
         'name': name,
         'email': email,
         'photoUrl': photoUrl,
         'accountStatus': AccountStatus.active,
-      });
-      response = await client.postFirebaseData(
-        endPoint: '${EndPoint.users}/$id.json',
-        formData: formData,
-      );
+      };
     } else {
       // Login
-      formData = FormData.fromMap(<String, dynamic>{
+      formData = <String, dynamic>{
         'token': deviceToken,
         'accountStatus': AccountStatus.active,
-      });
-      response = await client.patchFirebaseData(
-        endPoint: '${EndPoint.users}/$id.json',
-        formData: formData,
-      );
+      };
     }
+
+    response = await client.patchFirebaseData(
+      endPoint: '${EndPoint.users}/$id.json',
+      formData: formData,
+    );
 
     if (response.statusCode == 200) {
       final mappedAccountData = Map<String, dynamic>.from(response.data);
@@ -108,9 +106,9 @@ class AccountDataSourceImpl extends AccountDataSource {
   @override
   Future<bool> removeDeviceToken(
       {@required String id, @required String deviceToken}) async {
-    final formData = FormData.fromMap(<String, dynamic>{
-      'token': deviceToken,
-    });
+    final formData = <String, dynamic>{
+      'token': null,
+    };
 
     final response = await client.patchFirebaseData(
       endPoint: '${EndPoint.users}/$id.json',

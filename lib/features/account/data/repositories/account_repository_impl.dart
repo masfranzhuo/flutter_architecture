@@ -32,8 +32,12 @@ class AccountRepositoryImpl extends AccountRepository {
 
       final deviceToken = await firebaseMessagingDataSource.getDeviceToken();
 
-      final account = await accountDataSource.setUserProfile(
+      await accountDataSource.setUserProfile(
         deviceToken: deviceToken,
+        id: firebaseUser?.uid,
+      );
+
+      final account = await accountDataSource.getUserProfile(
         id: firebaseUser?.uid,
       );
 
@@ -65,12 +69,16 @@ class AccountRepositoryImpl extends AccountRepository {
 
       final deviceToken = await firebaseMessagingDataSource.getDeviceToken();
 
-      final account = await accountDataSource.setUserProfile(
+      await accountDataSource.setUserProfile(
         deviceToken: deviceToken,
         id: firebaseUser?.uid,
         name: name,
         email: email,
         photoUrl: photoUrl,
+      );
+
+      final account = await accountDataSource.getUserProfile(
+        id: firebaseUser?.uid,
       );
 
       return Right(account);
@@ -106,7 +114,7 @@ class AccountRepositoryImpl extends AccountRepository {
   }
 
   @override
-  Future<Either<Failure, Account>> getUserProfile({String id}) async {
+  Future<Either<Failure, Account>> getUserProfile({@required String id}) async {
     try {
       final account = await accountDataSource.getUserProfile(id: id);
       return Right(account);

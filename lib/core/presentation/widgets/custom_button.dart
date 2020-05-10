@@ -58,10 +58,12 @@ class CustomButton extends StatelessWidget {
       borderRadius: BorderRadius.circular(8),
       child: FlatButton(
         padding: const EdgeInsets.all(0),
-        onPressed: () {
-          onPressed();
-          FocusScope.of(context).requestFocus(FocusNode());
-        },
+        onPressed: state == ButtonState.idle
+            ? () {
+                onPressed();
+                FocusScope.of(context).requestFocus(FocusNode());
+              }
+            : null,
         child: child,
       ),
     );

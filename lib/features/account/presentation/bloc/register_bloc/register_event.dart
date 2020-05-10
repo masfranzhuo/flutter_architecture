@@ -7,6 +7,8 @@ abstract class RegisterEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class RegisterResetStateEvent extends RegisterEvent {}
+
 class RegisterWithPasswordEvent extends RegisterEvent {
   final String name, email, password, retypedPassword;
 

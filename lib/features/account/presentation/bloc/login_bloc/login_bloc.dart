@@ -30,7 +30,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Stream<LoginState> mapEventToState(
     LoginEvent event,
   ) async* {
-    if (event is LoginWithPasswordEvent) {
+    if (event is LoginResetStateEvent) {
+      yield LoginInitialState();
+    } else if (event is LoginWithPasswordEvent) {
       final validateLoginResult = validateLogin(vl.Params(
         email: event.email,
         password: event.password,

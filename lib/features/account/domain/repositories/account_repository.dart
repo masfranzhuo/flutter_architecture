@@ -25,10 +25,7 @@ abstract class AccountRepository {
   /// Get a user profile based on the specified idToken
   /// in the initialized http client.
   /// Will return Left(NotFoundFailure) if not found
-  ///
-  /// * [id] If not provided will use uid in the request's idToken
-  ///   (bearer token)
-  Future<Either<Failure, Account>> getUserProfile({String id});
+  Future<Either<Failure, Account>> getUserProfile({@required String id});
 
   Future<Either<Failure, bool>> changePassword({
     @required String password,

@@ -10,7 +10,6 @@ import 'package:flutter_architecture/features/account/presentation/pages/custome
 import 'package:flutter_architecture/features/account/presentation/pages/login_page/login_page.dart';
 import 'package:flutter_architecture/features/account/presentation/widgets/account_header.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 
 part 'register_form.w.dart';
 part 'register_footer.w.dart';
@@ -18,13 +17,10 @@ part 'register_footer.w.dart';
 class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<RegisterBloc>(
-      create: (_) => GetIt.I(),
-      child: SafeArea(
-        child: Scaffold(
-          resizeToAvoidBottomPadding: false,
-          body: LayoutBuilder(builder: _buildBody),
-        ),
+    return SafeArea(
+      child: Scaffold(
+        resizeToAvoidBottomPadding: false,
+        body: LayoutBuilder(builder: _buildBody),
       ),
     );
   }

@@ -14,7 +14,6 @@ import 'package:flutter_architecture/features/account/presentation/pages/staff_h
 import 'package:flutter_architecture/features/account/presentation/widgets/account_header.dart';
 import 'package:flutter_architecture/features/account/presentation/widgets/application_version.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 
 part 'login_form.w.dart';
 part 'login_footer.w.dart';
@@ -22,13 +21,10 @@ part 'login_footer.w.dart';
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<LoginBloc>(
-      create: (_) => GetIt.I(),
-      child: SafeArea(
-        child: Scaffold(
-          resizeToAvoidBottomPadding: false,
-          body: LayoutBuilder(builder: _buildBody),
-        ),
+    return SafeArea(
+      child: Scaffold(
+        resizeToAvoidBottomPadding: false,
+        body: LayoutBuilder(builder: _buildBody),
       ),
     );
   }
@@ -46,10 +42,6 @@ class LoginPage extends StatelessWidget {
         }
 
         if (state is LoginLoadedState) {
-          Navigator.of(context).pushReplacement(CustomPageRoute.slide(
-            page: CustomerHomePage(),
-            pageType: AppPageType.customerHome,
-          ));
           Timer(Duration(milliseconds: 500), () {
             if (state.isStaff) {
               Navigator.of(context).pushReplacement(CustomPageRoute.slide(

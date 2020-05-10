@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -11,7 +12,7 @@ class Url {
 }
 
 class EndPoint {
-  static const auth = '/auth';
+  static const auth = 'auth';
   static const users = '/users';
 }
 
@@ -75,7 +76,7 @@ class HttpClient {
 
   Future<Response> postFirebaseData({
     @required String endPoint,
-    @required FormData formData,
+    @required Map<String, dynamic> formData,
   }) async {
     final idToken = await firebaseAuthDataSource.getCurrentUserIdToken();
 
@@ -86,7 +87,12 @@ class HttpClient {
     try {
       final response = await dio.post(
         '$endPoint?${EndPoint.auth}=$idToken',
-        data: formData,
+        data: json.encode(formData),
+        options: Options(
+          headers: {
+            HttpHeaders.contentTypeHeader: 'application/json',
+          },
+        ),
       );
 
       return response;
@@ -97,7 +103,7 @@ class HttpClient {
 
   Future<Response> patchFirebaseData({
     @required String endPoint,
-    @required FormData formData,
+    @required Map<String, dynamic> formData,
   }) async {
     final idToken = await firebaseAuthDataSource.getCurrentUserIdToken();
 
@@ -107,11 +113,11 @@ class HttpClient {
 
     try {
       final response = await dio.patch(
-        endPoint,
-        data: formData,
+        '$endPoint?${EndPoint.auth}=$idToken',
+        data: json.encode(formData),
         options: Options(
           headers: {
-            HttpHeaders.authorizationHeader: 'Bearer $idToken',
+            HttpHeaders.contentTypeHeader: 'application/json',
           },
         ),
       );

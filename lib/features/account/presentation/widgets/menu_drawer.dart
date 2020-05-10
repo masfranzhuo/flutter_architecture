@@ -26,8 +26,8 @@ class MenuDrawer extends StatelessWidget {
             ),
             FlatButton(
               onPressed: () {
-                BlocProvider.of<AccountBloc>(context).add(LogoutEvent());
                 Navigator.of(context).pop();
+                BlocProvider.of<AccountBloc>(context).add(LogoutEvent());
               },
               child: Text('Yes'),
             )
@@ -52,6 +52,7 @@ class MenuDrawer extends StatelessWidget {
         }
 
         if (state is AccountLoadedState && !state.isLogin) {
+          Navigator.of(context).pop();
           Navigator.of(context).pushAndRemoveUntil(
             CustomPageRoute.slide(
               page: LoginPage(),
@@ -62,8 +63,21 @@ class MenuDrawer extends StatelessWidget {
         }
       },
       builder: (context, state) {
+        Widget _userAccount = SizedBox();
         Widget _menuWidget = SizedBox();
+
         if (state is AccountLoadedState) {
+          _userAccount = UserAccountsDrawerHeader(
+            accountName: Text(state.account?.name ?? 'Name'),
+            accountEmail: Text(state.account?.email ?? 'Email'),
+            currentAccountPicture: CircleAvatar(
+              child: Icon(Icons.person),
+            ),
+            onDetailsPressed: () {
+              Navigator.of(context).pop();
+            },
+          );
+
           if (state.role == StaffRole.admin) {
             _menuWidget = AdminMenu();
           } else if (state.role == StaffRole.superAdmin) {
@@ -72,19 +86,11 @@ class MenuDrawer extends StatelessWidget {
             _menuWidget = CustomerMenu();
           }
         }
+
         return Drawer(
           child: ListView(
             children: <Widget>[
-              UserAccountsDrawerHeader(
-                accountName: Text('John Doe'),
-                accountEmail: Text('john@doe.com'),
-                currentAccountPicture: CircleAvatar(
-                  child: Icon(Icons.person),
-                ),
-                onDetailsPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
+              _userAccount,
               _menuWidget,
               ListTile(
                 title: Text('Logout'),

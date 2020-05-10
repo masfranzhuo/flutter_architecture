@@ -6,8 +6,8 @@ class _$LoginForm extends StatefulWidget {
 }
 
 class __$LoginFormState extends State<_$LoginForm> {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final _emailController = TextEditingController(text: 'superadmin@gmail.com');
+  final _passwordController = TextEditingController(text: 'superadmin');
 
   void login(BuildContext context) {
     BlocProvider.of<LoginBloc>(context).add(LoginWithPasswordEvent(

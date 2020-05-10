@@ -54,7 +54,11 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
 
       yield logoutResult.fold(
         (failure) => _$mapFailureToError(failure),
-        (_) => AccountLoadedState(account: null),
+        (_) {
+          loginBloc.add(LoginResetStateEvent());
+          registerBloc.add(RegisterResetStateEvent());
+          return AccountLoadedState(account: null);
+        },
       );
     } else if (event is LoginEvent) {
       yield AccountLoadingState();

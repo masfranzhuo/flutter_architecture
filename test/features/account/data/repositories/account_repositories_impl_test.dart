@@ -48,8 +48,6 @@ void main() {
   });
 
   final idTest = 'user_uid';
-  final deviceTokenTest = 'mockdevicetoken';
-
   final emailTest = 'test';
   final passwordTest = 'test';
 
@@ -69,9 +67,8 @@ void main() {
     }
 
     test('should login as a staff', () async {
-      when(mockAccountDataSource.setUserProfile(
+      when(mockAccountDataSource.getUserProfile(
         id: anyNamed('id'),
-        deviceToken: anyNamed('deviceToken'),
       )).thenAnswer((_) async => mockStaff);
 
       final result = await repository.loginWithPassword(
@@ -79,20 +76,24 @@ void main() {
         password: passwordTest,
       );
 
-      verify(mockFirebaseAuthDataSource.signInWithPassword(
-          email: emailTest, password: passwordTest));
-      verify(mockFirebaseMessagingDataSource.getDeviceToken());
-      verifyNever(mockAccountDataSource.setUserProfile(
-        id: idTest,
-        deviceToken: deviceTokenTest,
-      ));
+      verifyInOrder([
+        mockFirebaseAuthDataSource.signInWithPassword(
+          email: emailTest,
+          password: passwordTest,
+        ),
+        mockFirebaseMessagingDataSource.getDeviceToken(),
+        mockAccountDataSource.setUserProfile(
+          id: anyNamed('id'),
+          deviceToken: anyNamed('deviceToken'),
+        ),
+        mockAccountDataSource.getUserProfile(id: anyNamed('id')),
+      ]);
       expect(result, Right(mockStaff));
     });
 
     test('should login as a customer', () async {
-      when(mockAccountDataSource.setUserProfile(
+      when(mockAccountDataSource.getUserProfile(
         id: anyNamed('id'),
-        deviceToken: anyNamed('deviceToken'),
       )).thenAnswer((_) async => mockCustomer);
 
       final result = await repository.loginWithPassword(
@@ -100,13 +101,18 @@ void main() {
         password: passwordTest,
       );
 
-      verify(mockFirebaseAuthDataSource.signInWithPassword(
-          email: emailTest, password: passwordTest));
-      verify(mockFirebaseMessagingDataSource.getDeviceToken());
-      verifyNever(mockAccountDataSource.setUserProfile(
-        id: idTest,
-        deviceToken: deviceTokenTest,
-      ));
+      verifyInOrder([
+        mockFirebaseAuthDataSource.signInWithPassword(
+          email: emailTest,
+          password: passwordTest,
+        ),
+        mockFirebaseMessagingDataSource.getDeviceToken(),
+        mockAccountDataSource.setUserProfile(
+          id: anyNamed('id'),
+          deviceToken: anyNamed('deviceToken'),
+        ),
+        mockAccountDataSource.getUserProfile(id: anyNamed('id')),
+      ]);
       expect(result, Right(mockCustomer));
     });
 
@@ -273,11 +279,8 @@ void main() {
     }
 
     test('should return a staff', () async {
-      when(mockAccountDataSource.setUserProfile(
+      when(mockAccountDataSource.getUserProfile(
         id: anyNamed('id'),
-        deviceToken: anyNamed('deviceToken'),
-        name: anyNamed('name'),
-        email: anyNamed('email'),
       )).thenAnswer((_) async => mockStaff);
 
       final result = await repository.registerWithPassword(
@@ -286,26 +289,29 @@ void main() {
         password: passwordTest,
       );
 
-      verify(mockFirebaseAuthDataSource.signUpWithPassword(
-          email: emailTest, password: passwordTest));
-      verify(mockFirebaseAuthDataSource.updateProfile(
-          updateInfo: anyNamed('updateInfo')));
-      verify(mockFirebaseMessagingDataSource.getDeviceToken());
-      verifyNever(mockAccountDataSource.setUserProfile(
-        id: idTest,
-        deviceToken: deviceTokenTest,
-        name: nameTest,
-        email: emailTest,
-      ));
+      verifyInOrder([
+        mockFirebaseAuthDataSource.signUpWithPassword(
+          email: emailTest,
+          password: passwordTest,
+        ),
+        mockFirebaseAuthDataSource.updateProfile(
+          updateInfo: anyNamed('updateInfo'),
+        ),
+        mockFirebaseMessagingDataSource.getDeviceToken(),
+        mockAccountDataSource.setUserProfile(
+          id: anyNamed('id'),
+          deviceToken: anyNamed('deviceToken'),
+          name: anyNamed('name'),
+          email: anyNamed('email'),
+        ),
+        mockAccountDataSource.getUserProfile(id: anyNamed('id')),
+      ]);
       expect(result, Right(mockStaff));
     });
 
     test('should register as a customer', () async {
-      when(mockAccountDataSource.setUserProfile(
+      when(mockAccountDataSource.getUserProfile(
         id: anyNamed('id'),
-        deviceToken: anyNamed('deviceToken'),
-        name: anyNamed('name'),
-        email: anyNamed('email'),
       )).thenAnswer((_) async => mockCustomer);
 
       final result = await repository.registerWithPassword(
@@ -314,17 +320,23 @@ void main() {
         password: passwordTest,
       );
 
-      verify(mockFirebaseAuthDataSource.signUpWithPassword(
-          email: emailTest, password: passwordTest));
-      verify(mockFirebaseAuthDataSource.updateProfile(
-          updateInfo: anyNamed('updateInfo')));
-      verify(mockFirebaseMessagingDataSource.getDeviceToken());
-      verifyNever(mockAccountDataSource.setUserProfile(
-        id: idTest,
-        deviceToken: deviceTokenTest,
-        name: nameTest,
-        email: emailTest,
-      ));
+      verifyInOrder([
+        mockFirebaseAuthDataSource.signUpWithPassword(
+          email: emailTest,
+          password: passwordTest,
+        ),
+        mockFirebaseAuthDataSource.updateProfile(
+          updateInfo: anyNamed('updateInfo'),
+        ),
+        mockFirebaseMessagingDataSource.getDeviceToken(),
+        mockAccountDataSource.setUserProfile(
+          id: anyNamed('id'),
+          deviceToken: anyNamed('deviceToken'),
+          name: anyNamed('name'),
+          email: anyNamed('email'),
+        ),
+        mockAccountDataSource.getUserProfile(id: anyNamed('id')),
+      ]);
       expect(result, Right(mockCustomer));
     });
 

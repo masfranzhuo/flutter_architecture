@@ -21,14 +21,14 @@ class AccountHeader extends StatelessWidget {
           Container(
             child: Text(
               headerText.toUpperCase(),
-              style: Theme.of(context).textTheme.headline
+              style: Theme.of(context).textTheme.headline5
             ),
           ),
           SizedBox(height: 16),
           Container(
             child: Text(
               subHeaderText ?? '',
-              style: Theme.of(context).textTheme.subhead,
+              style: Theme.of(context).textTheme.headline6,
             ),
           ),
         ],

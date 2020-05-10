@@ -12,6 +12,8 @@ class CustomTextField extends TextField {
     TextEditingController controller,
     TextInputType keyboardType,
     String errorText,
+    Widget prefixIcon,
+    Widget suffixIcon,
     String prefixText,
     String suffixText,
     int maxLength,
@@ -24,7 +26,7 @@ class CustomTextField extends TextField {
           controller: controller,
           autofocus: false,
           textCapitalization: textCapitalization,
-          style: Theme.of(context).textTheme.body1,
+          style: Theme.of(context).textTheme.bodyText1,
           decoration: InputDecoration(
             errorText: errorText,
             contentPadding: const EdgeInsets.symmetric(
@@ -37,6 +39,8 @@ class CustomTextField extends TextField {
                     color: Theme.of(context).primaryColor,
                   )
                 : null,
+            prefixIcon: prefixIcon,
+            suffixIcon: suffixIcon,
             prefixText: prefixText,
             suffixText: suffixText,
             hintText: hintText,

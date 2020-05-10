@@ -11,7 +11,14 @@ class ForgetPasswordInitialState extends ForgetPasswordState {}
 
 class ForgetPasswordLoadingState extends ForgetPasswordState {}
 
-class ForgetPasswordLoadedState extends ForgetPasswordState {}
+class ForgetPasswordLoadedState extends ForgetPasswordState {
+  final String message;
+
+  ForgetPasswordLoadedState({this.message});
+
+  @override
+  List<Object> get props => [];
+}
 
 class ForgetPasswordErrorState extends ForgetPasswordState {
   final Failure failure;

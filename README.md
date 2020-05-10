@@ -1,8 +1,8 @@
 [![codecov](https://codecov.io/gh/masfranzhuo/flutter_architecture/branch/master/graph/badge.svg?token=TLY1AWZWHD)](https://codecov.io/gh/masfranzhuo/flutter_architecture)
 
-# flutter_architecture
+# Flutter Architecture Boilerplate
 
-A new Flutter project.
+A Flutter architecture project boilerplate.
 
 ## Getting Started
 
@@ -10,9 +10,43 @@ This project is a starting point for a Flutter application.
 
 A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+### Flutter packages dependencies
+- [flutter_bloc: ^4.0.0](https://pub.dev/packages/flutter_bloc)
+- [dartz: ^0.8.9](https://pub.dev/packages/dartz) Latest 0.9.1
+- [dio: ^3.0.9](https://pub.dev/packages/dio)
+- [get_it: ^4.0.2](https://pub.dev/packages/get_it)
+- [firebase_auth: ^0.16.0](https://pub.dev/packages/firebase_auth)
+- [firebase_messaging: ^6.0.13](https://pub.dev/packages/firebase_messaging)
+- [equatable: ^1.1.1](https://pub.dev/packages/equatable)
+- [meta: ^1.1.8](https://pub.dev/packages/meta)
+- [cupertino_icons: ^0.1.2](https://pub.dev/packages/cupertino_icons) Latest 0.1.3
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Flutter packages dev dependencies
+- [mockito: ^4.1.1](https://pub.dev/packages/mockito)
+- [json_serializable: ^3.3.0](https://pub.dev/packages/json_serializable)
+- [build_runner: ^1.8.1](https://pub.dev/packages/build_runner) Latest 1.9.0
+- [bloc_test: ^5.0.0](https://pub.dev/packages/bloc_test) Latest 5.1.0
+
+### Secret Keys
+- CODECOV_TOKEN: Access Token to [https://codecov.io/](https://codecov.io/)
+- KEY_JKS: key.jks file
+- KEY_PASSWORD: key.jks store password
+- ALIAS_PASSWORD: key.jks key password
+- GOOGLE_SERVICES_JSON: google-services.json file
+- GH_TOKEN: GitHub Access Token
+
+## Resources Documentation
+
+Below is the source of this Flutter achitecture project boilerplate
+
+### Build and release an Android app
+- [Build and release an Android app](https://flutter.dev/docs/deployment/android)
+
+### GitHub Actions
+- [Article 01](https://levelup.gitconnected.com/ci-cd-for-flutter-apps-3a56e3fc6d8e)
+- [Article 02](https://medium.com/better-programming/ci-cd-for-flutter-apps-using-github-actions-b833f8f7aac)
+- [Article 03](https://medium.com/@danieln.llewellyn/flutter-github-actions-for-a-signed-apk-fcdf9878f660)
+
+### Clean Architecture
+- [Reso Coder Youtube Playlist](https://www.youtube.com/watch?v=KjE2IDphA_U&list=PLB6lc7nQ1n4iYGE_khpXRdJkJEp9WOech)
+- [Reso Coder Website](https://resocoder.com/category/tutorials/flutter/tdd-clean-architecture/)

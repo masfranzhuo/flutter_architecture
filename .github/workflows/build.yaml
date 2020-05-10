@@ -10,7 +10,6 @@ jobs:
   build:
     runs-on: macos-latest
     #Identifies any jobs that must complete successfully before this job will run.
-    # TODO: uncomment needs
     # needs: [test]
     steps:
       # The branch or tag ref that triggered the workflow will be checked out.
@@ -29,8 +28,13 @@ jobs:
       # - run: flutter  config --enable-web
       - run: flutter pub get
       # build Android version
-      - run: flutter build apk --debug --split-per-abi
-      # TODO: build release instead
+      # - run: flutter build apk --debug --split-per-abi
+      - run: flutter build apk --debug
+      # TODO: release version
+      # - echo "$RELEASE_KEYSTORE" | base64 --decode > "./android/app/release.keystore"
+      # - echo "$RELEASE_GOOGLE_SERVICES_JSON" | base64 --decode > "./android/app/google-services.json"
+      # - flutter build apk
+      # - flutter build appbundle --target-platform android-arm,android-arm64,android-x64
       # This action will create a github release and optionally upload an artifact to it.
       # https://github.com/ncipollo/release-action
       - name: Create a Release APK
@@ -38,7 +42,7 @@ jobs:
         with:
           artifacts: "build/app/outputs/apk/debug/*.apk"
           allowUpdates: true
-          tag: "v0.1"
+          tag: "flutter"
           token: ${{ secrets.GH_TOKEN }}
       # build Flutter web version
       # - run: flutter build web

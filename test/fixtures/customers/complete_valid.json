@@ -1,0 +1,11 @@
+{
+  "_id": "fake_id",
+  "name": "John Doe",
+  "email": "john@doe.com",
+  "accountStatus": "ACTIVE",
+  "phoneNumber": "1234567890",
+  "photoUrl": "https://fakeimage.com/image.jpg",
+  "gender": "MALE",
+  "birthPlace": "Indonesia",
+  "birthDate": "2020-04-20T13:00:00.000Z"
+}

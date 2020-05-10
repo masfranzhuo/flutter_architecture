@@ -29,6 +29,7 @@ jobs:
       - run: flutter pub get
       # build Android version
       - run: flutter build apk --debug --split-per-abi
+      # TODO: build release instead
       # This action will create a github release and optionally upload an artifact to it.
       # https://github.com/ncipollo/release-action
       - name: Create a Release APK

@@ -42,3 +42,6 @@ android/app/profile/
 android/app/debug/
 android/app/release/
 android/app/google-services.json
+
+# iOS
+GoogleService-Info.plist

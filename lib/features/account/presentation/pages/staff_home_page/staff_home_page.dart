@@ -26,9 +26,7 @@ class StaffHomePage extends StatelessWidget {
       width: constraints.maxWidth,
       height: constraints.maxHeight,
       child: ListView(
-        children: <Widget>[
-          Text('Staff'),
-        ],
+        children: <Widget>[],
       ),
     );
   }

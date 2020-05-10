@@ -32,7 +32,7 @@ jobs:
           KEY_JKS: ${{ secrets.KEY_JKS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
           ALIAS_PASSWORD: ${{ secrets.ALIAS_PASSWORD }}
-        run: echo $KEY_JKS > key.jks && flutter pub get && flutter build apk --release
+        run: echo $KEY_JKS > ./android/key.jks && flutter pub get && flutter build apk --release
       # - run: flutter build apk --debug
       # - run: flutter build appbundle --debug --target-platform android-arm,android-arm64,android-x64
       # This action will create a github release and optionally upload an artifact to it.

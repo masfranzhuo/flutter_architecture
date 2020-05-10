@@ -15,26 +15,25 @@ jobs:
       # The branch or tag ref that triggered the workflow will be checked out.
       # https://github.com/actions/checkout
       - uses: actions/checkout@v1
-      # Setup a flutter environment.
-      # https://github.com/marketplace/actions/flutter-action
-      - uses: subosito/flutter-action@v1
-        with:
-          channel: 'stable'
       # This action sets up a java environment
       # https://github.com/actions/setup-java
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
-      # - run: flutter  config --enable-web
-      - run: flutter pub get
+      # Setup a flutter environment.
+      # https://github.com/marketplace/actions/flutter-action
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+        env:
+          KEY_JKS: ${{ secrets.KEY_JKS }}
+          KEY_PASSWORD: ${{ secrets.ALIAS_PASSWORD }}
+          ALIAS_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          run: echo $KEY_JKS > key.jks && flutter pub get && flutter build apk --release
+      # - run: flutter pub get
       # build Android version
-      # - run: flutter build apk --debug --split-per-abi
-      - run: flutter build apk --debug
-      # TODO: release version
-      # - echo "$RELEASE_KEYSTORE" | base64 --decode > "./android/app/release.keystore"
-      # - echo "$RELEASE_GOOGLE_SERVICES_JSON" | base64 --decode > "./android/app/google-services.json"
-      # - flutter build apk
-      # - flutter build appbundle --target-platform android-arm,android-arm64,android-x64
+      # - run: flutter build apk --debug
+      # - run: flutter build appbundle --debug --target-platform android-arm,android-arm64,android-x64
       # This action will create a github release and optionally upload an artifact to it.
       # https://github.com/ncipollo/release-action
       - name: Create a Release APK
@@ -45,6 +44,7 @@ jobs:
           tag: "flutter"
           token: ${{ secrets.GH_TOKEN }}
       # build Flutter web version
+      # - run: flutter  config --enable-web
       # - run: flutter build web
       # Handle the deploy process of your project to GitHub Pages.
       # https://github.com/JamesIves/github-pages-deploy-action

@@ -1,9 +1,5 @@
 name: Build
-on:
-  push:
-    branches:
-      - master
-      - development
+on: push
 jobs:
   build:
     runs-on: macos-latest

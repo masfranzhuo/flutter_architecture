@@ -3,6 +3,9 @@ on:
   push:
     tags:
       - '*'
+    branches:
+      - master
+      - development
 jobs:
   build:
     runs-on: macos-latest

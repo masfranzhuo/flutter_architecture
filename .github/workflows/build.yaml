@@ -1,11 +1,11 @@
-name: Build Deploy
+name: Build
 on:
   push:
     branches:
       - master
       - development
 jobs:
-  build_deploy:
+  build:
     runs-on: macos-latest
     #Identifies any jobs that must complete successfully before this job will run.
     # needs: [test]

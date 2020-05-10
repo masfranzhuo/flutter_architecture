@@ -10,6 +10,7 @@ jobs:
   build:
     runs-on: macos-latest
     #Identifies any jobs that must complete successfully before this job will run.
+    # TODO: uncomment needs
     # needs: [test]
     steps:
       # The branch or tag ref that triggered the workflow will be checked out.
@@ -36,6 +37,8 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: "build/app/outputs/apk/debug/*.apk"
+          allowUpdates: true
+          tag: "v0.1"
           token: ${{ secrets.GH_TOKEN }}
       # build Flutter web version
       # - run: flutter build web

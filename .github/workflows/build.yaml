@@ -36,17 +36,17 @@ jobs:
       # - run: flutter build appbundle --debug --target-platform android-arm,android-arm64,android-x64
       # This action will create a github release and optionally upload an artifact to it.
       # https://github.com/ncipollo/release-action
-      - name: Create a Release APK
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "build/app/outputs/apk/release/*.apk"
-          allowUpdates: true
-          tag: "flutter"
-          token: ${{ secrets.GH_TOKEN }}
-      # - uses: actions/upload-artifact@v1
+      # - name: Create a Release APK
+      #   uses: ncipollo/release-action@v1
       #   with:
-      #     name: release-apk
-      #     path: build/app/outputs/apk/release/*.apk 
+      #     artifacts: "build/app/outputs/apk/release/*.apk"
+      #     allowUpdates: true
+      #     tag: "flutter"
+      #     token: ${{ secrets.GH_TOKEN }}
+      # - uses: actions/upload-artifact@v1
+        with:
+          name: release-apk
+          path: "**"
       # build Flutter web version
       # - run: flutter  config --enable-web
       # - run: flutter build web

@@ -35,14 +35,14 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: "build/app/outputs/apk/debug/*.apk"
-          token: ${{ secrets.GH_ACCESS_TOKEN }}
+          token: ${{ secrets.GH_TOKEN }}
       # build Flutter web version
       # - run: flutter build web
       # Handle the deploy process of your project to GitHub Pages.
       # https://github.com/JamesIves/github-pages-deploy-action
       # - uses: JamesIves/github-pages-deploy-action@releases/v3
       #   with:
-      #     GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+      #     GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       #     BASE_BRANCH: master
       #     BRANCH: gh-pages
       #     FOLDER: build/web

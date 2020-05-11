@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - master
-      - development
+      # - development
 jobs:
   test:
     runs-on: macos-latest

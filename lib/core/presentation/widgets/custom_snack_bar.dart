@@ -18,9 +18,7 @@ class CustomSnackBar {
           content: content ??
               Text(
                 message,
-                style: Theme.of(context).textTheme.body1.copyWith(
-                      color: _color(context, mode),
-                    ),
+                style: TextStyle(color: _color(context, mode)),
               ),
         ),
       );

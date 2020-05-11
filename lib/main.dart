@@ -63,23 +63,7 @@ class MyApp extends StatelessWidget {
               ),
             ),
             cardColor: DARK_BACKGROUND_COLOR,
-            textTheme: TextTheme(
-                // TODO: fix deprecated text theme in Flutter 1.17.0
-                // headline: TextStyle(fontSize: 36),
-                // subhead: TextStyle(fontSize: 18),
-                // title: TextStyle(fontSize: 24),
-                // body1: TextStyle(
-                //   color: Colors.white,
-                //   fontSize: 14,
-                // ),
-                // caption: TextStyle(
-                //   color: DISABLED_COLOR,
-                //   fontSize: 10,
-                // ),
-                // display1: TextStyle(
-                //   fontSize: 12,
-                // ),
-                ),
+            textTheme: TextTheme(),
             errorColor: ERROR_COLOR,
             disabledColor: DISABLED_COLOR,
             highlightColor: Color(0xFF000000).withOpacity(0.75),

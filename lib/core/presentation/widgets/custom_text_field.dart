@@ -24,7 +24,7 @@ class CustomTextField extends TextField {
           controller: controller,
           autofocus: false,
           textCapitalization: textCapitalization,
-          style: Theme.of(context).textTheme.body1,
+          style: Theme.of(context).textTheme.bodyText1,
           decoration: InputDecoration(
             errorText: errorText,
             contentPadding: const EdgeInsets.symmetric(

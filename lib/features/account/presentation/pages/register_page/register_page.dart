@@ -26,7 +26,7 @@ class RegisterPage extends StatelessWidget {
   }
 
   Widget _buildBody(BuildContext context, BoxConstraints constraints) {
-    return BlocListener<RegisterBloc, RegisterState>(
+    return BlocConsumer<RegisterBloc, RegisterState>(
       listener: (context, state) {
         if (state is RegisterErrorState &&
             state.error == RegisterErrorGroup.general) {
@@ -46,21 +46,26 @@ class RegisterPage extends StatelessWidget {
           });
         }
       },
-      child: Container(
-        width: constraints.maxWidth,
-        height: constraints.maxHeight,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            AccountHeader(
-              headerText: 'Register Form',
+      builder: (context, state) {
+        return IgnorePointer(
+          ignoring: state is RegisterLoadingState,
+          child: Container(
+            width: constraints.maxWidth,
+            height: constraints.maxHeight,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                AccountHeader(
+                  headerText: 'Register Form',
+                ),
+                _$RegisterForm(),
+                _$RegisterFooter(),
+              ],
             ),
-            _$RegisterForm(),
-            _$RegisterFooter(),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

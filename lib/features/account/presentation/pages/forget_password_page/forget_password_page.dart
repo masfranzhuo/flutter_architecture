@@ -27,7 +27,7 @@ class ForgetPasswordPage extends StatelessWidget {
   }
 
   Widget _buildBody(BuildContext context, BoxConstraints constraints) {
-    return BlocListener<ForgetPasswordBloc, ForgetPasswordState>(
+    return BlocConsumer<ForgetPasswordBloc, ForgetPasswordState>(
       listener: (context, state) {
         if (state is ForgetPasswordErrorState &&
             state.error == ForgetPasswordErrorGroup.general) {
@@ -38,24 +38,35 @@ class ForgetPasswordPage extends StatelessWidget {
           );
         }
 
-        if (state is ForgetPasswordLoadedState) {}
+        if (state is ForgetPasswordLoadedState) {
+          CustomSnackBar.showSnackBar(
+            context: context,
+            message: state.message,
+            mode: SnackBarMode.success,
+          );
+        }
       },
-      child: Container(
-        width: constraints.maxWidth,
-        height: constraints.maxHeight,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            AccountHeader(
-              headerText: 'Forget Password Form',
-              subHeaderText: 'Enter your email to reset the password',
+      builder: (context, state) {
+        return IgnorePointer(
+          ignoring: state is ForgetPasswordLoadingState,
+          child: Container(
+            width: constraints.maxWidth,
+            height: constraints.maxHeight,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                AccountHeader(
+                  headerText: 'Forget Password Form',
+                  subHeaderText: 'Enter your email to reset the password',
+                ),
+                _$ForgetPasswordForm(),
+                _$ForgetPasswordFooter(),
+              ],
             ),
-            _$ForgetPasswordForm(),
-            _$ForgetPasswordFooter(),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

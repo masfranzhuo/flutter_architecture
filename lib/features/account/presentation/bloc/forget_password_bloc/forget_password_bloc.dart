@@ -46,7 +46,7 @@ class ForgetPasswordBloc extends Bloc<ForgetPasswordEvent, ForgetPasswordState> 
 
           yield resetPasswordResult.fold(
             (failure) => _$mapFailureToError(failure),
-            (_) => ForgetPasswordLoadedState(),
+            (_) => ForgetPasswordLoadedState(message: 'Please check your email'),
           );
         },
       );

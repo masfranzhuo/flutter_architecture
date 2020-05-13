@@ -12,6 +12,8 @@ class CustomTextField extends TextField {
     TextEditingController controller,
     TextInputType keyboardType,
     String errorText,
+    Widget prefixIcon,
+    Widget suffixIcon,
     String prefixText,
     String suffixText,
     int maxLength,
@@ -37,6 +39,8 @@ class CustomTextField extends TextField {
                     color: Theme.of(context).primaryColor,
                   )
                 : null,
+            prefixIcon: prefixIcon,
+            suffixIcon: suffixIcon,
             prefixText: prefixText,
             suffixText: suffixText,
             hintText: hintText,

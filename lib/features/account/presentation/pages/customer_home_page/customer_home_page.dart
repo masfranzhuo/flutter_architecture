@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_architecture/core/presentation/widgets/custom_button.dart';
-import 'package:flutter_architecture/core/presentation/widgets/custom_drop_down_button.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_safe_area.dart';
-import 'package:flutter_architecture/core/presentation/widgets/custom_text_field.dart';
 import 'package:flutter_architecture/features/account/presentation/bloc/account_bloc.dart';
+import 'package:flutter_architecture/features/account/presentation/widgets/custom_widget.dart';
 import 'package:flutter_architecture/features/account/presentation/widgets/menu_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -30,56 +28,7 @@ class CustomerHomePage extends StatelessWidget {
       height: constraints.maxHeight,
       child: ListView(
         children: <Widget>[
-          SizedBox(height: 8),
-          CustomDropDownButton(
-            options: [
-              CustomDropdownItem(value: 1, label: 'One'),
-              CustomDropdownItem(value: 2, label: 'Two'),
-            ],
-            hintText: 'Custom DropDownButton',
-            onChange: (value) {},
-            iconData: Icons.home,
-            readOnly: true,
-          ),
-          SizedBox(height: 8),
-          CustomDropDownButton(
-            options: [
-              CustomDropdownItem(value: 1, label: 'One'),
-              CustomDropdownItem(value: 2, label: 'Two'),
-            ],
-            hintText: 'Custom DropDownButton',
-            onChange: (value) {},
-          ),
-          SizedBox(height: 8),
-          CustomTextField(
-            context: context,
-            hintText: 'Custom TextField',
-            iconData: Icons.home,
-            readOnly: true,
-          ),
-          SizedBox(height: 8),
-          CustomTextField(
-            context: context,
-            hintText: 'Custom TextField',
-          ),
-          SizedBox(height: 8),
-          CustomButton(
-            state: ButtonState.done,
-            onPressed: () {},
-            child: Text('Home Page'),
-          ),
-          SizedBox(height: 8),
-          CustomButton(
-            state: ButtonState.loading,
-            onPressed: () {},
-            child: Text('Home Page'),
-          ),
-          SizedBox(height: 8),
-          CustomButton(
-            state: ButtonState.idle,
-            onPressed: () {},
-            child: Text('Home Page'),
-          ),
+          CustomWidget(),
         ],
       ),
     );

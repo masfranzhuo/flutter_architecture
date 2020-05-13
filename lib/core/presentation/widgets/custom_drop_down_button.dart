@@ -14,7 +14,6 @@ class CustomDropDownButton<T> extends StatelessWidget {
   final T value;
   final IconData iconData;
   final bool readOnly;
-  final EdgeInsetsGeometry margin;
 
   const CustomDropDownButton({
     Key key,
@@ -24,7 +23,6 @@ class CustomDropDownButton<T> extends StatelessWidget {
     this.value,
     this.iconData,
     this.readOnly = false,
-    this.margin,
   }) : super(key: key);
 
   @override
@@ -53,14 +51,10 @@ class CustomDropDownButton<T> extends StatelessWidget {
     );
 
     if (iconData == null) {
-      return Container(
-        margin: margin,
-        child: dropdownButton,
-      );
+      return dropdownButton;
     }
 
     return Container(
-      margin: margin,
       child: Row(
         children: <Widget>[
           Icon(

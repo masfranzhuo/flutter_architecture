@@ -58,8 +58,8 @@ class CustomButton extends StatelessWidget {
       height: height,
       color: color ?? Theme.of(context).primaryColor,
       borderRadius: BorderRadius.circular(8),
-      child: IgnorePointer(
-        ignoring: state != ButtonState.idle || isDisabled,
+      child: AbsorbPointer(
+        absorbing: state != ButtonState.idle || isDisabled,
         child: FlatButton(
           padding: const EdgeInsets.all(0),
           onPressed: () {

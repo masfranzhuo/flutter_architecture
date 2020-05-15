@@ -126,6 +126,7 @@ class _CustomWidgetState extends State<CustomWidget> {
               onChange: (value) {},
               iconData: Icons.home,
               readOnly: true,
+              errorText: 'Error',
             ),
             SizedBox(height: 8),
             CustomDropDownButton(

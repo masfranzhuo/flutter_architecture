@@ -11,7 +11,7 @@ class SuperAdminMenu extends StatelessWidget {
           title: Text('Super Admin'),
           trailing: Icon(Icons.person),
           onTap: () {
-            Navigator.of(context).push(CustomPageRoute.slide(
+            Navigator.of(context).pushReplacement(CustomPageRoute.slide(
               page: StaffHomePage(),
               pageType: AppPageType.staffHome,
             ));

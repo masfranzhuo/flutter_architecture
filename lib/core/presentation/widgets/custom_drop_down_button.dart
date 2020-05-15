@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_architecture/core/presentation/widgets/utils/input_error_text.w.dart';
 
 class CustomDropdownItem<T> {
   final T value;
@@ -13,7 +14,6 @@ class CustomDropDownButton<T> extends StatelessWidget {
   final T value;
   final String hintText;
   final IconData iconData;
-  // TODO: error text
   final String errorText;
   final bool readOnly;
 
@@ -30,9 +30,14 @@ class CustomDropDownButton<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget dropdownButton = Container(
+    Widget dropDownButton = Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
+        border: Border.all(
+          color: errorText != null
+              ? Theme.of(context).errorColor
+              : Colors.transparent,
+        ),
         borderRadius: BorderRadius.all(Radius.circular(8)),
         color: Color.fromRGBO(0, 0, 0, 0.5),
       ),
@@ -56,22 +61,29 @@ class CustomDropDownButton<T> extends StatelessWidget {
       ),
     );
 
-    if (iconData == null) {
-      return dropdownButton;
-    }
-
     return Container(
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Icon(
-            iconData,
-            color: Theme.of(context).primaryColor,
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 16),
-              child: dropdownButton,
-            ),
+          iconData == null
+              ? dropDownButton
+              : Row(
+                  children: <Widget>[
+                    Icon(
+                      iconData,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 16),
+                        child: dropDownButton,
+                      ),
+                    ),
+                  ],
+                ),
+          InputErrorText(
+            errorText: errorText,
+            isIconAvailable: iconData != null,
           ),
         ],
       ),

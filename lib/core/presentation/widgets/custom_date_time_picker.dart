@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_date_picker.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_time_picker.dart';
+import 'package:flutter_architecture/core/presentation/widgets/utils/input_error_text.w.dart';
 
 class CustomDateTimePicker extends StatefulWidget {
   final String hintText;
@@ -9,7 +10,6 @@ class CustomDateTimePicker extends StatefulWidget {
   final DateTime minDate;
   final DateTime maxDate;
   final IconData iconData;
-  // TODO: error text
   final String errorText;
   final bool readOnly;
 
@@ -57,39 +57,72 @@ class _CustomDateTimePickerState extends State<CustomDateTimePicker> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Flexible(
-          flex: 2,
-          child: CustomDatePicker(
-            hintText: widget.hintText,
-            dateValue: date,
-            iconData: widget.iconData,
-            readOnly: widget.readOnly,
-            minDate: widget.minDate,
-            maxDate: widget.maxDate,
-            onSelected: (value) {
-              setState(() {
-                date = value;
-              });
-              _selectDateTime(context);
-            },
-          ),
+    Widget iconData = SizedBox();
+    if (widget.iconData != null) {
+      iconData = Padding(
+        padding: const EdgeInsets.only(right: 16),
+        child: Icon(
+          widget.iconData,
+          color: Theme.of(context).primaryColor,
         ),
-        SizedBox(width: 8),
-        Flexible(
-          flex: 1,
-          child: CustomTimePicker(
-            hintText: '',
-            timeValue: time,
-            readOnly: widget.readOnly,
-            onSelected: (value) {
-              setState(() {
-                time = value;
-              });
-              _selectDateTime(context);
-            },
-          ),
+      );
+    }
+
+    BoxDecoration errorBoxDecoration = widget.errorText != null
+        ? BoxDecoration(
+            border: Border.all(color: Theme.of(context).errorColor),
+            borderRadius: BorderRadius.all(Radius.circular(8)),
+          )
+        : null;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            iconData,
+            Flexible(
+              flex: 2,
+              child: Container(
+                decoration: errorBoxDecoration,
+                child: CustomDatePicker(
+                  hintText: widget.hintText,
+                  dateValue: date,
+                  readOnly: widget.readOnly,
+                  minDate: widget.minDate,
+                  maxDate: widget.maxDate,
+                  onSelected: (value) {
+                    setState(() {
+                      date = value;
+                    });
+                    _selectDateTime(context);
+                  },
+                ),
+              ),
+            ),
+            SizedBox(width: 8),
+            Flexible(
+              flex: 1,
+              child: Container(
+                decoration: errorBoxDecoration,
+                child: CustomTimePicker(
+                  hintText: '',
+                  timeValue: time,
+                  readOnly: widget.readOnly,
+                  onSelected: (value) {
+                    setState(() {
+                      time = value;
+                    });
+                    _selectDateTime(context);
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+        InputErrorText(
+          errorText: widget.errorText,
+          isIconAvailable: widget.iconData != null,
         ),
       ],
     );

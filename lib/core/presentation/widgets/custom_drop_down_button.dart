@@ -33,6 +33,11 @@ class CustomDropDownButton<T> extends StatelessWidget {
     Widget dropDownButton = Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
+        border: Border.all(
+          color: errorText != null
+              ? Theme.of(context).errorColor
+              : Colors.transparent,
+        ),
         borderRadius: BorderRadius.all(Radius.circular(8)),
         color: Color.fromRGBO(0, 0, 0, 0.5),
       ),

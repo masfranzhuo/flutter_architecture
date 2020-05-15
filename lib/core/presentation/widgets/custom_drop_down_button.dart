@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_architecture/core/presentation/widgets/utils/input_error_text.w.dart';
+import 'package:flutter_architecture/core/presentation/widgets/wrap_error_text.w.dart';
 
 class CustomDropdownItem<T> {
   final T value;
@@ -33,11 +33,6 @@ class CustomDropDownButton<T> extends StatelessWidget {
     Widget dropDownButton = Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        border: Border.all(
-          color: errorText != null
-              ? Theme.of(context).errorColor
-              : Colors.transparent,
-        ),
         borderRadius: BorderRadius.all(Radius.circular(8)),
         color: Color.fromRGBO(0, 0, 0, 0.5),
       ),
@@ -61,32 +56,10 @@ class CustomDropDownButton<T> extends StatelessWidget {
       ),
     );
 
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          iconData == null
-              ? dropDownButton
-              : Row(
-                  children: <Widget>[
-                    Icon(
-                      iconData,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 16),
-                        child: dropDownButton,
-                      ),
-                    ),
-                  ],
-                ),
-          InputErrorText(
-            errorText: errorText,
-            isIconAvailable: iconData != null,
-          ),
-        ],
-      ),
+    return WrapErrorText(
+      iconData: iconData,
+      errorText: errorText,
+      child: dropDownButton,
     );
   }
 }

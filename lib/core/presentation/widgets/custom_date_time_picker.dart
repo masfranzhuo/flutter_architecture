@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_date_picker.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_time_picker.dart';
-import 'package:flutter_architecture/core/presentation/widgets/utils/input_error_text.w.dart';
+import 'package:flutter_architecture/core/presentation/widgets/wrap_error_text.w.dart';
 
 class CustomDateTimePicker extends StatefulWidget {
   final String hintText;
@@ -57,74 +57,50 @@ class _CustomDateTimePickerState extends State<CustomDateTimePicker> {
 
   @override
   Widget build(BuildContext context) {
-    Widget iconData = SizedBox();
-    if (widget.iconData != null) {
-      iconData = Padding(
-        padding: const EdgeInsets.only(right: 16),
-        child: Icon(
-          widget.iconData,
-          color: Theme.of(context).primaryColor,
-        ),
-      );
-    }
-
-    BoxDecoration errorBoxDecoration = widget.errorText != null
-        ? BoxDecoration(
-            border: Border.all(color: Theme.of(context).errorColor),
-            borderRadius: BorderRadius.all(Radius.circular(8)),
-          )
-        : null;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    Widget dateTimePicker = Row(
       children: <Widget>[
-        Row(
-          children: <Widget>[
-            iconData,
-            Flexible(
-              flex: 2,
-              child: Container(
-                decoration: errorBoxDecoration,
-                child: CustomDatePicker(
-                  hintText: widget.hintText,
-                  dateValue: date,
-                  readOnly: widget.readOnly,
-                  minDate: widget.minDate,
-                  maxDate: widget.maxDate,
-                  onSelected: (value) {
-                    setState(() {
-                      date = value;
-                    });
-                    _selectDateTime(context);
-                  },
-                ),
-              ),
+        Flexible(
+          flex: 2,
+          child: Container(
+            child: CustomDatePicker(
+              hintText: widget.hintText,
+              dateValue: date,
+              readOnly: widget.readOnly,
+              minDate: widget.minDate,
+              maxDate: widget.maxDate,
+              onSelected: (value) {
+                setState(() {
+                  date = value;
+                });
+                _selectDateTime(context);
+              },
             ),
-            SizedBox(width: 8),
-            Flexible(
-              flex: 1,
-              child: Container(
-                decoration: errorBoxDecoration,
-                child: CustomTimePicker(
-                  hintText: '',
-                  timeValue: time,
-                  readOnly: widget.readOnly,
-                  onSelected: (value) {
-                    setState(() {
-                      time = value;
-                    });
-                    _selectDateTime(context);
-                  },
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
-        InputErrorText(
-          errorText: widget.errorText,
-          isIconAvailable: widget.iconData != null,
+        SizedBox(width: 8),
+        Flexible(
+          flex: 1,
+          child: Container(
+            child: CustomTimePicker(
+              hintText: '',
+              timeValue: time,
+              readOnly: widget.readOnly,
+              onSelected: (value) {
+                setState(() {
+                  time = value;
+                });
+                _selectDateTime(context);
+              },
+            ),
+          ),
         ),
       ],
+    );
+
+    return WrapErrorText(
+      iconData: widget.iconData,
+      errorText: widget.errorText,
+      child: dateTimePicker,
     );
   }
 }

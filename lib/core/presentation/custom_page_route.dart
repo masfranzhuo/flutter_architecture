@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 enum AppPageType {
+  custom,
   login,
   register,
   forgetPassword,

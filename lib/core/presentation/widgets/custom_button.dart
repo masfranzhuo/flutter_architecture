@@ -14,6 +14,7 @@ class CustomButton extends StatelessWidget {
   final Widget child;
   final ButtonState state;
   final bool isFullWidth;
+  final bool isDisabled;
 
   const CustomButton({
     Key key,
@@ -26,6 +27,7 @@ class CustomButton extends StatelessWidget {
     this.margin,
     this.state = ButtonState.idle,
     this.isFullWidth = false,
+    this.isDisabled = false,
   }) : super(key: key);
 
   @override
@@ -56,15 +58,16 @@ class CustomButton extends StatelessWidget {
       height: height,
       color: color ?? Theme.of(context).primaryColor,
       borderRadius: BorderRadius.circular(8),
-      child: FlatButton(
-        padding: const EdgeInsets.all(0),
-        onPressed: state == ButtonState.idle
-            ? () {
-                onPressed();
-                FocusScope.of(context).requestFocus(FocusNode());
-              }
-            : null,
-        child: child,
+      child: AbsorbPointer(
+        absorbing: state != ButtonState.idle || isDisabled,
+        child: FlatButton(
+          padding: const EdgeInsets.all(0),
+          onPressed: () {
+            onPressed();
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: child,
+        ),
       ),
     );
   }

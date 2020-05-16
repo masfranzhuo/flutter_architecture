@@ -30,7 +30,7 @@ class LoginPage extends StatelessWidget {
   }
 
   Widget _buildBody(BuildContext context, BoxConstraints constraints) {
-    return BlocListener<LoginBloc, LoginState>(
+    return BlocConsumer<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state is LoginErrorState &&
             state.error == LoginErrorGroup.general) {
@@ -57,32 +57,37 @@ class LoginPage extends StatelessWidget {
           });
         }
       },
-      child: Container(
-        width: constraints.maxWidth,
-        height: constraints.maxHeight,
-        child: Stack(
-          children: <Widget>[
-            Positioned(
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: ApplicationVersion(),
-              ),
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
+      builder: (context, state) {
+        return IgnorePointer(
+          ignoring: state is LoginLoadingState,
+          child: Container(
+            width: constraints.maxWidth,
+            height: constraints.maxHeight,
+            child: Stack(
               children: <Widget>[
-                AccountHeader(
-                  headerText: 'Flutter Architecture',
-                  subHeaderText: 'Login here',
+                Positioned(
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: ApplicationVersion(),
+                  ),
                 ),
-                _$LoginForm(),
-                _$LoginFooter(),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    AccountHeader(
+                      headerText: 'Flutter Architecture',
+                      subHeaderText: 'Login here',
+                    ),
+                    _$LoginForm(),
+                    _$LoginFooter(),
+                  ],
+                ),
               ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

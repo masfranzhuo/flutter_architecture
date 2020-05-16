@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_architecture/core/presentation/widgets/custom_button.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_safe_area.dart';
 import 'package:flutter_architecture/features/account/presentation/bloc/account_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/widgets/menu_drawer.dart';
@@ -27,26 +26,7 @@ class CustomerHomePage extends StatelessWidget {
       width: constraints.maxWidth,
       height: constraints.maxHeight,
       child: ListView(
-        children: <Widget>[
-          SizedBox(height: 32),
-          CustomButton(
-            state: ButtonState.done,
-            onPressed: () {},
-            child: Text('Home Page'),
-          ),
-          SizedBox(height: 32),
-          CustomButton(
-            state: ButtonState.loading,
-            onPressed: () {},
-            child: Text('Home Page'),
-          ),
-          SizedBox(height: 32),
-          CustomButton(
-            state: ButtonState.idle,
-            onPressed: () {},
-            child: Text('Home Page'),
-          ),
-        ],
+        children: <Widget>[],
       ),
     );
   }

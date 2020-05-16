@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_architecture/core/presentation/custom_page_route.dart';
+import 'package:flutter_architecture/features/account/presentation/pages/staff_home_page/staff_home_page.dart';
 
 class AdminMenu extends StatelessWidget {
   @override
@@ -8,6 +10,12 @@ class AdminMenu extends StatelessWidget {
         ListTile(
           title: Text('Admin'),
           trailing: Icon(Icons.person),
+          onTap: () {
+            Navigator.of(context).pushReplacement(CustomPageRoute.slide(
+              page: StaffHomePage(),
+              pageType: AppPageType.staffHome,
+            ));
+          },
         ),
         Divider(),
       ],

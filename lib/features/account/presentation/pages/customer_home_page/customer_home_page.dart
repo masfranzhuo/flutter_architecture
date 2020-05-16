@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_safe_area.dart';
 import 'package:flutter_architecture/features/account/presentation/bloc/account_bloc.dart';
-import 'package:flutter_architecture/features/account/presentation/widgets/custom_widget.dart';
 import 'package:flutter_architecture/features/account/presentation/widgets/menu_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

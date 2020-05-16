@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           title: 'Flutter Architecture',
           theme: CustomTheme.dark(),
-          home: CustomPage() ?? LoginPage(),
+          home: LoginPage() ?? CustomPage() ?? LoginPage(),
         ),
       ),
     );

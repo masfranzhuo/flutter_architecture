@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_architecture/core/presentation/custom_page_route.dart';
+import 'package:flutter_architecture/core/presentation/pages/custom_page.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_button.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_date_picker.dart';
+import 'package:flutter_architecture/core/presentation/widgets/custom_date_range.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_date_time_picker.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_drop_down_button.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_snack_bar.dart';
@@ -13,8 +16,7 @@ class CustomWidget extends StatefulWidget {
 }
 
 class _CustomWidgetState extends State<CustomWidget> {
-  DateTime selectedDateTime;
-  DateTime selectedDate;
+  DateTime selectedDate, selectedDateTime, selectedStartDate, selectedEndDate;
   TimeOfDay selectedTime;
   int selectedValue;
 
@@ -24,16 +26,52 @@ class _CustomWidgetState extends State<CustomWidget> {
       children: <Widget>[
         ExpansionTile(
           initiallyExpanded: true,
+          title: Text('CustomSearchBar'),
+          children: <Widget>[
+            CustomDateRangePicker(
+              startDateValue: DateTime.now(),
+              endDateValue: DateTime.now(),
+              startDateHintText: 'Custom startDateRangePicker',
+              endDateHintText: 'Custom endDateRangePicker',
+              iconData: Icons.date_range,
+              errorText: 'Error',
+              onStartDateSelected: (value) {},
+              onEndDateSelected: (value) {},
+            ),
+            SizedBox(height: 8),
+          ],
+        ),
+        ExpansionTile(
           title: Text('CustomDateRangePicker'),
           children: <Widget>[
-            CustomDateTimePicker(
-              dateTimeValue: selectedDateTime,
-              hintText: 'Custom DateRangePicker',
-              onSelected: (value) {
+            CustomDateRangePicker(
+              startDateValue: DateTime.now(),
+              endDateValue: DateTime.now(),
+              startDateHintText: 'Custom startDateRangePicker',
+              endDateHintText: 'Custom endDateRangePicker',
+              iconData: Icons.date_range,
+              readOnly: true,
+              errorText: 'Error',
+              onStartDateSelected: (value) {},
+              onEndDateSelected: (value) {},
+            ),
+            SizedBox(height: 8),
+            CustomDateRangePicker(
+              startDateValue: selectedDateTime,
+              endDateValue: selectedEndDate,
+              startDateHintText: 'Custom startDateRangePicker',
+              endDateHintText: 'Custom endDateRangePicker',
+              onStartDateSelected: (value) {
                 setState(() {
-                  selectedDateTime = value;
+                  selectedStartDate = value;
                 });
-                print('selectedDateTime: $selectedDateTime');
+                print('selectedStartDate: $selectedStartDate');
+              },
+              onEndDateSelected: (value) {
+                setState(() {
+                  selectedEndDate = value;
+                });
+                print('selectedEndDate: $selectedEndDate');
               },
             ),
             SizedBox(height: 8),
@@ -220,14 +258,24 @@ class _CustomWidgetState extends State<CustomWidget> {
             SizedBox(height: 8),
             CustomButton(
               state: ButtonState.idle,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushReplacement(CustomPageRoute.slide(
+                  page: CustomPage(),
+                  pageType: AppPageType.custom,
+                ));
+              },
               child: Text('Home Page'),
             ),
             SizedBox(height: 8),
             CustomButton(
               state: ButtonState.idle,
               isFullWidth: true,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushReplacement(CustomPageRoute.fade(
+                  page: CustomPage(),
+                  pageType: AppPageType.custom,
+                ));
+              },
               child: Text('Home Page'),
             ),
             SizedBox(height: 8),

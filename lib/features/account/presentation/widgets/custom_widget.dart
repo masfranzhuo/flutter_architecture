@@ -3,6 +3,7 @@ import 'package:flutter_architecture/core/presentation/widgets/custom_button.dar
 import 'package:flutter_architecture/core/presentation/widgets/custom_date_picker.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_date_time_picker.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_drop_down_button.dart';
+import 'package:flutter_architecture/core/presentation/widgets/custom_snack_bar.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_text_field.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_time_picker.dart';
 
@@ -161,6 +162,43 @@ class _CustomWidgetState extends State<CustomWidget> {
             CustomTextField(
               context: context,
               hintText: 'Custom TextField',
+            ),
+            SizedBox(height: 8),
+          ],
+        ),
+        ExpansionTile(
+          title: Text('CustomSnackBar'),
+          children: <Widget>[
+            CustomButton(
+              child: Text('Default SnackBar'),
+              onPressed: () {
+                CustomSnackBar.showSnackBar(
+                  context: context,
+                  message: 'Default',
+                );
+              },
+            ),
+            SizedBox(height: 8),
+            CustomButton(
+              child: Text('Success SnackBar'),
+              onPressed: () {
+                CustomSnackBar.showSnackBar(
+                  context: context,
+                  message: 'Success',
+                  mode: SnackBarMode.success,
+                );
+              },
+            ),
+            SizedBox(height: 8),
+            CustomButton(
+              child: Text('Error SnackBar'),
+              onPressed: () {
+                CustomSnackBar.showSnackBar(
+                  context: context,
+                  message: 'Error',
+                  mode: SnackBarMode.error,
+                );
+              },
             ),
             SizedBox(height: 8),
           ],

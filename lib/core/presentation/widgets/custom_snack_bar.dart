@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_architecture/main.dart';
+import 'package:flutter_architecture/core/presentation/custom_theme.dart';
 
 enum SnackBarMode { success, error, generic }
 
@@ -8,7 +8,6 @@ class CustomSnackBar {
     @required BuildContext context,
     @required String message,
     Widget content,
-    Color backgroundColor,
     SnackBarMode mode = SnackBarMode.generic,
   }) {
     Scaffold.of(context)
@@ -27,7 +26,7 @@ class CustomSnackBar {
   static Color _color(BuildContext context, SnackBarMode mode) {
     switch (mode) {
       case SnackBarMode.success:
-        return SUCCESS_COLOR;
+        return CustomTheme.SUCCESS_COLOR;
         break;
       case SnackBarMode.error:
         return Theme.of(context).errorColor;

@@ -6,6 +6,7 @@ import 'package:flutter_architecture/core/presentation/widgets/custom_date_picke
 import 'package:flutter_architecture/core/presentation/widgets/custom_date_range.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_date_time_picker.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_drop_down_button.dart';
+import 'package:flutter_architecture/core/presentation/widgets/custom_search_bar.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_snack_bar.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_text_field.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_time_picker.dart';
@@ -28,16 +29,7 @@ class _CustomWidgetState extends State<CustomWidget> {
           initiallyExpanded: true,
           title: Text('CustomSearchBar'),
           children: <Widget>[
-            CustomDateRangePicker(
-              startDateValue: DateTime.now(),
-              endDateValue: DateTime.now(),
-              startDateHintText: 'Custom startDateRangePicker',
-              endDateHintText: 'Custom endDateRangePicker',
-              iconData: Icons.date_range,
-              errorText: 'Error',
-              onStartDateSelected: (value) {},
-              onEndDateSelected: (value) {},
-            ),
+            CustomSearchBar(),
             SizedBox(height: 8),
           ],
         ),

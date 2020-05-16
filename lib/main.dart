@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_architecture/core/presentation/custom_theme.dart';
+import 'package:flutter_architecture/core/presentation/pages/custom_page.dart';
 import 'package:flutter_architecture/features/account/presentation/bloc/account_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/bloc/login_bloc/login_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/bloc/register_bloc/register_bloc.dart';
@@ -30,8 +31,8 @@ class MyApp extends StatelessWidget {
         ),
         child: MaterialApp(
           title: 'Flutter Architecture',
-          theme: CustomTheme.theme(),
-          home: LoginPage(),
+          theme: CustomTheme.dark(),
+          home: CustomPage() ?? LoginPage(),
         ),
       ),
     );

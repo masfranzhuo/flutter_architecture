@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 class CustomTheme {
   static const PRIMARY_COLOR = Colors.blueGrey;
   static const ACCENT_COLOR = Colors.yellow;
-  static const SUCCESS_COLOR = Colors.green;
-  static const WARNING_COLOR = Colors.orange;
   static const ERROR_COLOR = Colors.red;
   static const DISABLED_COLOR = Colors.grey;
   static const DARK_BACKGROUND_COLOR = Color(0xFF222222);
+  //? TODO: not used in theme data
+  static const SUCCESS_COLOR = Colors.green;
+  static const WARNING_COLOR = Colors.orange;
 
-  static ThemeData theme() {
+  static ThemeData dark() {
     return ThemeData(
       brightness: Brightness.dark,
       dividerColor: DISABLED_COLOR,

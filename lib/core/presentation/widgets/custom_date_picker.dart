@@ -33,12 +33,14 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
   Future _selectDate(BuildContext context) async {
     final DateTime datePicked = await showDatePicker(
       context: context,
-      initialDate: widget.dateValue ?? DateTime.now(),
+      initialDate: widget.minDate != null
+          ? widget.minDate
+          : (widget.dateValue ?? DateTime.now()),
       firstDate: widget.minDate ??
           DateTime.now().subtract(
             Duration(days: 365 * 100),
           ),
-      lastDate: widget.minDate ??
+      lastDate: widget.maxDate ??
           DateTime.now().add(
             Duration(days: 365 * 10),
           ),

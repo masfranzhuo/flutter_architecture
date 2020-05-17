@@ -33,18 +33,5 @@ abstract class Account extends Equatable {
   });
 
   @override
-  List<Object> get props => [
-        id,
-        name,
-        email,
-        phoneNumber,
-        accountStatus,
-        photoUrl,
-        gender,
-        birthPlace,
-        birthDate
-      ];
-
-  @override
   bool get stringify => true;
 }

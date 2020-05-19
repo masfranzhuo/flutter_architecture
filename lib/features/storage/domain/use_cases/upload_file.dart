@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -13,20 +15,21 @@ class UploadFile extends UseCase<String, Params> {
   @override
   Future<Either<Failure, String>> call(Params params) async {
     return await repository.uploadFile(
-      filePath: params.filePath,
+      file: params.file,
       fileType: params.fileType,
     );
   }
 }
 
 class Params extends Equatable {
-  final String filePath, fileType;
+  final File file;
+  final String fileType;
 
   Params({
-    @required this.filePath,
+    @required this.file,
     @required this.fileType,
   });
 
   @override
-  List<Object> get props => [filePath, fileType];
+  List<Object> get props => [file, fileType];
 }

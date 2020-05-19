@@ -1,10 +1,12 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter_architecture/core/error/failure.dart';
 import 'package:meta/meta.dart';
 
 abstract class StorageRepository {
   Future<Either<Failure, String>> uploadFile({
-    @required String filePath,
+    @required File file,
     @required String fileType,
   });
 

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter_architecture/features/storage/data/data_sources/firebase_storage_data_source.dart';
 import 'package:flutter_architecture/features/storage/data/repositories/storage_repository_impl.dart';
@@ -7,6 +9,8 @@ import 'package:mockito/mockito.dart';
 
 class MockFirebaseStorageDataSource extends Mock
     implements FirebaseStorageDataSource {}
+
+class MockFile extends Mock implements File {}
 
 void main() {
   StorageRepositoryImpl repository;
@@ -22,26 +26,28 @@ void main() {
   final urlTest = 'https://fakeimage.com/image.jpg';
 
   group('uploadFile', () {
-    final filePathTestTest = '/data/image.jpg';
-    final fileTypeTestTest = FileType.image;
+    final mockFile = MockFile();
+    final fileTypeTest = FileType.image;
 
     test('should upload file and return url', () async {
       when(mockFirebaseStorageDataSource.storageUploadTask(
-        filePath: anyNamed('filePath'),
+        file: anyNamed('file'),
         fileType: anyNamed('fileType'),
       )).thenAnswer((_) async => urlTest);
 
       final result = await repository.uploadFile(
-        filePath: filePathTestTest,
-        fileType: fileTypeTestTest,
+        file: mockFile,
+        fileType: fileTypeTest,
       );
 
       verify(mockFirebaseStorageDataSource.storageUploadTask(
-        filePath: anyNamed('filePath'),
+        file: anyNamed('file'),
         fileType: anyNamed('fileType'),
       ));
       expect(result, Right(urlTest));
     });
+
+    // TODO: test error case
   });
 
   group('deleteFile', () {

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter_architecture/core/error/exception_converter.dart';
 import 'package:flutter_architecture/core/error/failure.dart';
@@ -12,12 +14,12 @@ class StorageRepositoryImpl extends StorageRepository {
 
   @override
   Future<Either<Failure, String>> uploadFile({
-    @required String filePath,
+    @required File file,
     @required String fileType,
   }) async {
     try {
       final url = await firebaseStorageDataSource.storageUploadTask(
-        filePath: filePath,
+        file: file,
         fileType: fileType,
       );
 

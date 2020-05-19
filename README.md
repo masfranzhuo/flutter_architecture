@@ -20,6 +20,7 @@ A few resources to get you started if this is your first Flutter project:
 - [equatable: ^1.1.1](https://pub.dev/packages/equatable)
 - [meta: ^1.1.8](https://pub.dev/packages/meta)
 - [cupertino_icons: ^0.1.2](https://pub.dev/packages/cupertino_icons) Latest 0.1.3
+- [firebase_storage: ^3.1.5](https://pub.dev/packages/firebase_storage)
 
 ### Flutter packages dev dependencies
 - [mockito: ^4.1.1](https://pub.dev/packages/mockito)

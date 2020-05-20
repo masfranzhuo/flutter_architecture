@@ -5,13 +5,13 @@ import 'package:flutter_architecture/core/error/failure.dart';
 import 'package:flutter_architecture/core/util/use_case.dart';
 import 'package:flutter_architecture/features/storage/domain/repositories/storage_repository.dart';
 
-class DeleteFile extends UseCase<String, Params> {
+class DeleteFile extends UseCase<bool, Params> {
   final StorageRepository repository;
 
   DeleteFile({@required this.repository});
 
   @override
-  Future<Either<Failure, String>> call(Params params) async {
+  Future<Either<Failure, bool>> call(Params params) async {
     return await repository.deleteFile(url: params.url);
   }
 }

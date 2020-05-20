@@ -9,7 +9,9 @@ abstract class FirebaseStorageDataSource {
     @required String fileType,
   });
 
-  Future<String> deleteStorageFile({@required String url});
+  /// Convert file url from Firebase Storage into StorageReference,
+  /// then we could use this to delete the file in Firebase Storage.
+  Future<void> deleteStorageFile({@required String url, String fileType});
 }
 
 class FirebaseStorageDataSourceImpl extends FirebaseStorageDataSource {
@@ -22,18 +24,24 @@ class FirebaseStorageDataSourceImpl extends FirebaseStorageDataSource {
     @required File file,
     @required String fileType,
   }) async {
-    StorageReference storageReference =
-        firebaseStorageInstance.ref().child('$fileType${file.path}');
+    StorageReference storageReference = firebaseStorageInstance.ref();
+    storageReference.child('$fileType${file.path}');
+
     StorageUploadTask uploadTask = storageReference.putFile(file);
     await uploadTask.onComplete;
-    return storageReference.getDownloadURL().then((fileUrl) {
-      return fileUrl;
-    });
+
+    String fileUrl = await storageReference.getDownloadURL();
+    return fileUrl;
   }
 
   @override
-  Future<String> deleteStorageFile({@required String url}) {
-    // TODO: implement deleteStorageFile
-    throw UnimplementedError();
+  Future<void> deleteStorageFile({
+    @required String url,
+    String fileType,
+  }) async {
+    StorageReference storageReference =
+        await firebaseStorageInstance.getReferenceFromUrl(url);
+
+    return await storageReference.delete();
   }
 }

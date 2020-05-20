@@ -30,13 +30,13 @@ class StorageRepositoryImpl extends StorageRepository {
   }
 
   @override
-  Future<Either<Failure, String>> deleteFile({@required String url}) async {
+  Future<Either<Failure, bool>> deleteFile({@required String url}) async {
     try {
-      final resultUrl = await firebaseStorageDataSource.deleteStorageFile(
+      await firebaseStorageDataSource.deleteStorageFile(
         url: url,
       );
 
-      return Right(resultUrl);
+      return Right(true);
     } on Exception catch (e) {
       return Left(convertExceptionToFailure(exception: e));
     }

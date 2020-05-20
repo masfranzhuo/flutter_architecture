@@ -54,14 +54,14 @@ void main() {
     test('should delete file and return url', () async {
       when(mockFirebaseStorageDataSource.deleteStorageFile(
         url: anyNamed('url'),
-      )).thenAnswer((_) async => urlTest);
+      )).thenAnswer((_) async => true);
 
       final result = await repository.deleteFile(url: urlTest);
 
       verify(mockFirebaseStorageDataSource.deleteStorageFile(
         url: anyNamed('url'),
       ));
-      expect(result, Right(urlTest));
+      expect(result, Right(true));
     });
   });
 }

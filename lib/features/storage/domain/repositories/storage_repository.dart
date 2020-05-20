@@ -10,5 +10,5 @@ abstract class StorageRepository {
     @required String fileType,
   });
 
-  Future<Either<Failure, String>> deleteFile({@required String url});
+  Future<Either<Failure, bool>> deleteFile({@required String url});
 }

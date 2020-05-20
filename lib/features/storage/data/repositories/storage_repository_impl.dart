@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
-import 'package:flutter_architecture/core/error/exception_converter.dart';
-import 'package:flutter_architecture/core/error/failure.dart';
+import 'package:flutter_architecture/core/error/exceptions/app_exception.dart';
+import 'package:flutter_architecture/core/error/failures/failure.dart';
 import 'package:flutter_architecture/features/storage/data/data_sources/firebase_storage_data_source.dart';
 import 'package:flutter_architecture/features/storage/domain/repositories/storage_repository.dart';
 import 'package:meta/meta.dart';
@@ -24,8 +24,10 @@ class StorageRepositoryImpl extends StorageRepository {
       );
 
       return Right(url);
+    } on AppException catch (e) {
+      return Left(e.toFailure());
     } on Exception catch (e) {
-      return Left(convertExceptionToFailure(exception: e));
+      return Left(UnexpectedFailure(message: e.toString()));
     }
   }
 
@@ -37,8 +39,10 @@ class StorageRepositoryImpl extends StorageRepository {
       );
 
       return Right(true);
+    } on AppException catch (e) {
+      return Left(e.toFailure());
     } on Exception catch (e) {
-      return Left(convertExceptionToFailure(exception: e));
+      return Left(UnexpectedFailure(message: e.toString()));
     }
   }
 }

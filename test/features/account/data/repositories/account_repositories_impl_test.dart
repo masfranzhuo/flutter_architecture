@@ -1,6 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter_architecture/core/error/exception.dart';
-import 'package:flutter_architecture/core/error/failure.dart';
+import 'package:flutter_architecture/core/error/exceptions/app_exception.dart';
+import 'package:flutter_architecture/core/error/exceptions/http_exception.dart';
+import 'package:flutter_architecture/core/error/failures/failure.dart';
+import 'package:flutter_architecture/core/error/failures/http_failure.dart';
 import 'package:flutter_architecture/features/account/data/data_sources/account_data_source.dart';
 import 'package:flutter_architecture/features/account/data/data_sources/firebase_auth_data_source.dart';
 import 'package:flutter_architecture/features/account/data/data_sources/firebase_messaging_data_source.dart';
@@ -19,6 +21,12 @@ class MockFirebaseMessagingDataSource extends Mock
     implements FirebaseMessagingDataSource {}
 
 // ignore: must_be_immutable
+class MockAppException extends Mock implements AppException {}
+
+// ignore: must_be_immutable
+class MockFailure extends Mock implements Failure {}
+
+// ignore: must_be_immutable
 class MockStaff extends Mock implements Staff {}
 
 // ignore: must_be_immutable
@@ -30,6 +38,8 @@ void main() {
   MockFirebaseAuthDataSource mockFirebaseAuthDataSource;
   MockFirebaseMessagingDataSource mockFirebaseMessagingDataSource;
 
+  MockAppException mockAppException;
+  MockFailure mockFailure;
   MockStaff mockStaff;
   MockCustomer mockCustomer;
 
@@ -43,6 +53,8 @@ void main() {
       firebaseMessagingDataSource: mockFirebaseMessagingDataSource,
     );
 
+    mockAppException = MockAppException();
+    mockFailure = MockFailure();
     mockStaff = MockStaff();
     mockCustomer = MockCustomer();
   });
@@ -52,20 +64,6 @@ void main() {
   final passwordTest = 'test';
 
   group('loginWithPassword', () {
-    setUpFirebaseAuthLoginThrowException(Exception exception) {
-      when(mockFirebaseAuthDataSource.signInWithPassword(
-        email: emailTest,
-        password: passwordTest,
-      )).thenThrow(exception);
-    }
-
-    setUpAccountLoginThrowException(Exception exception) {
-      when(mockAccountDataSource.setUserProfile(
-        id: anyNamed('id'),
-        deviceToken: anyNamed('deviceToken'),
-      )).thenThrow(exception);
-    }
-
     test('should login as a staff', () async {
       when(mockAccountDataSource.getUserProfile(
         id: anyNamed('id'),
@@ -116,167 +114,75 @@ void main() {
       expect(result, Right(mockCustomer));
     });
 
-    test('should return InvalidEmailFailure', () async {
-      setUpFirebaseAuthLoginThrowException(InvalidEmailException());
+    test('should return UnexpectedFailure', () async {
+      when(mockFirebaseAuthDataSource.signInWithPassword(
+        email: emailTest,
+        password: passwordTest,
+      )).thenThrow(UnexpectedException());
 
       final result = await repository.loginWithPassword(
         email: emailTest,
         password: passwordTest,
       );
 
-      verify(mockFirebaseAuthDataSource.signInWithPassword(
-          email: emailTest, password: passwordTest));
-      expect((result as Left).value, isA<InvalidEmailFailure>());
+      expect((result as Left).value, isA<UnexpectedFailure>());
     });
 
-    test('should return WrongPasswordFailure', () async {
-      setUpFirebaseAuthLoginThrowException(WrongPasswordException());
+    test(
+      'should call toFailure if exception is AppException',
+      () async {
+        when(mockAppException.toFailure()).thenReturn(mockFailure);
+        when(mockFirebaseAuthDataSource.signInWithPassword(
+          email: emailTest,
+          password: passwordTest,
+        )).thenThrow(mockAppException);
 
-      final result = await repository.loginWithPassword(
-        email: emailTest,
-        password: passwordTest,
-      );
+        final result = await repository.loginWithPassword(
+          email: emailTest,
+          password: passwordTest,
+        );
 
-      verify(mockFirebaseAuthDataSource.signInWithPassword(
-          email: emailTest, password: passwordTest));
-      expect((result as Left).value, isA<WrongPasswordFailure>());
-    });
+        expect((result as Left).value, mockFailure);
+        expect((result as Left).value, isA<Failure>());
+      },
+    );
 
-    test('should return UserNotFoundFailure', () async {
-      setUpFirebaseAuthLoginThrowException(UserNotFoundException());
-
-      final result = await repository.loginWithPassword(
-        email: emailTest,
-        password: passwordTest,
-      );
-
-      verify(mockFirebaseAuthDataSource.signInWithPassword(
-          email: emailTest, password: passwordTest));
-      expect((result as Left).value, isA<UserNotFoundFailure>());
-    });
-
-    test('should return UserDisabledFailure', () async {
-      setUpFirebaseAuthLoginThrowException(UserDisabledException());
-
-      final result = await repository.loginWithPassword(
-        email: emailTest,
-        password: passwordTest,
-      );
-
-      verify(mockFirebaseAuthDataSource.signInWithPassword(
-          email: emailTest, password: passwordTest));
-      expect((result as Left).value, isA<UserDisabledFailure>());
-    });
-
-    test('should return TooManyRequestsFailure', () async {
-      setUpFirebaseAuthLoginThrowException(TooManyRequestsException());
-
-      final result = await repository.loginWithPassword(
-        email: emailTest,
-        password: passwordTest,
-      );
-
-      verify(mockFirebaseAuthDataSource.signInWithPassword(
-          email: emailTest, password: passwordTest));
-      expect((result as Left).value, isA<TooManyRequestsFailure>());
-    });
-
-    test('should return OperationNotAllowedFailure', () async {
-      setUpFirebaseAuthLoginThrowException(OperationNotAllowedException());
-
-      final result = await repository.loginWithPassword(
-        email: emailTest,
-        password: passwordTest,
-      );
-
-      verify(mockFirebaseAuthDataSource.signInWithPassword(
-          email: emailTest, password: passwordTest));
-      expect((result as Left).value, isA<OperationNotAllowedFailure>());
-    });
-
-    test('should return UndefinedFirebaseAuthFailure', () async {
-      setUpFirebaseAuthLoginThrowException(UndefinedFirebaseAuthException());
-
-      final result = await repository.loginWithPassword(
-        email: emailTest,
-        password: passwordTest,
-      );
-
-      verify(mockFirebaseAuthDataSource.signInWithPassword(
-          email: emailTest, password: passwordTest));
-      expect((result as Left).value, isA<UndefinedFirebaseAuthFailure>());
-    });
-
-    test('should return BadRequestFailure', () async {
-      setUpAccountLoginThrowException(BadRequestException());
-
-      final result = await repository.loginWithPassword(
-        email: emailTest,
-        password: passwordTest,
-      );
-
-      verify(mockFirebaseAuthDataSource.signInWithPassword(
-          email: emailTest, password: passwordTest));
-      expect((result as Left).value, isA<BadRequestFailure>());
-    });
-
-    test('should return InternalServerErrorFailure', () async {
-      setUpAccountLoginThrowException(InternalServerErrorException());
-
-      final result = await repository.loginWithPassword(
-        email: emailTest,
-        password: passwordTest,
-      );
-
-      verify(mockFirebaseAuthDataSource.signInWithPassword(
-          email: emailTest, password: passwordTest));
-      expect((result as Left).value, isA<InternalServerErrorFailure>());
-    });
-
-    test('should return ServiceUnavailableFailure', () async {
-      setUpAccountLoginThrowException(ServiceUnavailableException());
-
-      final result = await repository.loginWithPassword(
-        email: emailTest,
-        password: passwordTest,
-      );
-
-      verify(mockFirebaseAuthDataSource.signInWithPassword(
-          email: emailTest, password: passwordTest));
-      expect((result as Left).value, isA<ServiceUnavailableFailure>());
-    });
-
-    test('should return PreconditionFailedFailure', () async {
-      setUpAccountLoginThrowException(PreconditionFailedException());
-
-      final result = await repository.loginWithPassword(
-        email: emailTest,
-        password: passwordTest,
-      );
-
-      verify(mockFirebaseAuthDataSource.signInWithPassword(
-          email: emailTest, password: passwordTest));
-      expect((result as Left).value, isA<PreconditionFailedFailure>());
-    });
-  });
-  group('registerWithPassword', () {
-    final nameTest = 'John Doe';
-
-    setUpFirebaseAuthRegisterThrowException(Exception exception) {
-      when(mockFirebaseAuthDataSource.signUpWithPassword(
-        email: emailTest,
-        password: passwordTest,
-      )).thenThrow(exception);
-    }
-
-    setUpAccountRegisterThrowException(Exception exception) {
+    test('should return UnexpectedFailure', () async {
       when(mockAccountDataSource.setUserProfile(
         id: anyNamed('id'),
         deviceToken: anyNamed('deviceToken'),
-        name: anyNamed('name'),
-        email: anyNamed('email'),
-      )).thenThrow(exception);
-    }
+      )).thenThrow(UnexpectedException());
+
+      final result = await repository.loginWithPassword(
+        email: emailTest,
+        password: passwordTest,
+      );
+
+      expect((result as Left).value, isA<UnexpectedFailure>());
+    });
+
+    test(
+      'should call toFailure if exception is AppException',
+      () async {
+        when(mockAppException.toFailure()).thenReturn(mockFailure);
+        when(mockAccountDataSource.setUserProfile(
+          id: anyNamed('id'),
+          deviceToken: anyNamed('deviceToken'),
+        )).thenThrow(mockAppException);
+
+        final result = await repository.loginWithPassword(
+          email: emailTest,
+          password: passwordTest,
+        );
+
+        expect((result as Left).value, mockFailure);
+        expect((result as Left).value, isA<Failure>());
+      },
+    );
+  });
+
+  group('registerWithPassword', () {
+    final nameTest = 'John Doe';
 
     test('should return a staff', () async {
       when(mockAccountDataSource.getUserProfile(
@@ -340,8 +246,11 @@ void main() {
       expect(result, Right(mockCustomer));
     });
 
-    test('should return InvalidEmailFailure', () async {
-      setUpFirebaseAuthRegisterThrowException(InvalidEmailException());
+    test('should return UnexpectedFailure', () async {
+      when(mockFirebaseAuthDataSource.signUpWithPassword(
+        email: emailTest,
+        password: passwordTest,
+      )).thenThrow(UnexpectedException());
 
       final result = await repository.registerWithPassword(
         name: nameTest,
@@ -349,117 +258,69 @@ void main() {
         password: passwordTest,
       );
 
-      verify(mockFirebaseAuthDataSource.signUpWithPassword(
-          email: emailTest, password: passwordTest));
-      expect((result as Left).value, isA<InvalidEmailFailure>());
+      expect((result as Left).value, isA<UnexpectedFailure>());
     });
 
-    test('should return WeakPasswordFailure', () async {
-      setUpFirebaseAuthRegisterThrowException(WeakPasswordException());
+    test(
+      'should call toFailure if exception is AppException',
+      () async {
+        when(mockAppException.toFailure()).thenReturn(mockFailure);
+        when(mockFirebaseAuthDataSource.signUpWithPassword(
+          email: emailTest,
+          password: passwordTest,
+        )).thenThrow(mockAppException);
 
-      final result = await repository.registerWithPassword(
-        name: nameTest,
-        email: emailTest,
-        password: passwordTest,
-      );
+        final result = await repository.registerWithPassword(
+          name: nameTest,
+          email: emailTest,
+          password: passwordTest,
+        );
 
-      verify(mockFirebaseAuthDataSource.signUpWithPassword(
-          email: emailTest, password: passwordTest));
-      expect((result as Left).value, isA<WeakPasswordFailure>());
-    });
+        expect((result as Left).value, mockFailure);
+        expect((result as Left).value, isA<Failure>());
+      },
+    );
 
-    test('should return EmailAlreadyInUseFailure', () async {
-      setUpFirebaseAuthRegisterThrowException(EmailAlreadyInUseException());
-
-      final result = await repository.registerWithPassword(
-        name: nameTest,
-        email: emailTest,
-        password: passwordTest,
-      );
-
-      verify(mockFirebaseAuthDataSource.signUpWithPassword(
-          email: emailTest, password: passwordTest));
-      expect((result as Left).value, isA<EmailAlreadyInUseFailure>());
-    });
-
-    test('should return UndefinedFirebaseAuthFailure', () async {
-      setUpFirebaseAuthRegisterThrowException(UndefinedFirebaseAuthException());
-
-      final result = await repository.registerWithPassword(
-        name: nameTest,
-        email: emailTest,
-        password: passwordTest,
-      );
-
-      verify(mockFirebaseAuthDataSource.signUpWithPassword(
-          email: emailTest, password: passwordTest));
-      expect((result as Left).value, isA<UndefinedFirebaseAuthFailure>());
-    });
-
-    test('should return BadRequestFailure', () async {
-      setUpAccountRegisterThrowException(BadRequestException());
-
-      final result = await repository.registerWithPassword(
-        name: nameTest,
-        email: emailTest,
-        password: passwordTest,
-      );
-
-      verify(mockFirebaseAuthDataSource.signUpWithPassword(
-          email: emailTest, password: passwordTest));
-      expect((result as Left).value, isA<BadRequestFailure>());
-    });
-
-    test('should return InternalServerErrorFailure', () async {
-      setUpAccountRegisterThrowException(InternalServerErrorException());
-
-      final result = await repository.registerWithPassword(
-        name: nameTest,
-        email: emailTest,
-        password: passwordTest,
-      );
-
-      verify(mockFirebaseAuthDataSource.signUpWithPassword(
-          email: emailTest, password: passwordTest));
-      expect((result as Left).value, isA<InternalServerErrorFailure>());
-    });
-
-    test('should return ServiceUnavailableFailure', () async {
-      setUpAccountRegisterThrowException(ServiceUnavailableException());
-
-      final result = await repository.registerWithPassword(
-        name: nameTest,
-        email: emailTest,
-        password: passwordTest,
-      );
-
-      verify(mockFirebaseAuthDataSource.signUpWithPassword(
-          email: emailTest, password: passwordTest));
-      expect((result as Left).value, isA<ServiceUnavailableFailure>());
-    });
-
-    test('should return PreconditionFailedFailure', () async {
-      setUpAccountRegisterThrowException(PreconditionFailedException());
-
-      final result = await repository.registerWithPassword(
-        name: nameTest,
-        email: emailTest,
-        password: passwordTest,
-      );
-
-      verify(mockFirebaseAuthDataSource.signUpWithPassword(
-          email: emailTest, password: passwordTest));
-      expect((result as Left).value, isA<PreconditionFailedFailure>());
-    });
-  });
-  group('logout', () {
-    setUpAccountLogoutThrowException(Exception exception) {
-      when(mockAccountDataSource.removeDeviceToken(
+    test('should return UnexpectedFailure', () async {
+      when(mockAccountDataSource.setUserProfile(
         id: anyNamed('id'),
         deviceToken: anyNamed('deviceToken'),
-      )).thenThrow(exception);
-    }
+        name: anyNamed('name'),
+        email: anyNamed('email'),
+      )).thenThrow(UnexpectedException());
 
+      final result = await repository.registerWithPassword(
+        name: nameTest,
+        email: emailTest,
+        password: passwordTest,
+      );
+
+      expect((result as Left).value, isA<UnexpectedFailure>());
+    });
+
+    test(
+      'should call toFailure if exception is AppException',
+      () async {
+        when(mockAppException.toFailure()).thenReturn(mockFailure);
+        when(mockAccountDataSource.setUserProfile(
+          id: anyNamed('id'),
+          deviceToken: anyNamed('deviceToken'),
+          name: anyNamed('name'),
+          email: anyNamed('email'),
+        )).thenThrow(mockAppException);
+
+        final result = await repository.registerWithPassword(
+          name: nameTest,
+          email: emailTest,
+          password: passwordTest,
+        );
+
+        expect((result as Left).value, mockFailure);
+        expect((result as Left).value, isA<Failure>());
+      },
+    );
+  });
+  group('logout', () {
     test('should call all dependencies in order', () async {
       await repository.logout();
 
@@ -485,53 +346,32 @@ void main() {
       expect(result, Right(true));
     });
 
-    test('should return Left(InvalidIdTokenFailure())', () async {
-      setUpAccountLogoutThrowException(InvalidIdTokenException());
+    test('should return UnexpectedFailure', () async {
+      when(mockAccountDataSource.removeDeviceToken(
+        id: anyNamed('id'),
+        deviceToken: anyNamed('deviceToken'),
+      )).thenThrow(UnexpectedException());
 
       final result = await repository.logout();
 
-      expect(result, Left(InvalidIdTokenFailure()));
+      expect((result as Left).value, isA<UnexpectedFailure>());
     });
 
-    test('should return Left(NotFoundFailure())', () async {
-      setUpAccountLogoutThrowException(NotFoundException());
+    test(
+      'should call toFailure if exception is AppException',
+      () async {
+        when(mockAppException.toFailure()).thenReturn(mockFailure);
+        when(mockAccountDataSource.removeDeviceToken(
+          id: anyNamed('id'),
+          deviceToken: anyNamed('deviceToken'),
+        )).thenThrow(mockAppException);
 
-      final result = await repository.logout();
+        final result = await repository.logout();
 
-      expect(result, Left(NotFoundFailure()));
-    });
-
-    test('should return Left(BadRequestFailure())', () async {
-      setUpAccountLogoutThrowException(BadRequestException());
-
-      final result = await repository.logout();
-
-      expect(result, Left(BadRequestFailure()));
-    });
-
-    test('should return Left(InternalServerErrorFailure())', () async {
-      setUpAccountLogoutThrowException(InternalServerErrorException());
-
-      final result = await repository.logout();
-
-      expect(result, Left(InternalServerErrorFailure()));
-    });
-
-    test('should return Left(ServiceUnavailableFailure())', () async {
-      setUpAccountLogoutThrowException(ServiceUnavailableException());
-
-      final result = await repository.logout();
-
-      expect(result, Left(ServiceUnavailableFailure()));
-    });
-
-    test('should return Left(PreconditionFailedFailure())', () async {
-      setUpAccountLogoutThrowException(PreconditionFailedException());
-
-      final result = await repository.logout();
-
-      expect(result, Left(PreconditionFailedFailure()));
-    });
+        expect((result as Left).value, mockFailure);
+        expect((result as Left).value, isA<Failure>());
+      },
+    );
   });
   group('getBearerToken', () {
     final String idToken = 'idToken';
@@ -545,13 +385,13 @@ void main() {
       expect(result, Right(idToken));
     });
 
-    test('should return UnauthenticatedFailure', () async {
+    test('should return UnauthorizedFailure', () async {
       when(mockFirebaseAuthDataSource.getCurrentUserIdToken())
-          .thenThrow(UnauthenticatedException());
+          .thenThrow(UnauthorizedException());
 
       final result = await repository.getBearerToken();
 
-      expect(result, Left(UnauthenticatedFailure()));
+      expect(result, Left(UnauthorizedFailure()));
     });
   });
   group('getUserProfile', () {
@@ -573,52 +413,34 @@ void main() {
       expect(result, Right(mockStaff));
     });
 
-    test('should return NotFoundFailure', () async {
+    test('should return UnexpectedFailure', () async {
       when(mockAccountDataSource.getUserProfile(id: anyNamed('id')))
-          .thenThrow(NotFoundException());
+          .thenThrow(UnexpectedException());
+
       final result = await repository.getUserProfile(id: idTest);
-      expect(result, Left(NotFoundFailure()));
+
+      expect((result as Left).value, isA<UnexpectedFailure>());
     });
 
-    test('should return BadRequestFailure', () async {
-      when(mockAccountDataSource.getUserProfile(id: anyNamed('id')))
-          .thenThrow(BadRequestException());
-      final result = await repository.getUserProfile(id: idTest);
-      expect(result, Left(BadRequestFailure()));
-    });
+    test(
+      'should call toFailure if exception is AppException',
+      () async {
+        when(mockAppException.toFailure()).thenReturn(mockFailure);
+        when(mockAccountDataSource.getUserProfile(id: anyNamed('id')))
+            .thenThrow(mockAppException);
 
-    test('should return internalServerErrorFailure', () async {
-      when(mockAccountDataSource.getUserProfile(id: anyNamed('id')))
-          .thenThrow(InternalServerErrorException());
-      final result = await repository.getUserProfile(id: idTest);
-      expect(result, Left(InternalServerErrorFailure()));
-    });
+        final result = await repository.getUserProfile(id: idTest);
 
-    test('should return ServiceUnavailableFailure', () async {
-      when(mockAccountDataSource.getUserProfile(id: anyNamed('id')))
-          .thenThrow(ServiceUnavailableException());
-      final result = await repository.getUserProfile(id: idTest);
-      expect(result, Left(ServiceUnavailableFailure()));
-    });
-
-    test('should return PreconditionFailedFailure', () async {
-      when(mockAccountDataSource.getUserProfile(id: anyNamed('id')))
-          .thenThrow(PreconditionFailedException());
-      final result = await repository.getUserProfile(id: idTest);
-      expect(result, Left(PreconditionFailedFailure()));
-    });
+        expect((result as Left).value, mockFailure);
+        expect((result as Left).value, isA<Failure>());
+      },
+    );
   });
 
   group('changePassword', () {
     final passwordTest = 'password';
     final currentPasswordTest = 'currentPassword';
 
-    setUpThrowException(Exception exception) {
-      when(mockFirebaseAuthDataSource.changePassword(
-        password: anyNamed('password'),
-      )).thenThrow(exception);
-    }
-
     test('should return true', () async {
       when(mockFirebaseAuthDataSource.changePassword(
         password: anyNamed('password'),
@@ -632,79 +454,74 @@ void main() {
       expect(result, Right(true));
     });
 
-    test('should return UserDisabledFailure', () async {
-      setUpThrowException(UserDisabledException());
+    test('should return UnexpectedFailure', () async {
+      when(mockFirebaseAuthDataSource.changePassword(
+        password: anyNamed('password'),
+      )).thenThrow(UnexpectedException());
 
       final result = await repository.changePassword(
         password: passwordTest,
         currentPassword: currentPasswordTest,
       );
 
-      expect(result, Left(UserDisabledFailure()));
+      expect((result as Left).value, isA<UnexpectedFailure>());
     });
 
-    test('should return WeakPasswordFailure', () async {
-      setUpThrowException(WeakPasswordException());
+    test(
+      'should call toFailure if exception is AppException',
+      () async {
+        when(mockAppException.toFailure()).thenReturn(mockFailure);
+        when(mockFirebaseAuthDataSource.changePassword(
+          password: anyNamed('password'),
+        )).thenThrow(mockAppException);
 
-      final result = await repository.changePassword(
-        password: passwordTest,
-        currentPassword: currentPasswordTest,
-      );
+        final result = await repository.changePassword(
+          password: passwordTest,
+          currentPassword: currentPasswordTest,
+        );
 
-      expect(result, Left(WeakPasswordFailure()));
-    });
-
-    test('should return UndefinedFirebaseAuthFailure', () async {
-      setUpThrowException(UndefinedFirebaseAuthException());
-
-      final result = await repository.changePassword(
-        password: passwordTest,
-        currentPassword: currentPasswordTest,
-      );
-
-      expect(result, Left(UndefinedFirebaseAuthFailure()));
-    });
+        expect((result as Left).value, mockFailure);
+        expect((result as Left).value, isA<Failure>());
+      },
+    );
   });
 
   group('resetPassword', () {
     final emailTest = 'john@doe.com';
 
-    setUpThrowException(Exception exception) {
-      when(mockFirebaseAuthDataSource.resetPassword(
-        email: anyNamed('email'),
-      )).thenThrow(exception);
-    }
-
     test('should return true', () async {
       when(mockFirebaseAuthDataSource.resetPassword(
         email: anyNamed('email'),
       )).thenAnswer((_) async => Right(true));
 
-      final result = await repository.resetPassword(
-        email: emailTest,
-      );
+      final result = await repository.resetPassword(email: emailTest);
 
       expect(result, Right(true));
     });
 
-    test('should return UserNotFoundFailure', () async {
-      setUpThrowException(UserNotFoundException());
+    test('should return UnexpectedFailure', () async {
+      when(mockFirebaseAuthDataSource.resetPassword(
+        email: anyNamed('email'),
+      )).thenThrow(UnexpectedException());
 
-      final result = await repository.resetPassword(
-        email: emailTest,
-      );
+      final result = await repository.resetPassword(email: emailTest);
 
-      expect(result, Left(UserNotFoundFailure()));
+      expect((result as Left).value, isA<UnexpectedFailure>());
     });
 
-    test('should return UndefinedFirebaseAuthFailure', () async {
-      setUpThrowException(UndefinedFirebaseAuthException());
+    test(
+      'should call toFailure if exception is AppException',
+      () async {
+        when(mockAppException.toFailure()).thenReturn(mockFailure);
+        when(mockFirebaseAuthDataSource.resetPassword(
+          email: anyNamed('email'),
+        )).thenThrow(mockAppException);
 
-      final result = await repository.resetPassword(
-        email: emailTest,
-      );
+        final result = await repository.resetPassword(email: emailTest);
 
-      expect(result, Left(UndefinedFirebaseAuthFailure()));
-    });
+        expect((result as Left).value, mockFailure);
+        expect((result as Left).value, isA<Failure>());
+      },
+    );
   });
 }

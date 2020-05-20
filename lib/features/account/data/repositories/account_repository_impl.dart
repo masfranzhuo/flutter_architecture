@@ -1,8 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_architecture/core/error/exception_converter.dart';
-import 'package:flutter_architecture/core/error/failure.dart';
-import 'package:flutter_architecture/core/error/exception.dart';
+import 'package:flutter_architecture/core/error/exceptions/app_exception.dart';
+import 'package:flutter_architecture/core/error/exceptions/http_exception.dart';
+import 'package:flutter_architecture/core/error/failures/failure.dart';
+import 'package:flutter_architecture/core/error/failures/http_failure.dart';
 import 'package:flutter_architecture/features/account/data/data_sources/account_data_source.dart';
 import 'package:flutter_architecture/features/account/data/data_sources/firebase_auth_data_source.dart';
 import 'package:flutter_architecture/features/account/data/data_sources/firebase_messaging_data_source.dart';
@@ -42,8 +43,10 @@ class AccountRepositoryImpl extends AccountRepository {
       );
 
       return Right(account);
+    } on AppException catch (e) {
+      return Left(e.toFailure());
     } on Exception catch (e) {
-      return Left(convertExceptionToFailure(exception: e));
+      return Left(UnexpectedFailure(message: e.toString()));
     }
   }
 
@@ -82,8 +85,10 @@ class AccountRepositoryImpl extends AccountRepository {
       );
 
       return Right(account);
+    } on AppException catch (e) {
+      return Left(e.toFailure());
     } on Exception catch (e) {
-      return Left(convertExceptionToFailure(exception: e));
+      return Left(UnexpectedFailure(message: e.toString()));
     }
   }
 
@@ -98,8 +103,10 @@ class AccountRepositoryImpl extends AccountRepository {
       );
       await firebaseAuthDataSource.logout();
       return Right(logoutResult);
+    } on AppException catch (e) {
+      return Left(e.toFailure());
     } on Exception catch (e) {
-      return Left(convertExceptionToFailure(exception: e));
+      return Left(UnexpectedFailure(message: e.toString()));
     }
   }
 
@@ -108,8 +115,8 @@ class AccountRepositoryImpl extends AccountRepository {
     try {
       final token = await firebaseAuthDataSource.getCurrentUserIdToken();
       return Right(token);
-    } on UnauthenticatedException {
-      return Left(UnauthenticatedFailure());
+    } on UnauthorizedException {
+      return Left(UnauthorizedFailure());
     }
   }
 
@@ -118,8 +125,10 @@ class AccountRepositoryImpl extends AccountRepository {
     try {
       final account = await accountDataSource.getUserProfile(id: id);
       return Right(account);
+    } on AppException catch (e) {
+      return Left(e.toFailure());
     } on Exception catch (e) {
-      return Left(convertExceptionToFailure(exception: e));
+      return Left(UnexpectedFailure(message: e.toString()));
     }
   }
 
@@ -131,8 +140,10 @@ class AccountRepositoryImpl extends AccountRepository {
     try {
       await firebaseAuthDataSource.changePassword(password: password);
       return Right(true);
+    } on AppException catch (e) {
+      return Left(e.toFailure());
     } on Exception catch (e) {
-      return Left(convertExceptionToFailure(exception: e));
+      return Left(UnexpectedFailure(message: e.toString()));
     }
   }
 
@@ -141,8 +152,10 @@ class AccountRepositoryImpl extends AccountRepository {
     try {
       await firebaseAuthDataSource.resetPassword(email: email);
       return Right(true);
+    } on AppException catch (e) {
+      return Left(e.toFailure());
     } on Exception catch (e) {
-      return Left(convertExceptionToFailure(exception: e));
+      return Left(UnexpectedFailure(message: e.toString()));
     }
   }
 }

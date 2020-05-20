@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_architecture/core/presentation/pages/custom_widget.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_safe_area.dart';
 import 'package:flutter_architecture/features/account/presentation/bloc/account_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/widgets/menu_drawer.dart';
@@ -26,7 +27,9 @@ class CustomerHomePage extends StatelessWidget {
       width: constraints.maxWidth,
       height: constraints.maxHeight,
       child: ListView(
-        children: <Widget>[],
+        children: <Widget>[
+          CustomWidget(),
+        ],
       ),
     );
   }

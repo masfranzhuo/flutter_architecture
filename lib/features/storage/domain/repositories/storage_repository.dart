@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
-import 'package:flutter_architecture/core/error/failure.dart';
+import 'package:flutter_architecture/core/error/failures/failure.dart';
 import 'package:meta/meta.dart';
 
 abstract class StorageRepository {

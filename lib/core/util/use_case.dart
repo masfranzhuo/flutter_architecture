@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter_architecture/core/error/failure.dart';
+import 'package:flutter_architecture/core/error/failures/failure.dart';
 
 abstract class UseCase<Type, Params> {
   const UseCase();

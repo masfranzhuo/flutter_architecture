@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_architecture/core/error/failure.dart';
+import 'package:flutter_architecture/core/error/failures/failure.dart';
 import 'package:flutter_architecture/core/util/use_case.dart';
 import 'package:flutter_architecture/features/storage/domain/repositories/storage_repository.dart';
 

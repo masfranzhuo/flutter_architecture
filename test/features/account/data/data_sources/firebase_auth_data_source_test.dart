@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_architecture/core/error/exception.dart';
+import 'package:flutter_architecture/core/error/exceptions/firebase_exception.dart';
+import 'package:flutter_architecture/core/error/exceptions/http_exception.dart';
 import 'package:flutter_architecture/features/account/data/data_sources/firebase_auth_data_source.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -301,12 +302,12 @@ void main() {
       verify(mockIdTokenResult.token);
     });
 
-    test('should return UnauthenticatedException', () async {
+    test('should return UnauthorizedException', () async {
       when(mockFirebaseAuth.currentUser()).thenAnswer((_) async => null);
 
       expect(
         () => dataSource.getCurrentUserIdToken(),
-        throwsA(isA<UnauthenticatedException>()),
+        throwsA(isA<UnauthorizedException>()),
       );
       verify(mockFirebaseAuth.currentUser());
       verifyNoMoreInteractions(mockFirebaseAuth);
@@ -327,12 +328,12 @@ void main() {
       verify(mockFirebaseUser.uid);
     });
 
-    test('should return UnauthenticatedException', () async {
+    test('should return UnauthorizedException', () async {
       when(mockFirebaseAuth.currentUser()).thenAnswer((_) async => null);
 
       expect(
         () => dataSource.getCurrentUserId(),
-        throwsA(isA<UnauthenticatedException>()),
+        throwsA(isA<UnauthorizedException>()),
       );
       verify(mockFirebaseAuth.currentUser());
       verifyNoMoreInteractions(mockFirebaseAuth);

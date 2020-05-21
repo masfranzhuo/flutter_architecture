@@ -5,7 +5,7 @@ import 'package:flutter_architecture/core/error/failures/form_failure.dart';
 import 'package:flutter_architecture/features/account/domain/entities/account.dart';
 import 'package:flutter_architecture/features/account/domain/entities/customer.dart';
 import 'package:flutter_architecture/features/account/domain/use_cases/register_with_password.dart';
-import 'package:flutter_architecture/features/account/presentation/bloc/register_bloc/register_bloc.dart';
+import 'package:flutter_architecture/features/account/presentation/blocs/register_bloc/register_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/input_validators/validate_register.dart'
     as vr;
 import 'package:flutter_test/flutter_test.dart';

@@ -3,7 +3,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_architecture/core/platform/http_client.dart';
 import 'package:flutter_architecture/core/presentation/input_validators/validate_email.dart';
 import 'package:flutter_architecture/core/presentation/input_validators/validate_password.dart';
-import 'package:flutter_architecture/core/util/bloc_delegate.dart';
 import 'package:flutter_architecture/features/account/data/data_sources/account_data_source.dart';
 import 'package:flutter_architecture/features/account/data/data_sources/firebase_auth_data_source.dart';
 import 'package:flutter_architecture/features/account/data/data_sources/firebase_messaging_data_source.dart';
@@ -14,15 +13,14 @@ import 'package:flutter_architecture/features/account/domain/use_cases/login_wit
 import 'package:flutter_architecture/features/account/domain/use_cases/logout.dart';
 import 'package:flutter_architecture/features/account/domain/use_cases/register_with_password.dart';
 import 'package:flutter_architecture/features/account/domain/use_cases/reset_password.dart';
-import 'package:flutter_architecture/features/account/presentation/bloc/change_password_bloc/change_password_bloc.dart';
-import 'package:flutter_architecture/features/account/presentation/bloc/login_bloc/login_bloc.dart';
-import 'package:flutter_architecture/features/account/presentation/bloc/register_bloc/register_bloc.dart';
-import 'package:flutter_architecture/features/account/presentation/bloc/forget_password_bloc/forget_password_bloc.dart';
+import 'package:flutter_architecture/features/account/presentation/blocs/change_password_bloc/change_password_bloc.dart';
+import 'package:flutter_architecture/features/account/presentation/blocs/login_bloc/login_bloc.dart';
+import 'package:flutter_architecture/features/account/presentation/blocs/register_bloc/register_bloc.dart';
+import 'package:flutter_architecture/features/account/presentation/blocs/forget_password_bloc/forget_password_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/input_validators/validate_change_password.dart';
 import 'package:flutter_architecture/features/account/presentation/input_validators/validate_login.dart';
 import 'package:flutter_architecture/features/account/presentation/input_validators/validate_register.dart';
 import 'package:flutter_architecture/features/account/presentation/input_validators/validate_forget_password.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 void init() {
@@ -113,8 +111,4 @@ void init() {
   // Firebase
   GetIt.I.registerLazySingleton(() => FirebaseAuth.instance);
   GetIt.I.registerLazySingleton(() => FirebaseMessaging());
-
-  // External
-  BlocSupervisor.delegate = FlutterBlocDelegate();
-  GetIt.I.registerLazySingleton(() => BlocSupervisor.delegate);
 }

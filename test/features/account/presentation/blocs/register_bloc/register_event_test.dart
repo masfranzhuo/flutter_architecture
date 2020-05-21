@@ -1,4 +1,4 @@
-import 'package:flutter_architecture/features/account/presentation/bloc/register_bloc/register_bloc.dart';
+import 'package:flutter_architecture/features/account/presentation/blocs/register_bloc/register_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

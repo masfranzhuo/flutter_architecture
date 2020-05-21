@@ -4,10 +4,10 @@ import 'package:flutter_architecture/core/error/failures/failure.dart';
 import 'package:flutter_architecture/features/account/domain/entities/account.dart';
 import 'package:flutter_architecture/features/account/domain/entities/customer.dart';
 import 'package:flutter_architecture/features/account/domain/use_cases/logout.dart';
-import 'package:flutter_architecture/features/account/presentation/bloc/account_bloc.dart';
-import 'package:flutter_architecture/features/account/presentation/bloc/login_bloc/login_bloc.dart'
+import 'package:flutter_architecture/features/account/presentation/blocs/account_bloc.dart';
+import 'package:flutter_architecture/features/account/presentation/blocs/login_bloc/login_bloc.dart'
     as lb;
-import 'package:flutter_architecture/features/account/presentation/bloc/register_bloc/register_bloc.dart'
+import 'package:flutter_architecture/features/account/presentation/blocs/register_bloc/register_bloc.dart'
     as rb;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';

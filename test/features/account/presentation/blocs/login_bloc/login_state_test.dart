@@ -1,7 +1,7 @@
 import 'package:flutter_architecture/features/account/domain/entities/account.dart';
 import 'package:flutter_architecture/features/account/domain/entities/customer.dart';
 import 'package:flutter_architecture/features/account/domain/entities/staff.dart';
-import 'package:flutter_architecture/features/account/presentation/bloc/login_bloc/login_bloc.dart';
+import 'package:flutter_architecture/features/account/presentation/blocs/login_bloc/login_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

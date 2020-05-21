@@ -1,4 +1,4 @@
-import 'package:flutter_architecture/features/account/presentation/bloc/change_password_bloc/change_password_bloc.dart';
+import 'package:flutter_architecture/features/account/presentation/blocs/change_password_bloc/change_password_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

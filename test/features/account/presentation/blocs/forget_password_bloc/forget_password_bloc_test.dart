@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_architecture/core/error/failures/firebase_failure.dart';
 import 'package:flutter_architecture/core/error/failures/form_failure.dart';
 import 'package:flutter_architecture/features/account/domain/use_cases/reset_password.dart';
-import 'package:flutter_architecture/features/account/presentation/bloc/forget_password_bloc/forget_password_bloc.dart';
+import 'package:flutter_architecture/features/account/presentation/blocs/forget_password_bloc/forget_password_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/input_validators/validate_forget_password.dart'
     as vfp;
 import 'package:flutter_test/flutter_test.dart';

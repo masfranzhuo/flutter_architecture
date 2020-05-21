@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_architecture/core/error/failures/firebase_failure.dart';
 import 'package:flutter_architecture/core/error/failures/form_failure.dart';
 import 'package:flutter_architecture/features/account/domain/use_cases/change_password.dart';
-import 'package:flutter_architecture/features/account/presentation/bloc/change_password_bloc/change_password_bloc.dart';
+import 'package:flutter_architecture/features/account/presentation/blocs/change_password_bloc/change_password_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/input_validators/validate_change_password.dart'
     as vcp;
 import 'package:flutter_test/flutter_test.dart';

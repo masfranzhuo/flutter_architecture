@@ -5,6 +5,7 @@ import 'package:flutter_architecture/features/account/presentation/blocs/account
 import 'package:flutter_architecture/features/account/presentation/blocs/login_bloc/login_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/blocs/register_bloc/register_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/pages/login_page/login_page.dart';
+import 'package:flutter_architecture/features/storage/presentation/pages/image_picker_page/image_picker_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_architecture/injection_container.u.dart'
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           title: 'Flutter Architecture',
           theme: CustomTheme.dark(),
-          home: LoginPage() ?? CustomPage() ?? LoginPage(),
+          home: ImagePickerPage() ?? CustomPage() ?? LoginPage(),
         ),
       ),
     );

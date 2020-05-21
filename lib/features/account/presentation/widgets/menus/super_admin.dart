@@ -13,7 +13,7 @@ class SuperAdminMenu extends StatelessWidget {
           onTap: () {
             Navigator.of(context).pushReplacement(CustomPageRoute.slide(
               page: StaffHomePage(),
-              pageType: AppPageType.staffHome,
+              pageType: PageType.staffHome,
             ));
           },
         ),

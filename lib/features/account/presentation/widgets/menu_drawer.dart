@@ -56,7 +56,7 @@ class MenuDrawer extends StatelessWidget {
           Navigator.of(context).pushAndRemoveUntil(
             CustomPageRoute.slide(
               page: LoginPage(),
-              pageType: AppPageType.login,
+              pageType: PageType.login,
             ),
             (Route<dynamic> route) => false,
           );

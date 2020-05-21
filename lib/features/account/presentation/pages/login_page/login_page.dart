@@ -19,6 +19,8 @@ part 'login_form.w.dart';
 part 'login_footer.w.dart';
 
 class LoginPage extends StatelessWidget {
+  static const routeName = PageType.login;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -46,12 +48,12 @@ class LoginPage extends StatelessWidget {
             if (state.isStaff) {
               Navigator.of(context).pushReplacement(CustomPageRoute.slide(
                 page: StaffHomePage(),
-                pageType: AppPageType.staffHome,
+                pageType: PageType.staffHome,
               ));
             } else {
               Navigator.of(context).pushReplacement(CustomPageRoute.slide(
                 page: CustomerHomePage(),
-                pageType: AppPageType.customerHome,
+                pageType: PageType.customerHome,
               ));
             }
           });

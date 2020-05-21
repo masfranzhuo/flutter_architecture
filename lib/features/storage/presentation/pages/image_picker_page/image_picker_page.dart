@@ -1,12 +1,15 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_architecture/core/presentation/custom_page_route.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_button.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_safe_area.dart';
 
 part 'image_picker.w.dart';
 
 class ImagePickerPage extends StatelessWidget {
+  static const routeName = PageType.imagePicker;
+
   final bool isPickImageAvailable;
   final bool isTakePhotoAvailable;
 

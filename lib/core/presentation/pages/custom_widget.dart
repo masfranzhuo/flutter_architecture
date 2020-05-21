@@ -253,7 +253,7 @@ class _CustomWidgetState extends State<CustomWidget> {
               onPressed: () {
                 Navigator.of(context).pushReplacement(CustomPageRoute.slide(
                   page: CustomPage(),
-                  pageType: AppPageType.custom,
+                  pageType: PageType.custom,
                 ));
               },
               child: Text('Home Page'),
@@ -265,7 +265,7 @@ class _CustomWidgetState extends State<CustomWidget> {
               onPressed: () {
                 Navigator.of(context).pushReplacement(CustomPageRoute.fade(
                   page: CustomPage(),
-                  pageType: AppPageType.custom,
+                  pageType: PageType.custom,
                 ));
               },
               child: Text('Home Page'),

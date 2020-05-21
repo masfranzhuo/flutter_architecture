@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_architecture/core/presentation/custom_page_route.dart';
 import 'package:flutter_architecture/core/presentation/pages/custom_widget.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_safe_area.dart';
 import 'package:flutter_architecture/features/account/presentation/blocs/account_bloc.dart';
@@ -6,6 +7,8 @@ import 'package:flutter_architecture/features/account/presentation/widgets/menu_
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CustomerHomePage extends StatelessWidget {
+  static const routeName = PageType.customerHome;
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AccountBloc, AccountState>(

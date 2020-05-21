@@ -13,6 +13,8 @@ part 'forget_password_form.w.dart';
 part 'forget_password_footer.w.dart';
 
 class ForgetPasswordPage extends StatelessWidget {
+  static const routeName = PageType.forgetPassword;
+  
   @override
   Widget build(BuildContext context) {
     return BlocProvider<ForgetPasswordBloc>(

@@ -15,6 +15,8 @@ part 'register_form.w.dart';
 part 'register_footer.w.dart';
 
 class RegisterPage extends StatelessWidget {
+  static const routeName = PageType.register;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -41,7 +43,7 @@ class RegisterPage extends StatelessWidget {
           Timer(Duration(milliseconds: 500), () {
             Navigator.of(context).pushReplacement(CustomPageRoute.slide(
               page: CustomerHomePage(),
-              pageType: AppPageType.customerHome,
+              pageType: PageType.customerHome,
             ));
           });
         }

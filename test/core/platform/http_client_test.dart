@@ -10,10 +10,14 @@ class MockDio extends Mock implements Dio {}
 class MockFirebaseAuthDataSource extends Mock
     implements FirebaseAuthDataSource {}
 
+class MockResponse extends Mock implements Response {}
+
 void main() {
   HttpClient httpClient;
   MockDio mockDio;
   MockFirebaseAuthDataSource mockFirebaseAuthDataSource;
+
+  MockResponse mockResponse;
 
   setUp(() {
     mockDio = MockDio();
@@ -22,6 +26,8 @@ void main() {
       dioHttpClient: mockDio,
       firebaseAuthDataSource: mockFirebaseAuthDataSource,
     );
+
+    mockResponse = MockResponse();
   });
 
   group('postFormData', () {
@@ -67,6 +73,27 @@ void main() {
             options: anyNamed('options'),
           ),
         );
+      },
+    );
+
+    test(
+      'should return dio error exception response',
+      () async {
+        when(mockFirebaseAuthDataSource.getCurrentUserIdToken()).thenAnswer(
+          (_) async => idTokenTest,
+        );
+        when(mockDio.post(
+          any,
+          data: anyNamed('data'),
+          options: anyNamed('options'),
+        )).thenThrow(DioError(response: mockResponse));
+
+        final result = await httpClient.postFormData(
+          endPoint: EndPoint.auth,
+          formData: FormData(),
+        );
+
+        expect(result, mockResponse);
       },
     );
 
@@ -132,6 +159,28 @@ void main() {
             options: anyNamed('options'),
           ),
         );
+      },
+    );
+
+    test(
+      'should return dio error exception response',
+      () async {
+        when(mockFirebaseAuthDataSource.getCurrentUserIdToken()).thenAnswer(
+          (_) async => idTokenTest,
+        );
+        when(mockDio.post(
+          any,
+          data: anyNamed('data'),
+          options: anyNamed('options'),
+        )).thenThrow(DioError(response: mockResponse));
+
+        final result = await httpClient.postFirebaseData(
+          endPoint:
+              '${EndPoint.users}/$idTest.json?${EndPoint.auth}=$idTokenTest',
+          formData: {},
+        );
+
+        expect(result, mockResponse);
       },
     );
 
@@ -201,6 +250,28 @@ void main() {
       },
     );
 
+    test(
+      'should return dio error exception response',
+      () async {
+        when(mockFirebaseAuthDataSource.getCurrentUserIdToken()).thenAnswer(
+          (_) async => idTokenTest,
+        );
+        when(mockDio.patch(
+          any,
+          data: anyNamed('data'),
+          options: anyNamed('options'),
+        )).thenThrow(DioError(response: mockResponse));
+
+        final result = await httpClient.patchFirebaseData(
+          endPoint:
+              '${EndPoint.users}/$idTest.json?${EndPoint.auth}=$idTokenTest',
+          formData: {},
+        );
+
+        expect(result, mockResponse);
+      },
+    );
+
     test('should throw InvalidIdTokenException', () async {
       when(mockFirebaseAuthDataSource.getCurrentUserIdToken()).thenAnswer(
         (_) async => null,
@@ -241,9 +312,8 @@ void main() {
         when(mockFirebaseAuthDataSource.getCurrentUserIdToken()).thenAnswer(
           (_) async => idTokenTest,
         );
-        when(mockDio.post(
+        when(mockDio.get(
           any,
-          data: anyNamed('data'),
           options: anyNamed('options'),
         )).thenAnswer(
           (_) async => Response(statusCode: 201),
@@ -261,6 +331,26 @@ void main() {
             options: anyNamed('options'),
           ),
         );
+      },
+    );
+
+    test(
+      'should return dio error exception response',
+      () async {
+        when(mockFirebaseAuthDataSource.getCurrentUserIdToken()).thenAnswer(
+          (_) async => idTokenTest,
+        );
+        when(mockDio.get(
+          any,
+          options: anyNamed('options'),
+        )).thenThrow(DioError(response: mockResponse));
+
+        final result = await httpClient.getFirebaseData(
+          endPoint:
+              '${EndPoint.users}/$idTest.json?${EndPoint.auth}=$idTokenTest',
+        );
+
+        expect(result, mockResponse);
       },
     );
 

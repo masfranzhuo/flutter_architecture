@@ -24,6 +24,18 @@ void main() {
   MockLoginBloc mockLoginBloc;
   MockRegisterBloc mockRegisterBloc;
 
+  final customer = Customer(
+    id: 'fake_id',
+    name: 'John Doe',
+    email: 'john@doe.com',
+    accountStatus: AccountStatus.active,
+    phoneNumber: '1234567890',
+    photoUrl: 'https://fakeimage.com/image.jpg',
+    gender: Gender.male,
+    birthPlace: 'Indonesia',
+    birthDate: DateTime.now(),
+  );
+
   setUp(() {
     mockLogout = MockLogout();
     mockLoginBloc = MockLoginBloc();
@@ -41,13 +53,16 @@ void main() {
     mockRegisterBloc?.close();
   });
 
-  test('initial state should be initial', () {
-    expect(bloc.initialState, isA<AccountInitialState>());
-  });
+  blocTest(
+    'initial state should be initial',
+    build: () async => bloc,
+    skip: 0,
+    expect: [AccountInitialState()],
+  );
 
   group('LogoutEvent', () {
     blocTest(
-      'should emit [AccountLoadingState,AccountLoadedState] account: null when Logout is successful',
+      'should emit [AccountLoadingState, AccountLoadedState] account: null when Logout is successful',
       build: () async {
         when(mockLogout(any)).thenAnswer((_) async => Right(true));
         return bloc;
@@ -60,7 +75,7 @@ void main() {
     );
 
     blocTest(
-      'should emit [AccountLoadingState,AccountErrorState] when Login Successful',
+      'should emit [AccountLoadingState, AccountErrorState] when Login Successful',
       build: () async {
         when(mockLogout(any))
             .thenAnswer((_) async => Left(InvalidIdTokenFailure()));
@@ -75,22 +90,52 @@ void main() {
   });
 
   group('LoginEvent', () {
-    final customer = Customer(
-      id: 'fake_id',
-      name: 'John Doe',
-      email: 'john@doe.com',
-      accountStatus: AccountStatus.active,
-      phoneNumber: '1234567890',
-      photoUrl: 'https://fakeimage.com/image.jpg',
-      gender: Gender.male,
-      birthPlace: 'Indonesia',
-      birthDate: DateTime.now(),
+    blocTest(
+      'should emit [AccountLoadingState, AccountLoadedState] when Login is successful',
+      build: () async {
+        return bloc;
+      },
+      act: (bloc) => bloc.add(LoginEvent(account: customer)),
+      expect: [
+        AccountLoadingState(),
+        AccountLoadedState(account: customer),
+      ],
+    );
+  });
+
+  group('StreamSubscription', () {
+    blocTest(
+      'should emit [AccountLoadingState, AccountLoadedState] LoginLoadedState is successful',
+      build: () async {
+        when(mockLoginBloc.add(any)).thenAnswer(
+          (_) async => lb.LoginLoadedState(account: customer),
+        );
+
+        return AccountBloc(
+          logout: mockLogout,
+          loginBloc: mockLoginBloc,
+          registerBloc: mockRegisterBloc,
+        );
+      },
+      act: (bloc) => bloc.add(LoginEvent(account: customer)),
+      expect: [
+        AccountLoadingState(),
+        AccountLoadedState(account: customer),
+      ],
     );
 
     blocTest(
-      'should emit [AccountLoadingState,AccountLoadedState]account: null when Logout is successful',
+      'should emit [AccountLoadingState, AccountLoadedState] RegisterLoadedState is successful',
       build: () async {
-        return bloc;
+        when(mockRegisterBloc.add(any)).thenAnswer(
+          (_) async => rb.RegisterLoadedState(account: customer),
+        );
+
+        return AccountBloc(
+          logout: mockLogout,
+          loginBloc: mockLoginBloc,
+          registerBloc: mockRegisterBloc,
+        );
       },
       act: (bloc) => bloc.add(LoginEvent(account: customer)),
       expect: [

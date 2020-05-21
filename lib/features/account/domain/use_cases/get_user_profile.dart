@@ -20,7 +20,7 @@ class GetUserProfile extends UseCase<Account, Params> {
 class Params extends Equatable {
   final String id;
 
-  Params({this.id});
+  Params({@required this.id});
 
   @override
   List<Object> get props => [id];

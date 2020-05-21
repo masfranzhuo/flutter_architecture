@@ -25,6 +25,7 @@ void main() {
 
   final urlTest = 'https://fakeimage.com/image.jpg';
 
+  // TODO: test error case
   group('uploadFile', () {
     final mockFile = MockFile();
     final fileTypeTest = FileType.image;
@@ -46,8 +47,6 @@ void main() {
       ));
       expect(result, Right(urlTest));
     });
-
-    // TODO: test error case
   });
 
   group('deleteFile', () {

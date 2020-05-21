@@ -35,11 +35,11 @@ class AccountRepositoryImpl extends AccountRepository {
 
       await accountDataSource.setUserProfile(
         deviceToken: deviceToken,
-        id: firebaseUser?.uid,
+        id: firebaseUser.uid,
       );
 
       final account = await accountDataSource.getUserProfile(
-        id: firebaseUser?.uid,
+        id: firebaseUser.uid,
       );
 
       return Right(account);
@@ -74,14 +74,14 @@ class AccountRepositoryImpl extends AccountRepository {
 
       await accountDataSource.setUserProfile(
         deviceToken: deviceToken,
-        id: firebaseUser?.uid,
+        id: firebaseUser.uid,
         name: name,
         email: email,
         photoUrl: photoUrl,
       );
 
       final account = await accountDataSource.getUserProfile(
-        id: firebaseUser?.uid,
+        id: firebaseUser.uid,
       );
 
       return Right(account);

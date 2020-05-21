@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_architecture/core/error/exceptions/app_exception.dart';
 import 'package:flutter_architecture/core/error/exceptions/http_exception.dart';
 import 'package:flutter_architecture/core/error/failures/failure.dart';
@@ -20,6 +21,8 @@ class MockFirebaseAuthDataSource extends Mock
 class MockFirebaseMessagingDataSource extends Mock
     implements FirebaseMessagingDataSource {}
 
+class MockFirebaseUser extends Mock implements FirebaseUser {}
+
 // ignore: must_be_immutable
 class MockAppException extends Mock implements AppException {}
 
@@ -38,6 +41,7 @@ void main() {
   MockFirebaseAuthDataSource mockFirebaseAuthDataSource;
   MockFirebaseMessagingDataSource mockFirebaseMessagingDataSource;
 
+  MockFirebaseUser mockFirebaseUser;
   MockAppException mockAppException;
   MockFailure mockFailure;
   MockStaff mockStaff;
@@ -53,6 +57,7 @@ void main() {
       firebaseMessagingDataSource: mockFirebaseMessagingDataSource,
     );
 
+    mockFirebaseUser = MockFirebaseUser();
     mockAppException = MockAppException();
     mockFailure = MockFailure();
     mockStaff = MockStaff();
@@ -65,6 +70,10 @@ void main() {
 
   group('loginWithPassword', () {
     test('should login as a staff', () async {
+      when(mockFirebaseAuthDataSource.signInWithPassword(
+        email: anyNamed('email'),
+        password: anyNamed('password'),
+      )).thenAnswer((_) async => mockFirebaseUser);
       when(mockAccountDataSource.getUserProfile(
         id: anyNamed('id'),
       )).thenAnswer((_) async => mockStaff);
@@ -76,8 +85,8 @@ void main() {
 
       verifyInOrder([
         mockFirebaseAuthDataSource.signInWithPassword(
-          email: emailTest,
-          password: passwordTest,
+          email: anyNamed('email'),
+          password: anyNamed('password'),
         ),
         mockFirebaseMessagingDataSource.getDeviceToken(),
         mockAccountDataSource.setUserProfile(
@@ -90,6 +99,10 @@ void main() {
     });
 
     test('should login as a customer', () async {
+      when(mockFirebaseAuthDataSource.signInWithPassword(
+        email: anyNamed('email'),
+        password: anyNamed('password'),
+      )).thenAnswer((_) async => mockFirebaseUser);
       when(mockAccountDataSource.getUserProfile(
         id: anyNamed('id'),
       )).thenAnswer((_) async => mockCustomer);
@@ -101,8 +114,8 @@ void main() {
 
       verifyInOrder([
         mockFirebaseAuthDataSource.signInWithPassword(
-          email: emailTest,
-          password: passwordTest,
+          email: anyNamed('email'),
+          password: anyNamed('password'),
         ),
         mockFirebaseMessagingDataSource.getDeviceToken(),
         mockAccountDataSource.setUserProfile(
@@ -148,6 +161,10 @@ void main() {
     );
 
     test('should return UnexpectedFailure', () async {
+      when(mockFirebaseAuthDataSource.signInWithPassword(
+        email: anyNamed('email'),
+        password: anyNamed('password'),
+      )).thenAnswer((_) async => mockFirebaseUser);
       when(mockAccountDataSource.setUserProfile(
         id: anyNamed('id'),
         deviceToken: anyNamed('deviceToken'),
@@ -164,6 +181,10 @@ void main() {
     test(
       'should call toFailure if exception is AppException',
       () async {
+        when(mockFirebaseAuthDataSource.signInWithPassword(
+          email: anyNamed('email'),
+          password: anyNamed('password'),
+        )).thenAnswer((_) async => mockFirebaseUser);
         when(mockAppException.toFailure()).thenReturn(mockFailure);
         when(mockAccountDataSource.setUserProfile(
           id: anyNamed('id'),
@@ -183,8 +204,13 @@ void main() {
 
   group('registerWithPassword', () {
     final nameTest = 'John Doe';
+    final photoUrlTest = 'https://fakeimage.com/image.jpg';
 
     test('should return a staff', () async {
+      when(mockFirebaseAuthDataSource.signUpWithPassword(
+        email: anyNamed('email'),
+        password: anyNamed('password'),
+      )).thenAnswer((_) async => mockFirebaseUser);
       when(mockAccountDataSource.getUserProfile(
         id: anyNamed('id'),
       )).thenAnswer((_) async => mockStaff);
@@ -197,8 +223,8 @@ void main() {
 
       verifyInOrder([
         mockFirebaseAuthDataSource.signUpWithPassword(
-          email: emailTest,
-          password: passwordTest,
+          email: anyNamed('email'),
+          password: anyNamed('password'),
         ),
         mockFirebaseAuthDataSource.updateProfile(
           updateInfo: anyNamed('updateInfo'),
@@ -216,6 +242,10 @@ void main() {
     });
 
     test('should register as a customer', () async {
+      when(mockFirebaseAuthDataSource.signUpWithPassword(
+        email: anyNamed('email'),
+        password: anyNamed('password'),
+      )).thenAnswer((_) async => mockFirebaseUser);
       when(mockAccountDataSource.getUserProfile(
         id: anyNamed('id'),
       )).thenAnswer((_) async => mockCustomer);
@@ -224,12 +254,13 @@ void main() {
         name: nameTest,
         email: emailTest,
         password: passwordTest,
+        photoUrl: photoUrlTest,
       );
 
       verifyInOrder([
         mockFirebaseAuthDataSource.signUpWithPassword(
-          email: emailTest,
-          password: passwordTest,
+          email: anyNamed('email'),
+          password: anyNamed('password'),
         ),
         mockFirebaseAuthDataSource.updateProfile(
           updateInfo: anyNamed('updateInfo'),
@@ -240,6 +271,7 @@ void main() {
           deviceToken: anyNamed('deviceToken'),
           name: anyNamed('name'),
           email: anyNamed('email'),
+          photoUrl: anyNamed('photoUrl'),
         ),
         mockAccountDataSource.getUserProfile(id: anyNamed('id')),
       ]);
@@ -282,6 +314,10 @@ void main() {
     );
 
     test('should return UnexpectedFailure', () async {
+      when(mockFirebaseAuthDataSource.signUpWithPassword(
+        email: anyNamed('email'),
+        password: anyNamed('password'),
+      )).thenAnswer((_) async => mockFirebaseUser);
       when(mockAccountDataSource.setUserProfile(
         id: anyNamed('id'),
         deviceToken: anyNamed('deviceToken'),
@@ -301,6 +337,10 @@ void main() {
     test(
       'should call toFailure if exception is AppException',
       () async {
+        when(mockFirebaseAuthDataSource.signUpWithPassword(
+          email: anyNamed('email'),
+          password: anyNamed('password'),
+        )).thenAnswer((_) async => mockFirebaseUser);
         when(mockAppException.toFailure()).thenReturn(mockFailure);
         when(mockAccountDataSource.setUserProfile(
           id: anyNamed('id'),

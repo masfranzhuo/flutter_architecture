@@ -19,7 +19,6 @@ void main() {
   });
 
   test('should return staff', () async {
-    final idTest = 'idTest';
     final staffTest = Staff(
       id: 'fake_id',
       name: 'John Doe',
@@ -28,9 +27,9 @@ void main() {
       role: StaffRole.admin,
     );
 
-    when(mockAccountRepository.getUserProfile(id: idTest))
+    when(mockAccountRepository.getUserProfile(id: anyNamed('id')))
         .thenAnswer((_) async => Right(staffTest));
-    final profile = await getUserProfile(Params(id: idTest));
+    final profile = await getUserProfile(Params(id: staffTest.id));
     expect(profile, Right(staffTest));
   });
 
@@ -42,9 +41,9 @@ void main() {
       accountStatus: AccountStatus.active,
     );
 
-    when(mockAccountRepository.getUserProfile(id: null))
+    when(mockAccountRepository.getUserProfile(id: anyNamed('id')))
         .thenAnswer((_) async => Right(customerTest));
-    final profile = await getUserProfile(Params());
+    final profile = await getUserProfile(Params(id: customerTest.id));
     expect(profile, Right(customerTest));
   });
 }

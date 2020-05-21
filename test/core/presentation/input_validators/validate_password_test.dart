@@ -10,19 +10,28 @@ void main() {
     validatePassword = ValidatePassword();
   });
 
-  test('should return PasswordLessThanCharactersFailure', () {
-    final passwordTest = '12345';
+  group('ValidatePassword', () {
+    test('should return PasswordLessThanCharactersFailure', () {
+      final passwordTest = '12345';
 
-    final result = validatePassword(Params(password: passwordTest));
+      final result = validatePassword(Params(password: passwordTest));
 
-    expect(result, Left(PasswordLessThanCharactersFailure()));
+      expect(result, Left(PasswordLessThanCharactersFailure()));
+    });
+
+    test('should return true', () {
+      final passwordTest = '123456';
+
+      final result = validatePassword(Params(password: passwordTest));
+
+      expect(result, Right(true));
+    });
   });
 
-  test('should return true', () {
-    final passwordTest = '123456';
-
-    final result = validatePassword(Params(password: passwordTest));
-
-    expect(result, Right(true));
+  group('Params Equatable', () {
+    test('props are [password]', () {
+      final passwordTest = '123456';
+      expect(Params(password: passwordTest).props, [passwordTest]);
+    });
   });
 }

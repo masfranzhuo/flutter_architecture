@@ -5,9 +5,6 @@ abstract class LoginState extends Equatable {
 
   @override
   List<Object> get props => [];
-
-  @override
-  bool get stringify => true;
 }
 
 class LoginInitialState extends LoginState {}

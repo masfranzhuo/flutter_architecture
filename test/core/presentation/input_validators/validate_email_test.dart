@@ -10,35 +10,44 @@ void main() {
     validateEmail = ValidateEmail();
   });
 
-  test('should return BadEmailFormatFailure', () {
-    final emailTest = 'email';
+  group('ValidateEmail call', () {
+    test('should return BadEmailFormatFailure', () {
+      final emailTest = 'email';
 
-    final result = validateEmail(Params(email: emailTest));
+      final result = validateEmail(Params(email: emailTest));
 
-    expect(result, Left(BadEmailFormatFailure()));
+      expect(result, Left(BadEmailFormatFailure()));
+    });
+
+    test('should return BadEmailFormatFailure', () {
+      final emailTest = 'email.com';
+
+      final result = validateEmail(Params(email: emailTest));
+
+      expect(result, Left(BadEmailFormatFailure()));
+    });
+
+    test('should return BadEmailFormatFailure', () {
+      final emailTest = 'email@email';
+
+      final result = validateEmail(Params(email: emailTest));
+
+      expect(result, Left(BadEmailFormatFailure()));
+    });
+
+    test('should return true', () {
+      final emailTest = 'email@email.com';
+
+      final result = validateEmail(Params(email: emailTest));
+
+      expect(result, Right(true));
+    });
   });
 
-  test('should return BadEmailFormatFailure', () {
-    final emailTest = 'email.com';
-
-    final result = validateEmail(Params(email: emailTest));
-
-    expect(result, Left(BadEmailFormatFailure()));
-  });
-
-  test('should return BadEmailFormatFailure', () {
-    final emailTest = 'email@email';
-
-    final result = validateEmail(Params(email: emailTest));
-
-    expect(result, Left(BadEmailFormatFailure()));
-  });
-
-  test('should return true', () {
-    final emailTest = 'email@email.com';
-
-    final result = validateEmail(Params(email: emailTest));
-
-    expect(result, Right(true));
+  group('Params Equatable', () {
+    test('props are [email]', () {
+      final emailTest = 'email@email.com';
+      expect(Params(email: emailTest).props, [emailTest]);
+    });
   });
 }

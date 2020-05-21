@@ -31,7 +31,4 @@ abstract class Account extends Equatable {
     this.birthPlace,
     this.birthDate,
   });
-
-  @override
-  bool get stringify => true;
 }

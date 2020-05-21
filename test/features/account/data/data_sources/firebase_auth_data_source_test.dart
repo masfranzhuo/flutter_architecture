@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_architecture/core/error/exceptions/firebase_exception.dart';
 import 'package:flutter_architecture/core/error/exceptions/http_exception.dart';
 import 'package:flutter_architecture/features/account/data/data_sources/firebase_auth_data_source.dart';
@@ -57,7 +58,7 @@ void main() {
     });
 
     test('should throw InvalidEmailException', () async {
-      setUpSignInThrowException(InvalidEmailException());
+      setUpSignInThrowException(PlatformException(code: 'ERROR_INVALID_EMAIL'));
 
       expect(
         () => dataSource.signInWithPassword(
@@ -71,7 +72,8 @@ void main() {
     });
 
     test('should throw WrongPasswordException', () async {
-      setUpSignInThrowException(WrongPasswordException());
+      setUpSignInThrowException(
+          PlatformException(code: 'ERROR_WRONG_PASSWORD'));
 
       expect(
         () => dataSource.signInWithPassword(
@@ -85,7 +87,8 @@ void main() {
     });
 
     test('should throw UserNotFoundException', () async {
-      setUpSignInThrowException(UserNotFoundException());
+      setUpSignInThrowException(
+          PlatformException(code: 'ERROR_USER_NOT_FOUND'));
 
       expect(
         () => dataSource.signInWithPassword(
@@ -99,7 +102,7 @@ void main() {
     });
 
     test('should throw UserDisabledException', () async {
-      setUpSignInThrowException(UserDisabledException());
+      setUpSignInThrowException(PlatformException(code: 'ERROR_USER_DISABLED'));
 
       expect(
         () => dataSource.signInWithPassword(
@@ -113,7 +116,8 @@ void main() {
     });
 
     test('should throw TooManyRequestsException', () async {
-      setUpSignInThrowException(TooManyRequestsException());
+      setUpSignInThrowException(
+          PlatformException(code: 'ERROR_TOO_MANY_REQUESTS'));
 
       expect(
         () => dataSource.signInWithPassword(
@@ -127,7 +131,8 @@ void main() {
     });
 
     test('should throw OperationNotAllowedException', () async {
-      setUpSignInThrowException(OperationNotAllowedException());
+      setUpSignInThrowException(
+          PlatformException(code: 'ERROR_OPERATION_NOT_ALLOWED'));
 
       expect(
         () => dataSource.signInWithPassword(
@@ -141,7 +146,7 @@ void main() {
     });
 
     test('should throw UndefinedFirebaseAuthException', () async {
-      setUpSignInThrowException(UndefinedFirebaseAuthException());
+      setUpSignInThrowException(PlatformException(code: ''));
 
       expect(
         () => dataSource.signInWithPassword(
@@ -179,7 +184,7 @@ void main() {
     });
 
     test('should throw InvalidEmailException', () async {
-      setUpSignUpThrowException(InvalidEmailException());
+      setUpSignUpThrowException(PlatformException(code: 'ERROR_INVALID_EMAIL'));
 
       expect(
         () => dataSource.signUpWithPassword(
@@ -193,7 +198,7 @@ void main() {
     });
 
     test('should throw WeakPasswordException', () async {
-      setUpSignUpThrowException(WeakPasswordException());
+      setUpSignUpThrowException(PlatformException(code: 'ERROR_WEAK_PASSWORD'));
 
       expect(
         () => dataSource.signUpWithPassword(
@@ -207,7 +212,8 @@ void main() {
     });
 
     test('should throw EmailAlreadyInUseException', () async {
-      setUpSignUpThrowException(EmailAlreadyInUseException());
+      setUpSignUpThrowException(
+          PlatformException(code: 'ERROR_EMAIL_ALREADY_IN_USE'));
 
       expect(
         () => dataSource.signUpWithPassword(
@@ -221,7 +227,7 @@ void main() {
     });
 
     test('should throw UndefinedFirebaseAuthException', () async {
-      setUpSignUpThrowException(UndefinedFirebaseAuthException());
+      setUpSignUpThrowException(PlatformException(code: ''));
 
       expect(
         () => dataSource.signUpWithPassword(
@@ -255,7 +261,9 @@ void main() {
     });
 
     test('should throw UserDisabledException', () async {
-      when(mockFirebaseAuth.currentUser()).thenThrow(UserDisabledException());
+      when(mockFirebaseAuth.currentUser()).thenThrow(
+        PlatformException(code: 'ERROR_USER_DISABLED'),
+      );
 
       expect(
         () => dataSource.updateProfile(updateInfo: updateInfo),
@@ -265,7 +273,9 @@ void main() {
     });
 
     test('should throw UserNotFoundException', () async {
-      when(mockFirebaseAuth.currentUser()).thenThrow(UserNotFoundException());
+      when(mockFirebaseAuth.currentUser()).thenThrow(
+        PlatformException(code: 'ERROR_USER_NOT_FOUND'),
+      );
 
       expect(
         () => dataSource.updateProfile(updateInfo: updateInfo),
@@ -275,8 +285,9 @@ void main() {
     });
 
     test('should throw UndefinedFirebaseAuthException', () async {
-      when(mockFirebaseAuth.currentUser())
-          .thenThrow(UndefinedFirebaseAuthException());
+      when(mockFirebaseAuth.currentUser()).thenThrow(
+        PlatformException(code: ''),
+      );
 
       expect(
         () => dataSource.updateProfile(updateInfo: updateInfo),
@@ -360,7 +371,9 @@ void main() {
     });
 
     test('should throw UserDisabledException', () async {
-      when(mockFirebaseAuth.currentUser()).thenThrow(UserDisabledException());
+      when(mockFirebaseAuth.currentUser()).thenThrow(
+        PlatformException(code: 'ERROR_USER_DISABLED'),
+      );
 
       expect(
         () => dataSource.changePassword(password: passwordTest),
@@ -370,7 +383,9 @@ void main() {
     });
 
     test('should throw WeakPasswordException', () async {
-      when(mockFirebaseAuth.currentUser()).thenThrow(WeakPasswordException());
+      when(mockFirebaseAuth.currentUser()).thenThrow(
+        PlatformException(code: 'ERROR_WEAK_PASSWORD'),
+      );
 
       expect(
         () => dataSource.changePassword(password: passwordTest),
@@ -380,8 +395,9 @@ void main() {
     });
 
     test('should throw UndefinedFirebaseAuthException', () async {
-      when(mockFirebaseAuth.currentUser())
-          .thenThrow(UndefinedFirebaseAuthException());
+      when(mockFirebaseAuth.currentUser()).thenThrow(
+        PlatformException(code: ''),
+      );
 
       expect(
         () => dataSource.changePassword(password: passwordTest),
@@ -401,7 +417,7 @@ void main() {
     test('should throw UserNotFoundException', () async {
       when(mockFirebaseAuth.sendPasswordResetEmail(
         email: anyNamed('email'),
-      )).thenThrow(UserNotFoundException());
+      )).thenThrow(PlatformException(code: 'ERROR_USER_NOT_FOUND'));
 
       expect(
         () => dataSource.resetPassword(email: emailTest),
@@ -413,7 +429,7 @@ void main() {
     test('should throw UndefinedFirebaseAuthException', () async {
       when(mockFirebaseAuth.sendPasswordResetEmail(
         email: anyNamed('email'),
-      )).thenThrow(UndefinedFirebaseAuthException());
+      )).thenThrow(PlatformException(code: ''));
 
       expect(
         () => dataSource.resetPassword(email: emailTest),

@@ -33,6 +33,7 @@ void main() {
 
   final urlTest = 'https://fakeimage.com/image.jpg';
 
+  // TODO: test error case
   group('storageUploadTask', () {
     MockStorageUploadTask mockStorageUploadTask = MockStorageUploadTask();
     MockStorageTaskSnapshot mockStorageTaskSnapshot = MockStorageTaskSnapshot();
@@ -64,8 +65,6 @@ void main() {
       ]);
       expect(result, urlTest);
     });
-
-    // TODO: test error case
   });
 
   group('deleteStorageFile', () {

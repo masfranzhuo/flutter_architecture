@@ -32,9 +32,12 @@ void main() {
     bloc?.close();
   });
 
-  test('initial state should be initial', () {
-    expect(bloc.initialState, isA<ChangePasswordInitialState>());
-  });
+  blocTest(
+    'initial state should be initial',
+    build: () async => bloc,
+    skip: 0,
+    expect: [ChangePasswordInitialState()],
+  );
 
   group('AccountChangePasswordEvent', () {
     final passwordTest = 'password';

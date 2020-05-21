@@ -32,9 +32,12 @@ void main() {
     bloc?.close();
   });
 
-  test('initial state should be initial', () {
-    expect(bloc.initialState, isA<ForgetPasswordInitialState>());
-  });
+  blocTest(
+    'initial state should be initial',
+    build: () async => bloc,
+    skip: 0,
+    expect: [ForgetPasswordInitialState()],
+  );
 
   group('ResetPasswordEvent', () {
     final emailTest = 'john@doe.com';

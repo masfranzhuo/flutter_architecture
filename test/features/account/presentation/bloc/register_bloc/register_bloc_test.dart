@@ -1,3 +1,4 @@
+import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_architecture/features/account/domain/use_cases/register_with_password.dart';
 import 'package:flutter_architecture/features/account/presentation/bloc/register_bloc/register_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/input_validators/validate_register.dart';
@@ -26,7 +27,10 @@ void main() {
     bloc?.close();
   });
 
-  test('initial state should be initial', () {
-    expect(bloc.initialState, isA<RegisterInitialState>());
-  });
+  blocTest(
+    'initial state should be initial',
+    build: () async => bloc,
+    skip: 0,
+    expect: [RegisterInitialState()],
+  );
 }

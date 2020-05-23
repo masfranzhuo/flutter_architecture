@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_architecture/core/presentation/custom_page_route.dart';
 import 'package:flutter_architecture/core/presentation/pages/custom_page.dart';
@@ -6,10 +8,12 @@ import 'package:flutter_architecture/core/presentation/widgets/custom_date_picke
 import 'package:flutter_architecture/core/presentation/widgets/custom_date_range.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_date_time_picker.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_drop_down_button.dart';
+import 'package:flutter_architecture/core/presentation/widgets/custom_image_picker.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_search_bar.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_snack_bar.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_text_field.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_time_picker.dart';
+import 'package:flutter_architecture/features/storage/presentation/pages/image_picker_page/image_picker_page.dart';
 
 class CustomWidget extends StatefulWidget {
   @override
@@ -20,6 +24,8 @@ class _CustomWidgetState extends State<CustomWidget> {
   DateTime selectedDate, selectedDateTime, selectedStartDate, selectedEndDate;
   TimeOfDay selectedTime;
   int selectedValue;
+  String imageUrl;
+  File file;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +36,47 @@ class _CustomWidgetState extends State<CustomWidget> {
           title: Text('CustomSearchBar'),
           children: <Widget>[
             CustomSearchBar(),
+            SizedBox(height: 8),
+          ],
+        ),
+        ExpansionTile(
+          title: Text('CustomImagePicker'),
+          children: <Widget>[
+            CustomImagePicker(
+              imageUrl:
+                  'https://via.placeholder.com/512x512.png?text=Image picker preview',
+              errorText: 'Error',
+              readOnly: true,
+              onPicked: (value) {},
+            ),
+            SizedBox(height: 8),
+            CustomImagePicker(
+              isCropAvailable: true,
+              onPicked: (value) {
+                setState(() {
+                  file = value;
+                });
+                print('onPicked => file.path: ${file.path}');
+              },
+            ),
+            SizedBox(height: 8),
+            file != null ? Image.file(file) : SizedBox(),
+            SizedBox(height: 8),
+            CustomButton(
+              onPressed: () async {
+                File imageFile = await Navigator.of(context).push(
+                  CustomPageRoute.slide(
+                    page: ImagePickerPage(),
+                    pageType: PageType.imagePicker,
+                  ),
+                );
+                setState(() {
+                  file = imageFile;
+                });
+                print('Page => file.path: ${file.path}');
+              },
+              child: Text('Image Picker Page'),
+            ),
             SizedBox(height: 8),
           ],
         ),
@@ -253,7 +300,7 @@ class _CustomWidgetState extends State<CustomWidget> {
               onPressed: () {
                 Navigator.of(context).pushReplacement(CustomPageRoute.slide(
                   page: CustomPage(),
-                  pageType: AppPageType.custom,
+                  pageType: PageType.custom,
                 ));
               },
               child: Text('Home Page'),
@@ -265,7 +312,7 @@ class _CustomWidgetState extends State<CustomWidget> {
               onPressed: () {
                 Navigator.of(context).pushReplacement(CustomPageRoute.fade(
                   page: CustomPage(),
-                  pageType: AppPageType.custom,
+                  pageType: PageType.custom,
                 ));
               },
               child: Text('Home Page'),

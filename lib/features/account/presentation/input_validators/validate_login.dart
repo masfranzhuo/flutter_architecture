@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_architecture/core/error/failure.dart';
+import 'package:flutter_architecture/core/error/failures/failure.dart';
 import 'package:flutter_architecture/core/presentation/input_validators/validate_email.dart'
     as ve;
 import 'package:flutter_architecture/core/presentation/input_validators/validate_password.dart'

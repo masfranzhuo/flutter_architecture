@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_architecture/core/error/exception.dart';
+import 'package:flutter_architecture/core/error/exceptions/app_exception.dart';
+import 'package:flutter_architecture/core/error/exceptions/http_exception.dart';
 import 'package:flutter_architecture/core/platform/http_client.dart';
 import 'package:flutter_architecture/features/account/domain/entities/account.dart';
 import 'package:flutter_architecture/features/account/domain/entities/customer.dart';

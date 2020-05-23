@@ -5,7 +5,7 @@ import 'package:flutter_architecture/core/presentation/custom_page_route.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_button.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_snack_bar.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_text_field.dart';
-import 'package:flutter_architecture/features/account/presentation/bloc/register_bloc/register_bloc.dart';
+import 'package:flutter_architecture/features/account/presentation/blocs/register_bloc/register_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/pages/customer_home_page/customer_home_page.dart';
 import 'package:flutter_architecture/features/account/presentation/pages/login_page/login_page.dart';
 import 'package:flutter_architecture/features/account/presentation/widgets/account_header.dart';
@@ -15,6 +15,8 @@ part 'register_form.w.dart';
 part 'register_footer.w.dart';
 
 class RegisterPage extends StatelessWidget {
+  static const routeName = PageType.register;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -41,7 +43,7 @@ class RegisterPage extends StatelessWidget {
           Timer(Duration(milliseconds: 500), () {
             Navigator.of(context).pushReplacement(CustomPageRoute.slide(
               page: CustomerHomePage(),
-              pageType: AppPageType.customerHome,
+              pageType: PageType.customerHome,
             ));
           });
         }

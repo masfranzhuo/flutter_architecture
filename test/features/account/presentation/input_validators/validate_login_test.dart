@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter_architecture/core/error/failure.dart';
+import 'package:flutter_architecture/core/error/failures/form_failure.dart';
 import 'package:flutter_architecture/core/presentation/input_validators/validate_email.dart'
     hide Params;
 import 'package:flutter_architecture/core/presentation/input_validators/validate_password.dart'

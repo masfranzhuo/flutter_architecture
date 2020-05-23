@@ -12,14 +12,17 @@ A few resources to get you started if this is your first Flutter project:
 
 ### Flutter packages dependencies
 - [flutter_bloc: ^4.0.0](https://pub.dev/packages/flutter_bloc)
-- [dartz: ^0.8.9](https://pub.dev/packages/dartz) Latest 0.9.1
+- [dartz: ^0.9.1](https://pub.dev/packages/dartz)
 - [dio: ^3.0.9](https://pub.dev/packages/dio)
 - [get_it: ^4.0.2](https://pub.dev/packages/get_it)
 - [firebase_auth: ^0.16.0](https://pub.dev/packages/firebase_auth)
-- [firebase_messaging: ^6.0.13](https://pub.dev/packages/firebase_messaging)
+- [firebase_messaging: ^6.0.13](https://pub.dev/packages/firebase_messaging) Latest 6.0.15
 - [equatable: ^1.1.1](https://pub.dev/packages/equatable)
 - [meta: ^1.1.8](https://pub.dev/packages/meta)
-- [cupertino_icons: ^0.1.2](https://pub.dev/packages/cupertino_icons) Latest 0.1.3
+- [cupertino_icons: ^0.1.3](https://pub.dev/packages/cupertino_icons)
+- [firebase_storage: ^3.1.5](https://pub.dev/packages/firebase_storage)
+- [image_picker ^0.6.6+4](https://pub.dev/packages/image_picker)
+- [image_cropper: ^1.2.2](https://pub.dev/packages/image_cropper)
 
 ### Flutter packages dev dependencies
 - [mockito: ^4.1.1](https://pub.dev/packages/mockito)

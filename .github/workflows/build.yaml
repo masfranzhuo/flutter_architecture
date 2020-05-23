@@ -22,8 +22,8 @@ jobs:
       # https://github.com/marketplace/actions/flutter-action
       - uses: subosito/flutter-action@v1.1.1
         with:
-          flutter-version: '1.17'
-          channel: 'stable'
+          flutter-version: '1.15.3'
+          channel: 'master'
       # build Android version
       - name: Run release app
         env:

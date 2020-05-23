@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_architecture/core/error/exception.dart';
+import 'package:flutter_architecture/core/error/exceptions/firebase_exception.dart';
+import 'package:flutter_architecture/core/error/exceptions/http_exception.dart';
 import 'package:meta/meta.dart';
 
 abstract class FirebaseAuthDataSource {
@@ -61,19 +62,19 @@ class FirebaseAuthDataSourceImpl extends FirebaseAuthDataSource {
     } on PlatformException catch (e) {
       switch (e.code) {
         case 'ERROR_INVALID_EMAIL':
-          throw InvalidEmailException();
+          throw InvalidEmailException(code: e.code);
         case 'ERROR_WRONG_PASSWORD':
-          throw WrongPasswordException();
+          throw WrongPasswordException(code: e.code);
         case 'ERROR_USER_NOT_FOUND':
-          throw UserNotFoundException();
+          throw UserNotFoundException(code: e.code);
         case 'ERROR_USER_DISABLED':
-          throw UserDisabledException();
+          throw UserDisabledException(code: e.code);
         case 'ERROR_TOO_MANY_REQUESTS':
-          throw TooManyRequestsException();
+          throw TooManyRequestsException(code: e.code);
         case 'ERROR_OPERATION_NOT_ALLOWED':
-          throw OperationNotAllowedException();
+          throw OperationNotAllowedException(code: e.code);
         default:
-          throw UndefinedFirebaseAuthException();
+          throw UndefinedFirebaseAuthException(code: e.code);
       }
     }
   }
@@ -90,13 +91,13 @@ class FirebaseAuthDataSourceImpl extends FirebaseAuthDataSource {
     } on PlatformException catch (e) {
       switch (e.code) {
         case 'ERROR_INVALID_EMAIL':
-          throw InvalidEmailException();
+          throw InvalidEmailException(code: e.code);
         case 'ERROR_WEAK_PASSWORD':
-          throw WeakPasswordException();
+          throw WeakPasswordException(code: e.code);
         case 'ERROR_EMAIL_ALREADY_IN_USE':
-          throw EmailAlreadyInUseException();
+          throw EmailAlreadyInUseException(code: e.code);
         default:
-          throw UndefinedFirebaseAuthException();
+          throw UndefinedFirebaseAuthException(code: e.code);
       }
     }
   }
@@ -109,11 +110,11 @@ class FirebaseAuthDataSourceImpl extends FirebaseAuthDataSource {
     } on PlatformException catch (e) {
       switch (e.code) {
         case 'ERROR_USER_DISABLED':
-          throw UserDisabledException();
+          throw UserDisabledException(code: e.code);
         case 'ERROR_USER_NOT_FOUND':
-          throw UserNotFoundException();
+          throw UserNotFoundException(code: e.code);
         default:
-          throw UndefinedFirebaseAuthException();
+          throw UndefinedFirebaseAuthException(code: e.code);
       }
     }
   }
@@ -122,7 +123,7 @@ class FirebaseAuthDataSourceImpl extends FirebaseAuthDataSource {
   Future<String> getCurrentUserIdToken() async {
     final currentUser = await firebaseAuthInstance.currentUser();
 
-    if (currentUser == null) throw UnauthenticatedException();
+    if (currentUser == null) throw UnauthorizedException();
     return (await currentUser.getIdToken()).token;
   }
 
@@ -130,7 +131,7 @@ class FirebaseAuthDataSourceImpl extends FirebaseAuthDataSource {
   Future<String> getCurrentUserId() async {
     final currentUser = await firebaseAuthInstance.currentUser();
 
-    if (currentUser == null) throw UnauthenticatedException();
+    if (currentUser == null) throw UnauthorizedException();
     return currentUser.uid;
   }
 
@@ -147,11 +148,11 @@ class FirebaseAuthDataSourceImpl extends FirebaseAuthDataSource {
     } on PlatformException catch (e) {
       switch (e.code) {
         case 'ERROR_USER_DISABLED':
-          throw UserDisabledException();
+          throw UserDisabledException(code: e.code);
         case 'ERROR_WEAK_PASSWORD':
-          throw WeakPasswordException();
+          throw WeakPasswordException(code: e.code);
         default:
-          throw UndefinedFirebaseAuthException();
+          throw UndefinedFirebaseAuthException(code: e.code);
       }
     }
   }

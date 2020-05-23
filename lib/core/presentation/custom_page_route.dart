@@ -1,22 +1,23 @@
 import 'package:flutter/widgets.dart';
 
-enum AppPageType {
-  custom,
-  login,
-  register,
-  forgetPassword,
-  customerHome,
-  staffHome,
+class PageType {
+  static const custom = '/custom';
+  static const login = '/login';
+  static const register = '/register';
+  static const forgetPassword = '/forget-password';
+  static const customerHome = '/customer-home';
+  static const staffHome = '/staff-home';
+  static const imagePicker = '/image-picker';
 }
 
-enum AppPageFormType { create, read, update }
+enum PageFormType { create, read, update }
 
 class CustomPageRoute<T> extends PageRouteBuilder<T> {
   CustomPageRoute.slide({
     Offset begin = const Offset(1, 0),
     Offset end = Offset.zero,
     @required Widget page,
-    @required AppPageType pageType,
+    @required String pageType,
   }) : super(
           transitionDuration: Duration(milliseconds: 400),
           opaque: true,
@@ -32,12 +33,12 @@ class CustomPageRoute<T> extends PageRouteBuilder<T> {
               child: child,
             );
           },
-          settings: RouteSettings(name: pageType.toString()),
+          settings: RouteSettings(name: pageType),
         );
 
   CustomPageRoute.fade({
     @required Widget page,
-    @required AppPageType pageType,
+    @required String pageType,
   }) : super(
           transitionDuration: Duration(milliseconds: 400),
           opaque: true,
@@ -46,6 +47,6 @@ class CustomPageRoute<T> extends PageRouteBuilder<T> {
               Animation<double> animation, __, Widget child) {
             return new FadeTransition(opacity: animation, child: child);
           },
-          settings: RouteSettings(name: pageType.toString()),
+          settings: RouteSettings(name: pageType),
         );
 }

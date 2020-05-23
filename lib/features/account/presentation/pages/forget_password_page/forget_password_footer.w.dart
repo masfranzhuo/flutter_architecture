@@ -12,7 +12,7 @@ class _$ForgetPasswordFooter extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pushReplacement(CustomPageRoute.slide(
               page: LoginPage(),
-              pageType: AppPageType.login,
+              pageType: PageType.login,
             ));
           },
         ),

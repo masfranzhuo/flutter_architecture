@@ -13,7 +13,7 @@ class CustomerMenu extends StatelessWidget {
           onTap: () {
             Navigator.of(context).pushReplacement(CustomPageRoute.slide(
               page: CustomerHomePage(),
-              pageType: AppPageType.customerHome,
+              pageType: PageType.customerHome,
             ));
           },
         ),

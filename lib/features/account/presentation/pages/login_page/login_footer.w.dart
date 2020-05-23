@@ -13,7 +13,7 @@ class _$LoginFooter extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).pushReplacement(CustomPageRoute.slide(
                 page: RegisterPage(),
-                pageType: AppPageType.register,
+                pageType: PageType.register,
               ));
             },
           ),
@@ -22,7 +22,7 @@ class _$LoginFooter extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).pushReplacement(CustomPageRoute.slide(
                 page: ForgetPasswordPage(),
-                pageType: AppPageType.forgetPassword,
+                pageType: PageType.forgetPassword,
               ));
             },
           ),

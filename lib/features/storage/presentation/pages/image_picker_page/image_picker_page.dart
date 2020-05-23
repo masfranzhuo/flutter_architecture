@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_architecture/core/presentation/custom_page_route.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_button.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_safe_area.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 
 part 'image_picker.w.dart';
 
@@ -12,11 +14,13 @@ class ImagePickerPage extends StatelessWidget {
 
   final bool isPickImageAvailable;
   final bool isTakePhotoAvailable;
+  final bool isCropAvailable;
 
   const ImagePickerPage({
     Key key,
     this.isPickImageAvailable = true,
     this.isTakePhotoAvailable = true,
+    this.isCropAvailable = false,
   }) : super(key: key);
 
   @override
@@ -38,6 +42,7 @@ class ImagePickerPage extends StatelessWidget {
           _$ImagePicker(
             isPickImageAvailable: isPickImageAvailable,
             isTakePhotoAvailable: isTakePhotoAvailable,
+            isCropAvailable: isCropAvailable,
           ),
         ],
       ),

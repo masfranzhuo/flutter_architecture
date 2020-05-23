@@ -11,14 +11,16 @@ dependencies:
     sdk: flutter
   equatable: ^1.1.1
   meta: ^1.1.8
-  dartz: ^0.8.9
+  dartz: ^0.9.1
   firebase_auth: ^0.16.0
   firebase_messaging: ^6.0.13
   dio: ^3.0.9
   flutter_bloc: ^4.0.0
   get_it: ^4.0.2
-  cupertino_icons: ^0.1.2
+  cupertino_icons: ^0.1.3
   firebase_storage: ^3.1.5
+  image_picker: ^0.6.6+4
+  image_cropper: ^1.2.2
 
 dev_dependencies:
   flutter_test:

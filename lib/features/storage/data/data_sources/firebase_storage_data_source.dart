@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:meta/meta.dart';
+import 'package:path/path.dart';
 
 abstract class FirebaseStorageDataSource {
   Future<String> storageUploadTask({
@@ -24,8 +25,10 @@ class FirebaseStorageDataSourceImpl extends FirebaseStorageDataSource {
     @required File file,
     @required String fileType,
   }) async {
-    StorageReference storageReference = firebaseStorageInstance.ref();
-    storageReference.child('$fileType${file.path}');
+    StorageReference storageReference = firebaseStorageInstance
+        .ref()
+        .child('$fileType')
+        .child('${basename(file.path)}');
 
     StorageUploadTask uploadTask = storageReference.putFile(file);
     await uploadTask.onComplete;

@@ -63,7 +63,7 @@ void init() {
   GetIt.I.registerLazySingleton(
     () => ValidateRegister(
       validateEmail: GetIt.I(),
-      validatePassword: GetIt.I(),
+      validatePassword: GetIt.I()
     ),
   );
   GetIt.I.registerLazySingleton(

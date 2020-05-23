@@ -14,8 +14,6 @@ class MockStorageUploadTask extends Mock implements StorageUploadTask {}
 
 class MockStorageTaskSnapshot extends Mock implements StorageTaskSnapshot {}
 
-class MockFile extends Mock implements File {}
-
 void main() {
   FirebaseStorageDataSourceImpl dataSource;
   MockFirebaseStorage mockFirebaseStorage;
@@ -39,7 +37,7 @@ void main() {
     MockStorageTaskSnapshot mockStorageTaskSnapshot = MockStorageTaskSnapshot();
 
     final fileTypeTest = FileType.image;
-    final mockFile = MockFile();
+    final fileTest = File('/data/$urlTest');
 
     test('should return uploaded file url', () async {
       when(mockFirebaseStorage.ref()).thenAnswer((_) => mockStorageReference);
@@ -52,7 +50,7 @@ void main() {
           .thenAnswer((_) async => urlTest);
 
       final result = await dataSource.storageUploadTask(
-        file: mockFile,
+        file: fileTest,
         fileType: fileTypeTest,
       );
 

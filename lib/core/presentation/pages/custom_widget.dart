@@ -40,7 +40,6 @@ class _CustomWidgetState extends State<CustomWidget> {
           ],
         ),
         ExpansionTile(
-          initiallyExpanded: true,
           title: Text('CustomImagePicker'),
           children: <Widget>[
             CustomImagePicker(

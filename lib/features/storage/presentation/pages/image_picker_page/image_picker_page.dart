@@ -37,6 +37,7 @@ class ImagePickerPage extends StatelessWidget {
             isPickImageAvailable: isPickImageAvailable,
             isTakePhotoAvailable: isTakePhotoAvailable,
             isCropAvailable: isCropAvailable,
+            isToggleButton: true,
           ),
         ],
       ),

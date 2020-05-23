@@ -11,6 +11,7 @@ class CustomImagePicker extends StatefulWidget {
   final bool isPickImageAvailable;
   final bool isTakePhotoAvailable;
   final bool isCropAvailable;
+  final bool isToggleButton;
   final String imageUrl;
   final Function(File) onPicked;
   final bool readOnly;
@@ -21,6 +22,7 @@ class CustomImagePicker extends StatefulWidget {
     this.isPickImageAvailable = true,
     this.isTakePhotoAvailable = true,
     this.isCropAvailable = false,
+    this.isToggleButton = false,
     this.imageUrl,
     this.onPicked,
     this.readOnly = false,
@@ -56,6 +58,38 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
     }
   }
 
+  void _showOptionDialog(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                title: Text('Camera'),
+                leading: Icon(Icons.photo_camera),
+                onTap: () {
+                  _pickImage(ImagePickerSource.camera);
+                  Navigator.pop(context);
+                },
+              ),
+              Divider(),
+              ListTile(
+                title: Text('Gallery'),
+                leading: Icon(Icons.image),
+                onTap: () {
+                  _pickImage(ImagePickerSource.gallery);
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Widget> widgets = [];
@@ -65,7 +99,10 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
     } else {
       widgets.add(_buildImageFile(context));
     }
-    widgets.add(_buildButtons(context));
+
+    if (widget.isToggleButton) {
+      widgets.add(_buildButtons(context));
+    }
 
     return AbsorbPointer(
       absorbing: widget.readOnly,
@@ -77,26 +114,31 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
     );
   }
 
-  Widget _buildImageFile(BuildContext context) {
+  Widget _buildImage({@required Widget child}) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
-      child: WrapErrorText(
-        errorText: widget.errorText,
-        child: _file != null ? Image.file(_file) : Placeholder(),
+      padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+      child: InkWell(
+        onTap: widget.isToggleButton ? null : () => _showOptionDialog(context),
+        child: WrapErrorText(
+          errorText: widget.errorText,
+          child: child,
+        ),
       ),
     );
   }
 
+  Widget _buildImageFile(BuildContext context) {
+    return _buildImage(
+      child: _file != null ? Image.file(_file) : Placeholder(),
+    );
+  }
+
   Widget _buildImageNetwork(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
-      child: WrapErrorText(
-        errorText: widget.errorText,
-        child: FadeInImage(
-          image: NetworkImage(widget.imageUrl),
-          placeholder: NetworkImage(
-            'https://via.placeholder.com/512x512.png?text=Image preview',
-          ),
+    return _buildImage(
+      child: FadeInImage(
+        image: NetworkImage(widget.imageUrl),
+        placeholder: NetworkImage(
+          'https://via.placeholder.com/512x512.png?text=Image preview',
         ),
       ),
     );
@@ -131,6 +173,7 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
     List<bool> toggleButtons = List.generate(widgets.length, (index) => false);
 
     return Container(
+      padding: const EdgeInsets.only(top: 16),
       child: ToggleButtons(
         children: widgets,
         isSelected: toggleButtons,

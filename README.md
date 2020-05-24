@@ -1,3 +1,5 @@
+![Test](https://github.com/masfranzhuo/flutter_architecture/workflows/Test/badge.svg)
+![Build](https://github.com/masfranzhuo/flutter_architecture/workflows/Build/badge.svg)
 [![codecov](https://codecov.io/gh/masfranzhuo/flutter_architecture/branch/master/graph/badge.svg?token=TLY1AWZWHD)](https://codecov.io/gh/masfranzhuo/flutter_architecture)
 
 # Flutter Architecture Boilerplate

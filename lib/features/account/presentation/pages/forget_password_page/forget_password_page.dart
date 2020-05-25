@@ -54,13 +54,14 @@ class ForgetPasswordPage extends StatelessWidget {
           child: Container(
             width: constraints.maxWidth,
             height: constraints.maxHeight,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: ListView(
               children: <Widget>[
-                AccountHeader(
-                  headerText: 'Forget Password Form',
-                  subHeaderText: 'Enter your email to reset the password',
+                Padding(
+                  padding: const EdgeInsets.only(top: 64),
+                  child: AccountHeader(
+                    headerText: 'Forget Password Form',
+                    subHeaderText: 'Enter your email to reset the password',
+                  ),
                 ),
                 _$ForgetPasswordForm(),
                 _$ForgetPasswordFooter(),

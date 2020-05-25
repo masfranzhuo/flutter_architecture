@@ -65,26 +65,26 @@ class LoginPage extends StatelessWidget {
           child: Container(
             width: constraints.maxWidth,
             height: constraints.maxHeight,
-            child: Stack(
+            child: ListView(
               children: <Widget>[
-                Positioned(
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: ApplicationVersion(),
-                  ),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                ListView(
+                  physics: ScrollPhysics(),
+                  shrinkWrap: true,
                   children: <Widget>[
-                    AccountHeader(
-                      headerText: 'Flutter Architecture',
-                      subHeaderText: 'Login here',
+                    Padding(
+                      padding: EdgeInsets.only(
+                        top: 64,
+                      ),
+                      child: AccountHeader(
+                        headerText: 'Flutter Architecture',
+                        subHeaderText: 'Login here',
+                      ),
                     ),
                     _$LoginForm(),
                     _$LoginFooter(),
                   ],
                 ),
+                ApplicationVersion(),
               ],
             ),
           ),

@@ -54,12 +54,13 @@ class RegisterPage extends StatelessWidget {
           child: Container(
             width: constraints.maxWidth,
             height: constraints.maxHeight,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: ListView(
               children: <Widget>[
-                AccountHeader(
-                  headerText: 'Register Form',
+                Padding(
+                  padding: const EdgeInsets.only(top: 32),
+                  child: AccountHeader(
+                    headerText: 'Register Form',
+                  ),
                 ),
                 _$RegisterForm(),
                 _$RegisterFooter(),

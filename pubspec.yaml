@@ -9,6 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   equatable: ^1.1.1
   meta: ^1.1.8
   dartz: ^0.9.1
@@ -21,6 +23,7 @@ dependencies:
   firebase_storage: ^3.1.5
   image_picker: ^0.6.6+4
   image_cropper: ^1.2.2
+  intl: ^0.16.1
 
 dev_dependencies:
   flutter_test:
@@ -29,6 +32,7 @@ dev_dependencies:
   json_serializable: ^3.3.0
   build_runner: ^1.8.1
   bloc_test: ^5.0.0
+  intl_translation: ^0.17.9
 
 # The following section is specific to Flutter.
 flutter:

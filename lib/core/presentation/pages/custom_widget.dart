@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_architecture/core/localization/locale/app_localization.dart';
 import 'package:flutter_architecture/core/presentation/custom_page_route.dart';
 import 'package:flutter_architecture/core/presentation/pages/custom_page.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_button.dart';
@@ -36,6 +37,20 @@ class _CustomWidgetState extends State<CustomWidget> {
           title: Text('CustomSearchBar'),
           children: <Widget>[
             CustomSearchBar(),
+            SizedBox(height: 8),
+          ],
+        ),
+        ExpansionTile(
+          initiallyExpanded: true,
+          title: Text('Localization: en, id'),
+          children: <Widget>[
+            Text(AppLocalization.of(context).appTitle),
+            SizedBox(height: 8),
+            Text(AppLocalization.of(context).widgetCount(0)),
+            SizedBox(height: 8),
+            Text(AppLocalization.of(context).widgetCount(1)),
+            SizedBox(height: 8),
+            Text(AppLocalization.of(context).widgetCount(2)),
             SizedBox(height: 8),
           ],
         ),

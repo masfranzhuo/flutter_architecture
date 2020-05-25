@@ -41,7 +41,6 @@ class _CustomWidgetState extends State<CustomWidget> {
           ],
         ),
         ExpansionTile(
-          initiallyExpanded: true,
           title: Text('Localization: en, id'),
           children: <Widget>[
             Text(AppLocalization.of(context).appTitle),

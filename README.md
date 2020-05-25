@@ -49,6 +49,9 @@ Below is the source of this Flutter achitecture project boilerplate
 ### Build and release an Android app
 - [Build and release an Android app](https://flutter.dev/docs/deployment/android)
 
+### Localization
+- [Internationalizing Flutter apps](https://flutter.dev/docs/development/accessibility-and-localization/internationalization)
+
 ### GitHub Actions
 - [Article 01](https://levelup.gitconnected.com/ci-cd-for-flutter-apps-3a56e3fc6d8e)
 - [Article 02](https://medium.com/better-programming/ci-cd-for-flutter-apps-using-github-actions-b833f8f7aac)

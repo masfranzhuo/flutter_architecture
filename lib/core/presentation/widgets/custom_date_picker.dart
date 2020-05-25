@@ -74,7 +74,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
         hintText: widget.hintText,
         iconData: widget.iconData,
         errorText: widget.errorText,
-        suffixIcon: GestureDetector(
+        suffixIcon: InkWell(
           onTap: () => _selectDate(context),
           child: Icon(Icons.date_range),
         ),

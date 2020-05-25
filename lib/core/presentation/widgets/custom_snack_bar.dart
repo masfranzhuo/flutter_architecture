@@ -26,7 +26,7 @@ class CustomSnackBar {
   static Color _color(BuildContext context, SnackBarMode mode) {
     switch (mode) {
       case SnackBarMode.success:
-        return CustomTheme.SUCCESS_COLOR;
+        return CustomTheme.successColor;
         break;
       case SnackBarMode.error:
         return Theme.of(context).errorColor;

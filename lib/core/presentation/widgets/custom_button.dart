@@ -35,7 +35,16 @@ class CustomButton extends StatelessWidget {
     Widget widget = _buildWidget(context, child, state);
 
     if (state == ButtonState.loading) {
-      widget = _buildWidget(context, LoadingIndicator(), state);
+      widget = _buildWidget(
+        context,
+         Transform.scale(
+           scale: 0.75,
+          child: LoadingIndicator(
+            backgroundColor: Colors.white,
+          ),
+        ),
+        state,
+      );
     }
 
     if (state == ButtonState.done) {

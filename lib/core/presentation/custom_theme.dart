@@ -1,24 +1,28 @@
+
 import 'package:flutter/material.dart';
 
 class CustomTheme {
-  static const PRIMARY_COLOR = Colors.blueGrey;
-  static const ACCENT_COLOR = Colors.yellow;
-  static const ERROR_COLOR = Colors.red;
-  static const DISABLED_COLOR = Colors.grey;
-  static const DARK_BACKGROUND_COLOR = Color(0xFF222222);
-  //? TODO: not used in theme data
-  static const SUCCESS_COLOR = Colors.green;
-  static const WARNING_COLOR = Colors.orange;
+  static Color primaryColor = Colors.blueGrey;
+  static Color accentColor = Colors.yellow;
+  static Color backgroundColor = Color(0xFF222222);
+  static Color fillColor = Color(0X88000000);
+  static Color highlightColor = Color(0XDD000000);
+  static Color disabledColor = Colors.grey;
+  static Color errorColor = Colors.red;
+
+  /// other color not in theme
+  /// could be accessed directly
+  static Color successColor = Colors.green;
 
   static ThemeData dark() {
     return ThemeData(
       brightness: Brightness.dark,
-      dividerColor: DISABLED_COLOR,
-      scaffoldBackgroundColor: DARK_BACKGROUND_COLOR,
+      dividerColor: disabledColor,
+      scaffoldBackgroundColor: backgroundColor,
       inputDecorationTheme: InputDecorationTheme(
-        hintStyle: TextStyle(color: DISABLED_COLOR),
+        hintStyle: TextStyle(color: disabledColor),
         filled: true,
-        fillColor: Color.fromRGBO(0, 0, 0, 0.5),
+        fillColor: fillColor,
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide.none,
           borderRadius: BorderRadius.circular(8),
@@ -28,23 +32,71 @@ class CustomTheme {
           borderRadius: BorderRadius.circular(8),
         ),
         errorBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: ERROR_COLOR),
+          borderSide: BorderSide(color: errorColor),
           borderRadius: BorderRadius.circular(8),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: ERROR_COLOR),
+          borderSide: BorderSide(color: errorColor),
           borderRadius: BorderRadius.circular(8),
         ),
       ),
-      cardColor: DARK_BACKGROUND_COLOR,
+      cardColor: backgroundColor,
       textTheme: TextTheme(),
-      errorColor: ERROR_COLOR,
-      disabledColor: DISABLED_COLOR,
-      highlightColor: Color(0xFF000000).withOpacity(0.75),
-      primaryColor: PRIMARY_COLOR,
-      accentColor: ACCENT_COLOR,
-      backgroundColor: DARK_BACKGROUND_COLOR,
-      canvasColor: PRIMARY_COLOR,
+      errorColor: errorColor,
+      disabledColor: disabledColor,
+      highlightColor: highlightColor,
+      primaryColor: primaryColor,
+      accentColor: accentColor,
+      backgroundColor: backgroundColor,
+      canvasColor: primaryColor,
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: Colors.black,
+      ),
+    );
+  }
+
+  static ThemeData light() {
+    primaryColor = Color(0xFFA6B1E1);
+    accentColor = Color(0xFF424874);
+    backgroundColor = Colors.white;
+    fillColor = Color(0X88DDDDDD);
+    highlightColor = Color(0XDDFFFFFF);
+    errorColor = Colors.orange;
+
+    return ThemeData(
+      brightness: Brightness.light,
+      dividerColor: disabledColor,
+      scaffoldBackgroundColor: backgroundColor,
+      inputDecorationTheme: InputDecorationTheme(
+        hintStyle: TextStyle(color: disabledColor),
+        filled: true,
+        fillColor: fillColor,
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: errorColor),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: errorColor),
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+      cardColor: backgroundColor,
+      textTheme: TextTheme(),
+      errorColor: errorColor,
+      disabledColor: disabledColor,
+      highlightColor: highlightColor,
+      primaryColor: primaryColor,
+      accentColor: accentColor,
+      backgroundColor: backgroundColor,
+      canvasColor: primaryColor,
       snackBarTheme: SnackBarThemeData(
         backgroundColor: Colors.black,
       ),

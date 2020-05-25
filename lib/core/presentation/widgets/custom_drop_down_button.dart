@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_architecture/core/presentation/custom_theme.dart';
 import 'package:flutter_architecture/core/presentation/widgets/wrap_error_text.w.dart';
 
 class CustomDropdownItem<T> {
@@ -34,7 +35,7 @@ class CustomDropDownButton<T> extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(8)),
-        color: Color.fromRGBO(0, 0, 0, 0.5),
+        color: CustomTheme.fillColor,
       ),
       child: AbsorbPointer(
         absorbing: readOnly,

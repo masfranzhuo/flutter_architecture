@@ -2,13 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:flutter_architecture/core/error/exceptions/app_exception.dart';
 import 'package:flutter_architecture/features/account/data/data_sources/firebase_auth_data_source.dart';
 import 'package:meta/meta.dart';
 
 class Url {
   static const main = 'https://flutter-architecture-b8cfd.firebaseio.com';
-  static const storage = 'https://flutter-architecture-b8cfd.firebaseio.com';
 }
 
 class EndPoint {
@@ -17,15 +17,27 @@ class EndPoint {
 }
 
 class HttpClient {
+  static BaseOptions options = BaseOptions(
+    baseUrl: Url.main,
+    // connectTimeout: 5000,
+    // receiveTimeout: 3000,
+  );
+
+  // TODO: Future<Account> getUserProfile({String id}) test cache ane network exception
+
+  static DioCacheManager dioCacheManager = DioCacheManager(
+    CacheConfig(baseUrl: Url.main),
+  );
+
   final Dio dio;
   final FirebaseAuthDataSource firebaseAuthDataSource;
 
   HttpClient({
     @required this.firebaseAuthDataSource,
     Dio dioHttpClient,
-  }) : dio = dioHttpClient == null
-            ? Dio(BaseOptions(baseUrl: Url.main))
-            : dioHttpClient;
+  }) : dio = (dioHttpClient == null ? Dio(options) : dioHttpClient)
+          ..interceptors.add(dioCacheManager.interceptor)
+          ..interceptors.add(LogInterceptor(responseBody: true));
 
   Future<Response> postFormData({
     @required String endPoint,
@@ -41,10 +53,13 @@ class HttpClient {
       final response = await dio.post(
         endPoint,
         data: formData,
-        options: Options(
-          headers: {
-            HttpHeaders.authorizationHeader: 'Bearer $idToken',
-          },
+        options: buildCacheOptions(
+          Duration(days: 7),
+          options: Options(
+            headers: {
+              HttpHeaders.authorizationHeader: 'Bearer $idToken',
+            },
+          ),
         ),
       );
 

@@ -5,5 +5,13 @@
     "description": "Application Title",
     "type": "text",
     "placeholders": {}
+  },
+  "widgetCount": "{howMany,plural, =0{Tidak ada widget}=1{{howMany} widget}other{{howMany} widget}}",
+  "@widgetCount": {
+    "description": "Widget counter",
+    "type": "text",
+    "placeholders": {
+      "howMany": {}
+    }
   }
 }

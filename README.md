@@ -25,12 +25,14 @@ A few resources to get you started if this is your first Flutter project:
 - [firebase_storage: ^3.1.5](https://pub.dev/packages/firebase_storage)
 - [image_picker ^0.6.6+4](https://pub.dev/packages/image_picker)
 - [image_cropper: ^1.2.2](https://pub.dev/packages/image_cropper)
+- [intl: ^0.16.1](https://pub.dev/packages/intl)
 
 ### Flutter packages dev dependencies
 - [mockito: ^4.1.1](https://pub.dev/packages/mockito)
 - [json_serializable: ^3.3.0](https://pub.dev/packages/json_serializable)
 - [build_runner: ^1.8.1](https://pub.dev/packages/build_runner) Latest 1.9.0
 - [bloc_test: ^5.0.0](https://pub.dev/packages/bloc_test) Latest 5.1.0
+- [intl_translation: ^0.17.9](https://pub.dev/packages/intl_translation) Latest 0.17.10
 
 ### Secret Keys
 - CODECOV_TOKEN: Access Token to [https://codecov.io/](https://codecov.io/)

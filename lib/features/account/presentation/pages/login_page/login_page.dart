@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_architecture/core/localization/locale/app_localization.dart';
 import 'package:flutter_architecture/core/presentation/custom_page_route.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_button.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_snack_bar.dart';
@@ -76,7 +77,7 @@ class LoginPage extends StatelessWidget {
                         top: 64,
                       ),
                       child: AccountHeader(
-                        headerText: 'Flutter Architecture',
+                        headerText: AppLocalization.of(context).appTitle,
                         subHeaderText: 'Login here',
                       ),
                     ),

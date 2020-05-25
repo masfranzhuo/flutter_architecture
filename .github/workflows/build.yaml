@@ -47,13 +47,13 @@ jobs:
           tag: "flutter"
           token: ${{ secrets.GH_TOKEN }}
       # build Flutter web version
-      # - run: flutter  config --enable-web
-      # - run: flutter build web
+      - run: flutter  config --enable-web
+      - run: flutter build web
       # Handle the deploy process of your project to GitHub Pages.
       # https://github.com/JamesIves/github-pages-deploy-action
-      # - uses: JamesIves/github-pages-deploy-action@releases/v3
-      #   with:
-      #     GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-      #     BASE_BRANCH: master
-      #     BRANCH: gh-pages
-      #     FOLDER: build/web
+      - uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          BASE_BRANCH: master
+          BRANCH: gh-pages
+          FOLDER: build/web

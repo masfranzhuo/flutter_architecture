@@ -15,4 +15,11 @@ void main() {
       expect(LoginEvent(account: customer).props, [customer]);
     });
   });
+
+  group('GetUserProfileEvent', () {
+    test('props are [id]', () {
+      final idTest = 'fake_id';
+      expect(GetUserProfileEvent(id: idTest).props, [idTest]);
+    });
+  });
 }

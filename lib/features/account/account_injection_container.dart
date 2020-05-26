@@ -9,6 +9,7 @@ import 'package:flutter_architecture/features/account/data/data_sources/firebase
 import 'package:flutter_architecture/features/account/data/repositories/account_repository_impl.dart';
 import 'package:flutter_architecture/features/account/domain/repositories/account_repository.dart';
 import 'package:flutter_architecture/features/account/domain/use_cases/change_password.dart';
+import 'package:flutter_architecture/features/account/domain/use_cases/get_user_profile.dart';
 import 'package:flutter_architecture/features/account/domain/use_cases/login_with_password.dart';
 import 'package:flutter_architecture/features/account/domain/use_cases/logout.dart';
 import 'package:flutter_architecture/features/account/domain/use_cases/register_with_password.dart';
@@ -58,6 +59,7 @@ void init() {
   GetIt.I.registerLazySingleton(() => ResetPassword(repository: GetIt.I()));
   GetIt.I.registerLazySingleton(() => ChangePassword(repository: GetIt.I()));
   GetIt.I.registerLazySingleton(() => Logout(repository: GetIt.I()));
+  GetIt.I.registerLazySingleton(() => GetUserProfile(repository: GetIt.I()));
 
   // Form validators
   GetIt.I.registerLazySingleton(

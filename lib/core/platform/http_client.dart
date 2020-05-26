@@ -19,15 +19,13 @@ class EndPoint {
 class HttpClient {
   static BaseOptions options = BaseOptions(
     baseUrl: Url.main,
-    // connectTimeout: 5000,
-    // receiveTimeout: 3000,
   );
-
-  // TODO: Future<Account> getUserProfile({String id}) test cache ane network exception
 
   static DioCacheManager dioCacheManager = DioCacheManager(
     CacheConfig(baseUrl: Url.main),
   );
+
+  static Duration cacheDuration = Duration(days: 7);
 
   final Dio dio;
   final FirebaseAuthDataSource firebaseAuthDataSource;
@@ -54,7 +52,7 @@ class HttpClient {
         endPoint,
         data: formData,
         options: buildCacheOptions(
-          Duration(days: 7),
+          cacheDuration,
           options: Options(
             headers: {
               HttpHeaders.authorizationHeader: 'Bearer $idToken',
@@ -81,6 +79,7 @@ class HttpClient {
     try {
       final response = await dio.get(
         '$endPoint?${EndPoint.auth}=$idToken',
+        options: buildCacheOptions(cacheDuration),
       );
 
       return response;
@@ -103,10 +102,13 @@ class HttpClient {
       final response = await dio.post(
         '$endPoint?${EndPoint.auth}=$idToken',
         data: json.encode(formData),
-        options: Options(
-          headers: {
-            HttpHeaders.contentTypeHeader: 'application/json',
-          },
+        options: buildCacheOptions(
+          cacheDuration,
+          options: Options(
+            headers: {
+              HttpHeaders.contentTypeHeader: 'application/json',
+            },
+          ),
         ),
       );
 
@@ -130,10 +132,13 @@ class HttpClient {
       final response = await dio.patch(
         '$endPoint?${EndPoint.auth}=$idToken',
         data: json.encode(formData),
-        options: Options(
-          headers: {
-            HttpHeaders.contentTypeHeader: 'application/json',
-          },
+        options: buildCacheOptions(
+          cacheDuration,
+          options: Options(
+            headers: {
+              HttpHeaders.contentTypeHeader: 'application/json',
+            },
+          ),
         ),
       );
 

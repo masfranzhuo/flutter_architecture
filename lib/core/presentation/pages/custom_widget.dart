@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_architecture/core/localization/locale/app_localization.dart';
 import 'package:flutter_architecture/core/presentation/custom_page_route.dart';
 import 'package:flutter_architecture/core/presentation/pages/custom_page.dart';
+import 'package:flutter_architecture/core/presentation/pages/network_and_cache.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_button.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_date_picker.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_date_range.dart';
@@ -40,6 +41,13 @@ class _CustomWidgetState extends State<CustomWidget> {
             SizedBox(height: 8),
           ],
         ),
+        // ExpansionTile(
+        //   title: Text('Cache and Network Exception'),
+        //   children: <Widget>[
+        //     NetworkAndCache(),
+        //     SizedBox(height: 8),
+        //   ],
+        // ),
         ExpansionTile(
           title: Text('Localization: en, id'),
           children: <Widget>[

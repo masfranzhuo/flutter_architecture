@@ -3,6 +3,8 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_architecture/core/error/failures/failure.dart';
 import 'package:flutter_architecture/features/account/domain/entities/account.dart';
 import 'package:flutter_architecture/features/account/domain/entities/customer.dart';
+import 'package:flutter_architecture/features/account/domain/use_cases/get_user_profile.dart'
+    as gup;
 import 'package:flutter_architecture/features/account/domain/use_cases/logout.dart';
 import 'package:flutter_architecture/features/account/presentation/blocs/account_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/blocs/login_bloc/login_bloc.dart'
@@ -18,11 +20,14 @@ class MockLoginBloc extends Mock implements lb.LoginBloc {}
 
 class MockRegisterBloc extends Mock implements rb.RegisterBloc {}
 
+class MockGetUserProfile extends Mock implements gup.GetUserProfile {}
+
 void main() {
   AccountBloc bloc;
   MockLogout mockLogout;
   MockLoginBloc mockLoginBloc;
   MockRegisterBloc mockRegisterBloc;
+  MockGetUserProfile mockGetUserProfile;
 
   final customer = Customer(
     id: 'fake_id',
@@ -40,10 +45,12 @@ void main() {
     mockLogout = MockLogout();
     mockLoginBloc = MockLoginBloc();
     mockRegisterBloc = MockRegisterBloc();
+    mockGetUserProfile = MockGetUserProfile();
     bloc = AccountBloc(
       logout: mockLogout,
       loginBloc: mockLoginBloc,
       registerBloc: mockRegisterBloc,
+      getUserProfile: mockGetUserProfile,
     );
   });
 
@@ -75,13 +82,45 @@ void main() {
     );
 
     blocTest(
-      'should emit [AccountLoadingState, AccountErrorState] when Login Successful',
+      'should emit [AccountLoadingState, AccountErrorState] when Logout failed',
       build: () async {
         when(mockLogout(any))
             .thenAnswer((_) async => Left(InvalidIdTokenFailure()));
         return bloc;
       },
       act: (bloc) => bloc.add(LogoutEvent()),
+      expect: [
+        AccountLoadingState(),
+        AccountErrorState(failure: InvalidIdTokenFailure()),
+      ],
+    );
+  });
+
+  group('GetUserProfileEvent', () {
+    final idTest = 'fake_id';
+
+    blocTest(
+      'should emit [AccountLoadingState, AccountLoadedState] when getUserProfile is successful',
+      build: () async {
+        when(mockGetUserProfile(any)).thenAnswer((_) async => Right(customer));
+        return bloc;
+      },
+      act: (bloc) => bloc.add(GetUserProfileEvent(id: idTest)),
+      expect: [
+        AccountLoadingState(),
+        AccountLoadedState(account: customer),
+      ],
+    );
+
+    blocTest(
+      'should emit [AccountLoadingState, AccountErrorState] when getUserProfile failed',
+      build: () async {
+        when(mockGetUserProfile(any)).thenAnswer(
+          (_) async => Left(InvalidIdTokenFailure()),
+        );
+        return bloc;
+      },
+      act: (bloc) => bloc.add(GetUserProfileEvent(id: idTest)),
       expect: [
         AccountLoadingState(),
         AccountErrorState(failure: InvalidIdTokenFailure()),
@@ -115,6 +154,7 @@ void main() {
           logout: mockLogout,
           loginBloc: mockLoginBloc,
           registerBloc: mockRegisterBloc,
+          getUserProfile: mockGetUserProfile,
         );
       },
       act: (bloc) => bloc.add(LoginEvent(account: customer)),
@@ -135,6 +175,7 @@ void main() {
           logout: mockLogout,
           loginBloc: mockLoginBloc,
           registerBloc: mockRegisterBloc,
+          getUserProfile: mockGetUserProfile,
         );
       },
       act: (bloc) => bloc.add(LoginEvent(account: customer)),

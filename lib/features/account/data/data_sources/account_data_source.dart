@@ -25,7 +25,7 @@ abstract class AccountDataSource {
     @required String deviceToken,
   });
 
-  Future<Account> getUserProfile({String id});
+  Future<Account> getUserProfile({@required String id});
 }
 
 class AccountDataSourceImpl extends AccountDataSource {
@@ -105,8 +105,10 @@ class AccountDataSourceImpl extends AccountDataSource {
   }
 
   @override
-  Future<bool> removeDeviceToken(
-      {@required String id, @required String deviceToken}) async {
+  Future<bool> removeDeviceToken({
+    @required String id,
+    @required String deviceToken,
+  }) async {
     final formData = <String, dynamic>{
       'token': null,
     };
@@ -148,7 +150,7 @@ class AccountDataSourceImpl extends AccountDataSource {
   }
 
   @override
-  Future<Account> getUserProfile({String id}) async {
+  Future<Account> getUserProfile({@required String id}) async {
     final response = await client.getFirebaseData(
       endPoint: '${EndPoint.users}/$id.json',
     );

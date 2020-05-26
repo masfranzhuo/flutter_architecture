@@ -6,6 +6,7 @@ import 'package:flutter_architecture/core/error/failures/failure.dart';
 import 'package:flutter_architecture/core/util/use_case.dart';
 import 'package:flutter_architecture/features/account/domain/entities/account.dart';
 import 'package:flutter_architecture/features/account/domain/entities/staff.dart';
+import 'package:flutter_architecture/features/account/domain/use_cases/get_user_profile.dart';
 import 'package:flutter_architecture/features/account/domain/use_cases/logout.dart';
 import 'package:flutter_architecture/features/account/presentation/blocs/login_bloc/login_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/blocs/register_bloc/register_bloc.dart';
@@ -19,6 +20,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   final Logout logout;
   final LoginBloc loginBloc;
   final RegisterBloc registerBloc;
+  final GetUserProfile getUserProfile;
 
   StreamSubscription loginBlocSubscription;
   StreamSubscription registerBlocSubscription;
@@ -27,6 +29,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     @required this.logout,
     @required this.loginBloc,
     @required this.registerBloc,
+    this.getUserProfile,
   }) {
     loginBlocSubscription = loginBloc.listen((state) {
       if (state is LoginLoadedState) {
@@ -63,6 +66,15 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     } else if (event is LoginEvent) {
       yield AccountLoadingState();
       yield AccountLoadedState(account: event.account);
+    } else if (event is GetUserProfileEvent) {
+      yield AccountLoadingState();
+
+      final getUserProfileResult = await getUserProfile(Params(id: event.id));
+
+      yield getUserProfileResult.fold(
+        (failure) => _$mapFailureToError(failure),
+        (account) => AccountLoadedState(account: account),
+      );
     }
   }
 

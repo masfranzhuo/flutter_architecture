@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_architecture/core/localization/locale/app_localization.dart';
 import 'package:flutter_architecture/core/presentation/custom_page_route.dart';
 import 'package:flutter_architecture/core/presentation/pages/custom_page.dart';
-import 'package:flutter_architecture/core/presentation/pages/network_and_cache.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_button.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_date_picker.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_date_range.dart';

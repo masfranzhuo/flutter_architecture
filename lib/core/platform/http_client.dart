@@ -25,7 +25,7 @@ class HttpClient {
     CacheConfig(baseUrl: Url.main),
   );
 
-  static Duration cacheDuration = Duration(days: 7);
+  static Duration cacheDuration = Duration(hours: 1);
 
   final Dio dio;
   final FirebaseAuthDataSource firebaseAuthDataSource;

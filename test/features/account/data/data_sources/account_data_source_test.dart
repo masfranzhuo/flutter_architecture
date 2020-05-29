@@ -65,7 +65,7 @@ void main() {
       );
     }
 
-    test('should call postFirebaseData of HttpClient when register', () async {
+    test('should call patchFirebaseData of HttpClient when register', () async {
       setUpPatchSuccessfully();
 
       await dataSource.setUserProfile(
@@ -439,6 +439,131 @@ void main() {
 
       expect(
         () async => await dataSource.getUserProfile(id: idTest),
+        throwsA(isA<UnexpectedException>()),
+      );
+    });
+  });
+  group('updateUserProfile', () {
+    setUpPatchSuccessfully() {
+      when(mockHttpClient.patchFirebaseData(
+        endPoint: anyNamed('endPoint'),
+        formData: anyNamed('formData'),
+      )).thenAnswer(
+        (_) async => Response<Map<String, dynamic>>(
+          data: customerFixture,
+          statusCode: 200,
+        ),
+      );
+    }
+
+    setUpResponseStatusCode(int statusCode) {
+      when(mockHttpClient.patchFirebaseData(
+        endPoint: anyNamed('endPoint'),
+        formData: anyNamed('formData'),
+      )).thenAnswer(
+        (_) async => Response<Map<String, dynamic>>(
+          statusCode: statusCode,
+        ),
+      );
+    }
+
+    test('should call patchFirebaseData of HttpClient when register', () async {
+      setUpPatchSuccessfully();
+
+      await dataSource.updateUserProfile(account: customer);
+
+      verify(mockHttpClient.patchFirebaseData(
+        endPoint: anyNamed('endPoint'),
+        formData: anyNamed('formData'),
+      ));
+    });
+
+    test('should call patchFirebaseData of HttpClient when update user profile',
+        () async {
+      setUpPatchSuccessfully();
+
+      await dataSource.updateUserProfile(account: customer);
+
+      verify(mockHttpClient.patchFirebaseData(
+        endPoint: anyNamed('endPoint'),
+        formData: anyNamed('formData'),
+      ));
+    });
+    test('should return Customer', () async {
+      setUpPatchSuccessfully();
+
+      final result = await dataSource.updateUserProfile(account: customer);
+
+      expect(result, customer);
+    });
+    test('should return Staff', () async {
+      when(mockHttpClient.patchFirebaseData(
+        endPoint: anyNamed('endPoint'),
+        formData: anyNamed('formData'),
+      )).thenAnswer(
+        (_) async => Response<Map<String, dynamic>>(
+          data: staffFixture,
+          statusCode: 200,
+        ),
+      );
+
+      final result = await dataSource.updateUserProfile(account: customer);
+
+      expect(result, staff);
+    });
+    test('should throw InvalidIdTokenException', () async {
+      setUpResponseStatusCode(401);
+
+      expect(
+        () async => await dataSource.updateUserProfile(account: customer),
+        throwsA(isA<InvalidIdTokenException>()),
+      );
+    });
+    test('should throw NotFoundException', () async {
+      setUpResponseStatusCode(404);
+
+      expect(
+        () async => await dataSource.updateUserProfile(account: customer),
+        throwsA(isA<NotFoundException>()),
+      );
+    });
+    test('should throw BadRequestException', () async {
+      setUpResponseStatusCode(400);
+
+      expect(
+        () async => await dataSource.updateUserProfile(account: customer),
+        throwsA(isA<BadRequestException>()),
+      );
+    });
+    test('should throw InternalServerErrorException', () async {
+      setUpResponseStatusCode(500);
+
+      expect(
+        () async => await dataSource.updateUserProfile(account: customer),
+        throwsA(isA<InternalServerErrorException>()),
+      );
+    });
+    test('should throw ServiceUnavailableException', () async {
+      setUpResponseStatusCode(503);
+
+      expect(
+        () async => await dataSource.updateUserProfile(account: customer),
+        throwsA(isA<ServiceUnavailableException>()),
+      );
+    });
+    test('should throw PreconditionFailedException', () async {
+      setUpResponseStatusCode(412);
+
+      expect(
+        () async => await dataSource.updateUserProfile(account: customer),
+        throwsA(isA<PreconditionFailedException>()),
+      );
+    });
+    test('should throw UnexpectedException', () async {
+      setUpResponseStatusCode(501);
+
+      expect(
+        () async => await dataSource.updateUserProfile(account: customer),
         throwsA(isA<UnexpectedException>()),
       );
     });

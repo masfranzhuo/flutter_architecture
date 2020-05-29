@@ -325,29 +325,25 @@ void main() {
     });
   });
 
-  group('getCurrentUserId', () {
-    final idTest = 'id';
-    test('should return id', () async {
+  group('getCurrentUser', () {
+    test('should return FirebaseUser', () async {
       when(mockFirebaseAuth.currentUser())
           .thenAnswer((_) async => mockFirebaseUser);
-      when(mockFirebaseUser.uid).thenReturn(idTest);
 
-      final result = await dataSource.getCurrentUserId();
+      final result = await dataSource.getCurrentUser();
 
-      expect(result, idTest);
+      expect(result, mockFirebaseUser);
       verify(mockFirebaseAuth.currentUser());
-      verify(mockFirebaseUser.uid);
     });
 
     test('should return UnauthorizedException', () async {
       when(mockFirebaseAuth.currentUser()).thenAnswer((_) async => null);
 
       expect(
-        () => dataSource.getCurrentUserId(),
+        () => dataSource.getCurrentUser(),
         throwsA(isA<UnauthorizedException>()),
       );
       verify(mockFirebaseAuth.currentUser());
-      verifyNoMoreInteractions(mockFirebaseAuth);
     });
   });
 

@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter_architecture/core/error/exceptions/app_exception.dart';
 import 'package:flutter_architecture/core/error/exceptions/http_exception.dart';
 import 'package:flutter_architecture/core/platform/http_client.dart';
@@ -26,6 +25,8 @@ abstract class AccountDataSource {
   });
 
   Future<Account> getUserProfile({@required String id});
+
+  Future<Account> updateUserProfile({@required Account account});
 }
 
 class AccountDataSourceImpl extends AccountDataSource {
@@ -42,7 +43,6 @@ class AccountDataSourceImpl extends AccountDataSource {
     String photoUrl,
   }) async {
     Map<String, dynamic> formData;
-    Response<dynamic> response;
 
     if (name != null && email != null) {
       // Register
@@ -62,7 +62,7 @@ class AccountDataSourceImpl extends AccountDataSource {
       };
     }
 
-    response = await client.patchFirebaseData(
+    final response = await client.patchFirebaseData(
       endPoint: '${EndPoint.users}/$id.json',
       formData: formData,
     );
@@ -153,6 +153,53 @@ class AccountDataSourceImpl extends AccountDataSource {
   Future<Account> getUserProfile({@required String id}) async {
     final response = await client.getFirebaseData(
       endPoint: '${EndPoint.users}/$id.json',
+    );
+
+    if (response.statusCode == 200) {
+      final mappedAccountData = Map<String, dynamic>.from(response.data);
+
+      if (mappedAccountData['role'] != null) {
+        return Staff.fromJson(mappedAccountData);
+      }
+
+      return Customer.fromJson(mappedAccountData);
+    }
+
+    if (response.statusCode == 401) {
+      throw InvalidIdTokenException();
+    }
+
+    if (response.statusCode == 404) {
+      throw NotFoundException();
+    }
+
+    if (response.statusCode == 400) {
+      throw BadRequestException();
+    }
+
+    if (response.statusCode == 500) {
+      throw InternalServerErrorException();
+    }
+
+    if (response.statusCode == 503) {
+      throw ServiceUnavailableException();
+    }
+
+    if (response.statusCode == 412) {
+      throw PreconditionFailedException();
+    }
+
+    throw UnexpectedException();
+  }
+
+  @override
+  Future<Account> updateUserProfile({Account account}) async {
+    final formData =
+        account is Customer ? account.toJson() : (account as Staff).toJson();
+
+    final response = await client.patchFirebaseData(
+      endPoint: '${EndPoint.users}/${account.id}.json',
+      formData: formData,
     );
 
     if (response.statusCode == 200) {

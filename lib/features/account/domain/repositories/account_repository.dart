@@ -27,6 +27,10 @@ abstract class AccountRepository {
   /// Will return Left(NotFoundFailure) if not found
   Future<Either<Failure, Account>> getUserProfile({@required String id});
 
+  Future<Either<Failure, Account>> updateUserProfile({
+    @required Account account,
+  });
+
   Future<Either<Failure, bool>> changePassword({
     @required String password,
     @required String currentPassword,

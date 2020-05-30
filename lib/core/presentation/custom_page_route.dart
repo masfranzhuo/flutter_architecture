@@ -8,6 +8,7 @@ class PageType {
   static const customerHome = '/customer-home';
   static const staffHome = '/staff-home';
   static const imagePicker = '/image-picker';
+  static const userProfile = '/user-profile';
 }
 
 enum PageFormType { create, read, update }

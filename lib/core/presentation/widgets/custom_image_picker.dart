@@ -59,31 +59,43 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
   }
 
   void _showOptionDialog(BuildContext context) {
+    List<Widget> widgets = [];
+
+    if (widget.isTakePhotoAvailable) {
+      widgets.add(
+        ListTile(
+          title: Text('Camera'),
+          leading: Icon(Icons.photo_camera),
+          onTap: () {
+            _pickImage(ImagePickerSource.camera);
+            Navigator.pop(context);
+          },
+        ),
+      );
+
+      if (widget.isPickImageAvailable) widgets.add(Divider());
+    }
+
+    if (widget.isPickImageAvailable) {
+      widgets.add(
+        ListTile(
+          title: Text('Gallery'),
+          leading: Icon(Icons.image),
+          onTap: () {
+            _pickImage(ImagePickerSource.gallery);
+            Navigator.pop(context);
+          },
+        ),
+      );
+    }
+
     showModalBottomSheet(
       context: context,
       builder: (context) {
         return SafeArea(
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              ListTile(
-                title: Text('Camera'),
-                leading: Icon(Icons.photo_camera),
-                onTap: () {
-                  _pickImage(ImagePickerSource.camera);
-                  Navigator.pop(context);
-                },
-              ),
-              Divider(),
-              ListTile(
-                title: Text('Gallery'),
-                leading: Icon(Icons.image),
-                onTap: () {
-                  _pickImage(ImagePickerSource.gallery);
-                  Navigator.pop(context);
-                },
-              ),
-            ],
+            children: widgets,
           ),
         );
       },

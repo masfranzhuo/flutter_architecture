@@ -4,6 +4,7 @@ import 'package:flutter_architecture/core/presentation/widgets/custom_snack_bar.
 import 'package:flutter_architecture/features/account/domain/entities/staff.dart';
 import 'package:flutter_architecture/features/account/presentation/blocs/account_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/pages/login_page/login_page.dart';
+import 'package:flutter_architecture/features/account/presentation/pages/user_profile_form_page/user_profile_form_page.dart';
 import 'package:flutter_architecture/features/account/presentation/widgets/menus/admin_menu.dart';
 import 'package:flutter_architecture/features/account/presentation/widgets/menus/customer_menu.dart';
 import 'package:flutter_architecture/features/account/presentation/widgets/menus/super_admin.dart';
@@ -75,6 +76,10 @@ class MenuDrawer extends StatelessWidget {
             ),
             onDetailsPressed: () {
               Navigator.of(context).pop();
+              Navigator.of(context).push(CustomPageRoute.slide(
+                page: UserProfileFormPage(),
+                pageType: PageType.userProfile,
+              ));
             },
           );
 

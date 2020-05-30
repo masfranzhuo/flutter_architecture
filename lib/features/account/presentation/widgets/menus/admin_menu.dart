@@ -11,7 +11,7 @@ class AdminMenu extends StatelessWidget {
           title: Text('Admin'),
           trailing: Icon(Icons.person),
           onTap: () {
-            Navigator.of(context).pushReplacement(CustomPageRoute.slide(
+            Navigator.of(context).push(CustomPageRoute.slide(
               page: StaffHomePage(),
               pageType: PageType.staffHome,
             ));

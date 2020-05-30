@@ -51,31 +51,45 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     AccountEvent event,
   ) async* {
     if (event is LogoutEvent) {
-      yield AccountLoadingState();
-
-      final logoutResult = await logout(NoParams());
-
-      yield logoutResult.fold(
-        (failure) => _$mapFailureToError(failure),
-        (_) {
-          loginBloc.add(LoginResetStateEvent());
-          registerBloc.add(RegisterResetStateEvent());
-          return AccountLoadedState(account: null);
-        },
-      );
+      yield* _handleLogoutEvent(event);
     } else if (event is LoginEvent) {
-      yield AccountLoadingState();
-      yield AccountLoadedState(account: event.account);
+      yield* _handleLoginEvent(event);
     } else if (event is GetUserProfileEvent) {
-      yield AccountLoadingState();
-
-      final getUserProfileResult = await getUserProfile(Params(id: event.id));
-
-      yield getUserProfileResult.fold(
-        (failure) => _$mapFailureToError(failure),
-        (account) => AccountLoadedState(account: account),
-      );
+      yield* _handleGetUserProfileEvent(event);
     }
+  }
+
+  Stream<AccountState> _handleLogoutEvent(LogoutEvent event) async* {
+    yield AccountLoadingState();
+
+    final logoutResult = await logout(NoParams());
+
+    yield logoutResult.fold(
+      (failure) => _$mapFailureToError(failure),
+      (_) {
+        loginBloc.add(LoginResetStateEvent());
+        registerBloc.add(RegisterResetStateEvent());
+        return AccountLoadedState(account: null);
+      },
+    );
+  }
+
+  Stream<AccountState> _handleLoginEvent(LoginEvent event) async* {
+    yield AccountLoadingState();
+    yield AccountLoadedState(account: event.account);
+  }
+
+  Stream<AccountState> _handleGetUserProfileEvent(
+    GetUserProfileEvent event,
+  ) async* {
+    yield AccountLoadingState();
+
+    final getUserProfileResult = await getUserProfile(Params(id: event.id));
+
+    yield getUserProfileResult.fold(
+      (failure) => _$mapFailureToError(failure),
+      (account) => AccountLoadedState(account: account),
+    );
   }
 
   @override

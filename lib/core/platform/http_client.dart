@@ -34,8 +34,8 @@ class HttpClient {
     @required this.firebaseAuthDataSource,
     Dio dioHttpClient,
   }) : dio = (dioHttpClient == null ? Dio(options) : dioHttpClient)
-          ..interceptors.add(dioCacheManager.interceptor)
-          ..interceptors.add(LogInterceptor(responseBody: true));
+          ..interceptors.add(dioCacheManager.interceptor);
+          // ..interceptors.add(LogInterceptor(responseBody: true));
 
   Future<Response> postFormData({
     @required String endPoint,

@@ -26,3 +26,8 @@ class NameLessThanCharactersFailure extends Failure {
   NameLessThanCharactersFailure({String message = ''})
       : super(message: message, code: 'NAME_LESS_THAN_CHARACTERS_ERROR');
 }
+
+class PhoneNumberNotValidFailure extends Failure {
+  PhoneNumberNotValidFailure({String message = ''})
+      : super(message: message, code: 'PHONE_NUMBER_NOT_VALID_ERROR');
+}

@@ -48,4 +48,42 @@ void main() {
       expect(result, expectedMap);
     });
   });
+
+  group('copyWith', () {
+    test('should copy correctly with new result', () {
+      final customerTest = Customer(
+        id: 'fake_id',
+        name: 'John Doe',
+        email: 'john@doe.com',
+        accountStatus: AccountStatus.active,
+        phoneNumber: '1234567890',
+        photoUrl: 'https://fakeimage.com/image.jpg',
+        gender: Gender.male,
+        birthPlace: 'Indonesia',
+        birthDate: DateTime.parse("2020-04-20T13:00:00.000Z"),
+      );
+
+      final copiedCustomer = customer.copyWith(
+        id: customerTest.id,
+        name: customerTest.name,
+        email: customerTest.email,
+        accountStatus: customerTest.accountStatus,
+        phoneNumber: customerTest.phoneNumber,
+        photoUrl: customerTest.photoUrl,
+        gender: customerTest.gender,
+        birthPlace: customerTest.birthPlace,
+        birthDate: customerTest.birthDate,
+      );
+
+      expect(copiedCustomer.id, customerTest.id);
+      expect(copiedCustomer.name, customerTest.name);
+      expect(copiedCustomer.email, customerTest.email);
+      expect(copiedCustomer.accountStatus, customerTest.accountStatus);
+      expect(copiedCustomer.phoneNumber, customerTest.phoneNumber);
+      expect(copiedCustomer.photoUrl, customerTest.photoUrl);
+      expect(copiedCustomer.gender, customerTest.gender);
+      expect(copiedCustomer.birthPlace, customerTest.birthPlace);
+      expect(copiedCustomer.birthDate, customerTest.birthDate);
+    });
+  });
 }

@@ -46,4 +46,36 @@ void main() {
       expect(result, expectedMap);
     });
   });
+
+  group('copyWith', () {
+    test('should copy correctly with new result', () {
+      final staffTest = Staff(
+        id: 'fake_id',
+        name: 'John Doe',
+        email: 'john@doe.com',
+        accountStatus: AccountStatus.active,
+        role: StaffRole.admin,
+        phoneNumber: '1234567890',
+        photoUrl: 'https://fakeimage.com/image.jpg',
+      );
+
+      final copiedStaff = staff.copyWith(
+        id: staffTest.id,
+        name: staffTest.name,
+        email: staffTest.email,
+        accountStatus: staffTest.accountStatus,
+        role: staffTest.role,
+        phoneNumber: staffTest.phoneNumber,
+        photoUrl: staffTest.photoUrl,
+      );
+
+      expect(copiedStaff.id, staffTest.id);
+      expect(copiedStaff.name, staffTest.name);
+      expect(copiedStaff.email, staffTest.email);
+      expect(copiedStaff.accountStatus, staffTest.accountStatus);
+      expect(copiedStaff.role, staffTest.role);
+      expect(copiedStaff.phoneNumber, staffTest.phoneNumber);
+      expect(copiedStaff.photoUrl, staffTest.photoUrl);
+    });
+  });
 }

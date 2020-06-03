@@ -19,6 +19,7 @@ import 'package:flutter_architecture/features/account/presentation/blocs/change_
 import 'package:flutter_architecture/features/account/presentation/blocs/login_bloc/login_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/blocs/register_bloc/register_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/blocs/forget_password_bloc/forget_password_bloc.dart';
+import 'package:flutter_architecture/features/account/presentation/blocs/user_profile_form_bloc/user_profile_form_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/input_validators/validate_change_password.dart';
 import 'package:flutter_architecture/features/account/presentation/input_validators/validate_login.dart';
 import 'package:flutter_architecture/features/account/presentation/input_validators/validate_register.dart';
@@ -52,6 +53,12 @@ void init() {
       validateChangePassword: GetIt.I(),
     ),
   );
+  GetIt.I.registerFactory(
+    () => UserProfileFormBloc(
+      updateUserProfile: GetIt.I(),
+      validateUpdateUserProfile: GetIt.I(),
+    ),
+  );
 
   // Use cases
   GetIt.I.registerLazySingleton(
@@ -66,10 +73,8 @@ void init() {
 
   // Form validators
   GetIt.I.registerLazySingleton(
-    () => ValidateRegister(
-      validateEmail: GetIt.I(),
-      validatePassword: GetIt.I()
-    ),
+    () =>
+        ValidateRegister(validateEmail: GetIt.I(), validatePassword: GetIt.I()),
   );
   GetIt.I.registerLazySingleton(
     () => ValidateLogin(

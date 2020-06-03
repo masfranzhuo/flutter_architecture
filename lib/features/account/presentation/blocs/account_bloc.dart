@@ -6,17 +6,12 @@ import 'package:flutter_architecture/core/error/failures/failure.dart';
 import 'package:flutter_architecture/core/error/failures/form_failure.dart';
 import 'package:flutter_architecture/core/util/use_case.dart';
 import 'package:flutter_architecture/features/account/domain/entities/account.dart';
-import 'package:flutter_architecture/features/account/domain/entities/customer.dart';
 import 'package:flutter_architecture/features/account/domain/entities/staff.dart';
 import 'package:flutter_architecture/features/account/domain/use_cases/get_user_profile.dart'
     as gup;
 import 'package:flutter_architecture/features/account/domain/use_cases/logout.dart';
-import 'package:flutter_architecture/features/account/domain/use_cases/update_user_profile.dart'
-    as uup;
 import 'package:flutter_architecture/features/account/presentation/blocs/login_bloc/login_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/blocs/register_bloc/register_bloc.dart';
-import 'package:flutter_architecture/features/account/presentation/input_validators/validate_update_user_profile.dart'
-    as vuup;
 import 'package:meta/meta.dart';
 
 part 'account_event.dart';
@@ -28,8 +23,6 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   final LoginBloc loginBloc;
   final RegisterBloc registerBloc;
   final gup.GetUserProfile getUserProfile;
-  final vuup.ValidateUpdateUserProfile validateUpdateUserProfile;
-  final uup.UpdateUserProfile updateUserProfile;
 
   StreamSubscription loginBlocSubscription;
   StreamSubscription registerBlocSubscription;
@@ -39,8 +32,6 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     @required this.loginBloc,
     @required this.registerBloc,
     this.getUserProfile,
-    this.validateUpdateUserProfile,
-    this.updateUserProfile,
   }) {
     loginBlocSubscription = loginBloc.listen((state) {
       if (state is LoginLoadedState) {
@@ -67,8 +58,6 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       yield* _handleLoginEvent(event);
     } else if (event is GetUserProfileEvent) {
       yield* _handleGetUserProfileEvent(event);
-    } else if (event is UpdateUserProfileEvent) {
-      yield* _handleUpdateUserProfileEvent(event);
     }
   }
 
@@ -102,45 +91,6 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     yield getUserProfileResult.fold(
       (failure) => _$mapFailureToError(failure),
       (account) => AccountLoadedState(account: account),
-    );
-  }
-
-  Stream<AccountState> _handleUpdateUserProfileEvent(
-    UpdateUserProfileEvent event,
-  ) async* {
-    final validateResult = validateUpdateUserProfile(vuup.Params(
-      name: event.name,
-      phoneNumber: event.phoneNumber,
-    ));
-
-    yield* validateResult.fold(
-      (failure) async* {
-        yield _$mapFailureToError(failure);
-      },
-      (_) async* {
-        yield AccountLoadingState();
-
-        if (event.isStaff) {
-          (event.account as Staff).copyWith(
-            name: event.name,
-            phoneNumber: event.phoneNumber,
-          );
-        } else {
-          (event.account as Customer).copyWith(
-            name: event.name,
-            phoneNumber: event.phoneNumber,
-          );
-        }
-
-        final updateResult = await updateUserProfile(uup.Params(
-          account: event.account,
-        ));
-
-        yield updateResult.fold(
-          (failure) => _$mapFailureToError(failure),
-          (account) => AccountLoadedState(account: account),
-        );
-      },
     );
   }
 

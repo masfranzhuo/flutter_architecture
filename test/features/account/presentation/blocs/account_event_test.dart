@@ -22,27 +22,4 @@ void main() {
       expect(GetUserProfileEvent(id: idTest).props, [idTest]);
     });
   });
-
-  group('UpdateUserProfileEvent', () {
-    test('props are [name, phoneNumber]', () {
-      final customer = Customer(
-        id: 'fake_id',
-        name: 'John Doe',
-        email: 'john@doe.com',
-        accountStatus: AccountStatus.active,
-      );
-      final isStaffTest = false;
-      final nameTest = 'John Doe';
-      final phoneNumberTest = '081212345678';
-      expect(
-        UpdateUserProfileEvent(
-          account: customer,
-          isStaff: isStaffTest,
-          name: nameTest,
-          phoneNumber: phoneNumberTest,
-        ).props,
-        [customer, isStaffTest, nameTest, phoneNumberTest],
-      );
-    });
-  });
 }

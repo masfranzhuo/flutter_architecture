@@ -1,9 +1,9 @@
 part of 'user_profile_form_page.dart';
 
-class _$UserProfileInputs extends StatefulWidget {
+class _$UserProfileForm extends StatefulWidget {
   final PageFormType pageFormType;
 
-  const _$UserProfileInputs({
+  const _$UserProfileForm({
     Key key,
     @required this.pageFormType,
   }) : super(key: key);
@@ -11,17 +11,39 @@ class _$UserProfileInputs extends StatefulWidget {
   bool get readOnly => pageFormType == PageFormType.read;
 
   @override
-  __$UserProfileInputsState createState() => __$UserProfileInputsState();
+  __$UserProfileFormState createState() => __$UserProfileFormState();
 }
 
-class __$UserProfileInputsState extends State<_$UserProfileInputs> {
+class __$UserProfileFormState extends State<_$UserProfileForm> {
   final _emailController = TextEditingController();
   final _nameController = TextEditingController();
   final _phoneNumberController = TextEditingController();
   String _imageUrl;
 
+  void _onSubmitUpdate(BuildContext context, UserProfileFormLoadedState state) {
+    BlocProvider.of<UserProfileFormBloc>(context).add(UpdateUserProfileEvent(
+      account: state.account,
+      name: _nameController.text,
+      phoneNumber: _phoneNumberController.text,
+    ));
+  }
+
+  void _onNavigateUpdate(BuildContext context) {
+    Navigator.of(context).push(CustomPageRoute.slide(
+      page: UserProfileFormPage(pageFormType: PageFormType.update),
+      pageType: PageType.userProfile,
+    ));
+  }
+
   @override
   void initState() {
+    // TODO: if error then affect account bloc, split the bloc and test
+    // remove account and isStaff in event, use copyWith instead
+    // https://bloclibrary.dev/#/flutterinfinitelisttutorial
+    // final account = (BlocProvider.of<AccountBloc>(context) as AccountLoadedState).account;
+    _emailController.text = 'update';
+    _nameController.text = 'update';
+    _phoneNumberController.text = 'update';
     super.initState();
   }
 
@@ -62,12 +84,11 @@ class __$UserProfileInputsState extends State<_$UserProfileInputs> {
   Widget _buildEmail(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
-      child: BlocBuilder<AccountBloc, AccountState>(
+      child: BlocBuilder<UserProfileFormBloc, UserProfileFormState>(
         builder: (context, state) {
           return CustomTextField(
             context: context,
-            controller: _emailController
-              ..text = (state as AccountLoadedState).account.email,
+            controller: _emailController,
             iconData: Icons.email,
             keyboardType: TextInputType.emailAddress,
             hintText: 'Email',
@@ -81,13 +102,12 @@ class __$UserProfileInputsState extends State<_$UserProfileInputs> {
   Widget _buildName(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
-      child: BlocBuilder<AccountBloc, AccountState>(
+      child: BlocBuilder<UserProfileFormBloc, UserProfileFormState>(
         builder: (context, state) {
           String errorText;
           return CustomTextField(
             context: context,
-            controller: _nameController
-              ..text = (state as AccountLoadedState).account.name,
+            controller: _nameController,
             iconData: Icons.person,
             keyboardType: TextInputType.text,
             hintText: 'Name',
@@ -102,17 +122,17 @@ class __$UserProfileInputsState extends State<_$UserProfileInputs> {
   Widget _buildPhoneNumber(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
-      child: BlocBuilder<AccountBloc, AccountState>(
+      child: BlocBuilder<UserProfileFormBloc, UserProfileFormState>(
         builder: (context, state) {
           String errorText;
           return CustomTextField(
             context: context,
-            controller: _phoneNumberController
-              ..text = (state as AccountLoadedState).account.phoneNumber,
+            controller: _phoneNumberController,
             iconData: Icons.phone,
             keyboardType: TextInputType.phone,
             hintText: 'Phone Number',
             readOnly: widget.readOnly,
+            errorText: errorText,
           );
         },
       ),
@@ -122,17 +142,22 @@ class __$UserProfileInputsState extends State<_$UserProfileInputs> {
   Widget _buildButton(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(32),
-      child: BlocBuilder<AccountBloc, AccountState>(
+      child: BlocBuilder<UserProfileFormBloc, UserProfileFormState>(
         builder: (context, state) {
           ButtonState buttonState = ButtonState.idle;
-          if (state is AccountLoadingState) {
+          if (state is UserProfileFormLoadingState) {
             buttonState = ButtonState.loading;
           }
 
           return CustomButton(
             state: buttonState,
-            child: Text('Edit'),
-            onPressed: () {},
+            child: Text(widget.readOnly ? 'Edit' : 'Submit'),
+            onPressed: () {
+              widget.readOnly
+                  ? _onNavigateUpdate(context)
+                  : _onSubmitUpdate(
+                      context, (state as UserProfileFormLoadedState));
+            },
           );
         },
       ),

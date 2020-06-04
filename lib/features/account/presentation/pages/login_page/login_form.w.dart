@@ -6,13 +6,13 @@ class _$LoginForm extends StatefulWidget {
 }
 
 class __$LoginFormState extends State<_$LoginForm> {
-  final _emailController = TextEditingController(text: 'one@test.com');
-  final _passwordController = TextEditingController(text: '123456');
+  final emailController = TextEditingController(text: 'one@test.com');
+  final passwordController = TextEditingController(text: '123456');
 
   void login(BuildContext context) {
     BlocProvider.of<LoginBloc>(context).add(LoginWithPasswordEvent(
-      email: _emailController.text,
-      password: _passwordController.text,
+      email: emailController.text,
+      password: passwordController.text,
     ));
   }
 
@@ -42,7 +42,7 @@ class __$LoginFormState extends State<_$LoginForm> {
 
           return CustomTextField(
             context: context,
-            controller: _emailController,
+            controller: emailController,
             hintText: 'Email',
             keyboardType: TextInputType.emailAddress,
             readOnly: state is LoginLoadingState,
@@ -67,7 +67,7 @@ class __$LoginFormState extends State<_$LoginForm> {
 
           return CustomTextField(
             context: context,
-            controller: _passwordController,
+            controller: passwordController,
             hintText: 'Password',
             obscureText: true,
             keyboardType: TextInputType.visiblePassword,

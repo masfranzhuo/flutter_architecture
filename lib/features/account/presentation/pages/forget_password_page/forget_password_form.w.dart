@@ -6,11 +6,11 @@ class _$ForgetPasswordForm extends StatefulWidget {
 }
 
 class __$ForgetPasswordFormState extends State<_$ForgetPasswordForm> {
-  final _emailController = TextEditingController();
+  final emailController = TextEditingController();
 
   void resetPassword(BuildContext context) {
     BlocProvider.of<ForgetPasswordBloc>(context).add(ResetPasswordEvent(
-      email: _emailController.text,
+      email: emailController.text,
     ));
   }
 
@@ -39,7 +39,7 @@ class __$ForgetPasswordFormState extends State<_$ForgetPasswordForm> {
 
           return CustomTextField(
             context: context,
-            controller: _emailController,
+            controller: emailController,
             hintText: 'Email',
             keyboardType: TextInputType.emailAddress,
             readOnly: state is ForgetPasswordLoadingState,

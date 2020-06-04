@@ -15,16 +15,16 @@ class _$UserProfileForm extends StatefulWidget {
 }
 
 class __$UserProfileFormState extends State<_$UserProfileForm> {
-  final _emailController = TextEditingController();
-  final _nameController = TextEditingController();
-  final _phoneNumberController = TextEditingController();
+  final emailController = TextEditingController();
+  final nameController = TextEditingController();
+  final phoneNumberController = TextEditingController();
   String _imageUrl;
 
   void _onSubmitUpdate(BuildContext context, UserProfileFormLoadedState state) {
     BlocProvider.of<UserProfileFormBloc>(context).add(UpdateUserProfileEvent(
       account: state.account,
-      name: _nameController.text,
-      phoneNumber: _phoneNumberController.text,
+      name: nameController.text,
+      phoneNumber: phoneNumberController.text,
     ));
   }
 
@@ -37,21 +37,19 @@ class __$UserProfileFormState extends State<_$UserProfileForm> {
 
   @override
   void initState() {
-    // TODO: if error then affect account bloc, split the bloc and test
-    // remove account and isStaff in event, use copyWith instead
-    // https://bloclibrary.dev/#/flutterinfinitelisttutorial
+    // TODO: get user profile
     // final account = (BlocProvider.of<AccountBloc>(context) as AccountLoadedState).account;
-    _emailController.text = 'update';
-    _nameController.text = 'update';
-    _phoneNumberController.text = 'update';
+    emailController.text = 'update';
+    nameController.text = 'update';
+    phoneNumberController.text = 'update';
     super.initState();
   }
 
   @override
   void dispose() {
-    _emailController.dispose();
-    _nameController.dispose();
-    _phoneNumberController.dispose();
+    emailController.dispose();
+    nameController.dispose();
+    phoneNumberController.dispose();
     super.dispose();
   }
 
@@ -88,7 +86,7 @@ class __$UserProfileFormState extends State<_$UserProfileForm> {
         builder: (context, state) {
           return CustomTextField(
             context: context,
-            controller: _emailController,
+            controller: emailController,
             iconData: Icons.email,
             keyboardType: TextInputType.emailAddress,
             hintText: 'Email',
@@ -107,7 +105,7 @@ class __$UserProfileFormState extends State<_$UserProfileForm> {
           String errorText;
           return CustomTextField(
             context: context,
-            controller: _nameController,
+            controller: nameController,
             iconData: Icons.person,
             keyboardType: TextInputType.text,
             hintText: 'Name',
@@ -127,7 +125,7 @@ class __$UserProfileFormState extends State<_$UserProfileForm> {
           String errorText;
           return CustomTextField(
             context: context,
-            controller: _phoneNumberController,
+            controller: phoneNumberController,
             iconData: Icons.phone,
             keyboardType: TextInputType.phone,
             hintText: 'Phone Number',

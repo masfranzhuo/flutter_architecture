@@ -6,17 +6,17 @@ class _$RegisterForm extends StatefulWidget {
 }
 
 class __$RegisterFormState extends State<_$RegisterForm> {
-  final _nameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _retypedPasswordController = TextEditingController();
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final retypedPasswordController = TextEditingController();
 
   void register(BuildContext context) {
     BlocProvider.of<RegisterBloc>(context).add(RegisterWithPasswordEvent(
-      name: _nameController.text,
-      email: _emailController.text,
-      password: _passwordController.text,
-      retypedPassword: _retypedPasswordController.text,
+      name: nameController.text,
+      email: emailController.text,
+      password: passwordController.text,
+      retypedPassword: retypedPasswordController.text,
     ));
   }
 
@@ -48,7 +48,7 @@ class __$RegisterFormState extends State<_$RegisterForm> {
 
           return CustomTextField(
             context: context,
-            controller: _nameController,
+            controller: nameController,
             hintText: 'Name',
             keyboardType: TextInputType.text,
             readOnly: state is RegisterLoadingState,
@@ -73,7 +73,7 @@ class __$RegisterFormState extends State<_$RegisterForm> {
 
           return CustomTextField(
             context: context,
-            controller: _emailController,
+            controller: emailController,
             hintText: 'Email',
             keyboardType: TextInputType.emailAddress,
             readOnly: state is RegisterLoadingState,
@@ -98,7 +98,7 @@ class __$RegisterFormState extends State<_$RegisterForm> {
 
           return CustomTextField(
             context: context,
-            controller: _passwordController,
+            controller: passwordController,
             hintText: 'Password',
             obscureText: true,
             keyboardType: TextInputType.visiblePassword,
@@ -124,7 +124,7 @@ class __$RegisterFormState extends State<_$RegisterForm> {
 
           return CustomTextField(
             context: context,
-            controller: _retypedPasswordController,
+            controller: retypedPasswordController,
             hintText: 'Retyped Password',
             obscureText: true,
             keyboardType: TextInputType.visiblePassword,

@@ -54,20 +54,21 @@ class UserProfileFormBloc
       (_) async* {
         yield UserProfileFormLoadingState();
 
+        Account updatedAccount;
         if (event.account is Staff) {
-          (event.account as Staff).copyWith(
+          updatedAccount = (event.account as Staff).copyWith(
             name: event.name,
             phoneNumber: event.phoneNumber,
           );
         } else {
-          (event.account as Customer).copyWith(
+          updatedAccount = (event.account as Customer).copyWith(
             name: event.name,
             phoneNumber: event.phoneNumber,
           );
         }
 
         final updateResult = await updateUserProfile(uup.Params(
-          account: event.account,
+          account: updatedAccount,
         ));
 
         yield updateResult.fold(

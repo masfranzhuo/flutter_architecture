@@ -33,9 +33,10 @@ class HttpClient {
   HttpClient({
     @required this.firebaseAuthDataSource,
     Dio dioHttpClient,
-  }) : dio = (dioHttpClient == null ? Dio(options) : dioHttpClient)
-          ..interceptors.add(dioCacheManager.interceptor);
+  }) : dio = (dioHttpClient == null ? Dio(options) : dioHttpClient);
+          // ..interceptors.add(dioCacheManager.interceptor);
           // ..interceptors.add(LogInterceptor(responseBody: true));
+  // TODO: option to enable or disable cache
 
   Future<Response> postFormData({
     @required String endPoint,

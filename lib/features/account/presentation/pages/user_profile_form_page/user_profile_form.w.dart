@@ -1,10 +1,12 @@
 part of 'user_profile_form_page.dart';
 
 class _$UserProfileForm extends StatefulWidget {
+  final Account account;
   final PageFormType pageFormType;
 
   const _$UserProfileForm({
     Key key,
+    @required this.account,
     @required this.pageFormType,
   }) : super(key: key);
 
@@ -20,28 +22,36 @@ class __$UserProfileFormState extends State<_$UserProfileForm> {
   final phoneNumberController = TextEditingController();
   String _imageUrl;
 
-  void _onSubmitUpdate(BuildContext context, UserProfileFormLoadedState state) {
-    BlocProvider.of<UserProfileFormBloc>(context).add(UpdateUserProfileEvent(
-      account: state.account,
-      name: nameController.text,
-      phoneNumber: phoneNumberController.text,
-    ));
-  }
+  void onSubmit(BuildContext context) async {
+    if (widget.readOnly) {
+      final account = await Navigator.of(context).push<Account>(
+        CustomPageRoute.slide(
+          page: UserProfileFormPage(pageFormType: PageFormType.update),
+          pageType: PageType.userProfile,
+        ),
+      );
 
-  void _onNavigateUpdate(BuildContext context) {
-    Navigator.of(context).push(CustomPageRoute.slide(
-      page: UserProfileFormPage(pageFormType: PageFormType.update),
-      pageType: PageType.userProfile,
-    ));
+      if (account != null) {
+        Scaffold.of(context).showSnackBar(CcustomSnackBar(
+          message: 'Data updated',
+          mode: SnackBarMode.success,
+        ));
+      }
+    } else {
+      BlocProvider.of<UserProfileFormBloc>(context).add(UpdateUserProfileEvent(
+        account: widget.account,
+        name: nameController.text,
+        phoneNumber: phoneNumberController.text,
+      ));
+    }
   }
 
   @override
   void initState() {
-    // TODO: get user profile
-    // final account = (BlocProvider.of<AccountBloc>(context) as AccountLoadedState).account;
-    emailController.text = 'update';
-    nameController.text = 'update';
-    phoneNumberController.text = 'update';
+    emailController.text = widget.account?.email;
+    nameController.text = widget.account?.name;
+    phoneNumberController.text = widget.account?.phoneNumber;
+    _imageUrl = widget.account?.photoUrl;
     super.initState();
   }
 
@@ -71,10 +81,16 @@ class __$UserProfileFormState extends State<_$UserProfileForm> {
   }
 
   Widget _buildImage(BuildContext context) {
+    double width = MediaQuery.of(context).size.width / 4;
     return Container(
       padding: const EdgeInsets.all(32),
-      child: CircleAvatar(
-        child: Icon(Icons.person),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(width / 2),
+        child: Container(
+          width: width,
+          height: width,
+          child: Icon(Icons.person, size: width / 2),
+        ),
       ),
     );
   }
@@ -103,6 +119,10 @@ class __$UserProfileFormState extends State<_$UserProfileForm> {
       child: BlocBuilder<UserProfileFormBloc, UserProfileFormState>(
         builder: (context, state) {
           String errorText;
+          if (state is UserProfileFormErrorState &&
+              state.error == UserProfileFormErrorGroup.name) {
+            errorText = state.message;
+          }
           return CustomTextField(
             context: context,
             controller: nameController,
@@ -123,6 +143,10 @@ class __$UserProfileFormState extends State<_$UserProfileForm> {
       child: BlocBuilder<UserProfileFormBloc, UserProfileFormState>(
         builder: (context, state) {
           String errorText;
+          if (state is UserProfileFormErrorState &&
+              state.error == UserProfileFormErrorGroup.phoneNumber) {
+            errorText = state.message;
+          }
           return CustomTextField(
             context: context,
             controller: phoneNumberController,
@@ -150,12 +174,7 @@ class __$UserProfileFormState extends State<_$UserProfileForm> {
           return CustomButton(
             state: buttonState,
             child: Text(widget.readOnly ? 'Edit' : 'Submit'),
-            onPressed: () {
-              widget.readOnly
-                  ? _onNavigateUpdate(context)
-                  : _onSubmitUpdate(
-                      context, (state as UserProfileFormLoadedState));
-            },
+            onPressed: () => onSubmit(context),
           );
         },
       ),

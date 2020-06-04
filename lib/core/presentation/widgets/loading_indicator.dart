@@ -11,9 +11,11 @@ class LoadingIndicator extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    Widget loading = CircularProgressIndicator(
-      strokeWidth: 3,
-      backgroundColor: backgroundColor ?? Theme.of(context).canvasColor,
+    Widget loading = Center(
+      child: CircularProgressIndicator(
+        strokeWidth: 3,
+        backgroundColor: backgroundColor ?? Theme.of(context).canvasColor,
+      ),
     );
 
     if (isFullScreen) {
@@ -29,7 +31,7 @@ class LoadingIndicator extends StatelessWidget {
               ),
             ),
           ),
-          Center(child: loading),
+          loading,
         ],
       );
     }

@@ -12,7 +12,7 @@ UserProfileFormErrorState _$mapFailureToError(Failure failure) {
   }
 
   if (failure is PhoneNumberNotValidFailure) {
-    errorGroup = UserProfileFormErrorGroup.name;
+    errorGroup = UserProfileFormErrorGroup.phoneNumber;
     message = 'Phone number is not valid';
   }
 

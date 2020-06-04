@@ -270,32 +270,35 @@ class _CustomWidgetState extends State<CustomWidget> {
             CustomButton(
               child: Text('Default SnackBar'),
               onPressed: () {
-                CustomSnackBar.showSnackBar(
-                  context: context,
-                  message: 'Default',
-                );
+                Scaffold.of(context)
+                  ..removeCurrentSnackBar()
+                  ..showSnackBar(CustomSnackBar(
+                    message: 'Default',
+                  ));
               },
             ),
             SizedBox(height: 8),
             CustomButton(
               child: Text('Success SnackBar'),
               onPressed: () {
-                CustomSnackBar.showSnackBar(
-                  context: context,
-                  message: 'Success',
-                  mode: SnackBarMode.success,
-                );
+                Scaffold.of(context)
+                  ..removeCurrentSnackBar()
+                  ..showSnackBar(CustomSnackBar(
+                    message: 'Success',
+                    mode: SnackBarMode.success,
+                  ));
               },
             ),
             SizedBox(height: 8),
             CustomButton(
               child: Text('Error SnackBar'),
               onPressed: () {
-                CustomSnackBar.showSnackBar(
-                  context: context,
-                  message: 'Error',
-                  mode: SnackBarMode.error,
-                );
+                Scaffold.of(context)
+                  ..removeCurrentSnackBar()
+                  ..showSnackBar(CustomSnackBar(
+                    message: 'Error',
+                    mode: SnackBarMode.error,
+                  ));
               },
             ),
             SizedBox(height: 8),

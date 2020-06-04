@@ -32,7 +32,7 @@ class __$UserProfileFormState extends State<_$UserProfileForm> {
       );
 
       if (account != null) {
-        Scaffold.of(context).showSnackBar(CcustomSnackBar(
+        Scaffold.of(context).showSnackBar(CustomSnackBar(
           message: 'Data updated',
           mode: SnackBarMode.success,
         ));

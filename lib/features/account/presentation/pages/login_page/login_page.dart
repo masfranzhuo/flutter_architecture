@@ -36,11 +36,10 @@ class LoginPage extends StatelessWidget {
       listener: (context, state) {
         if (state is LoginErrorState &&
             state.error == LoginErrorGroup.general) {
-          CustomSnackBar.showSnackBar(
-            context: context,
+          Scaffold.of(context).showSnackBar(CustomSnackBar(
             message: state.message,
             mode: SnackBarMode.error,
-          );
+          ));
         }
 
         if (state is LoginLoadedState) {

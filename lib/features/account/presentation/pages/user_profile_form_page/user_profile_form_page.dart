@@ -59,11 +59,10 @@ class UserProfileFormPage extends StatelessWidget {
           listener: (context, state) {
             if (state is UserProfileFormErrorState &&
                 state.error == UserProfileFormErrorGroup.general) {
-              CustomSnackBar.showSnackBar(
-                context: context,
+              Scaffold.of(context).showSnackBar(CustomSnackBar(
                 message: state.message,
                 mode: SnackBarMode.error,
-              );
+              ));
             }
 
             if (state is UserProfileFormLoadedState) {

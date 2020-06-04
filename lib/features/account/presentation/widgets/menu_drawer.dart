@@ -45,11 +45,10 @@ class MenuDrawer extends StatelessWidget {
         if (state is AccountErrorState &&
             state.error == AccountErrorGroup.general) {
           Navigator.of(context).pop();
-          CustomSnackBar.showSnackBar(
-            context: context,
+          Scaffold.of(context).showSnackBar(CustomSnackBar(
             message: state.message,
             mode: SnackBarMode.error,
-          );
+          ));
         }
 
         if (state is AccountLoadedState && !state.isLogin) {

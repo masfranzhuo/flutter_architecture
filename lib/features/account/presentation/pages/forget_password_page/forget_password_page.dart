@@ -14,7 +14,7 @@ part 'forget_password_footer.w.dart';
 
 class ForgetPasswordPage extends StatelessWidget {
   static const routeName = PageType.forgetPassword;
-  
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider<ForgetPasswordBloc>(
@@ -33,19 +33,17 @@ class ForgetPasswordPage extends StatelessWidget {
       listener: (context, state) {
         if (state is ForgetPasswordErrorState &&
             state.error == ForgetPasswordErrorGroup.general) {
-          CustomSnackBar.showSnackBar(
-            context: context,
+          Scaffold.of(context).showSnackBar(CustomSnackBar(
             message: state.message,
             mode: SnackBarMode.error,
-          );
+          ));
         }
 
         if (state is ForgetPasswordLoadedState) {
-          CustomSnackBar.showSnackBar(
-            context: context,
+          Scaffold.of(context).showSnackBar(CustomSnackBar(
             message: state.message,
             mode: SnackBarMode.success,
-          );
+          ));
         }
       },
       builder: (context, state) {

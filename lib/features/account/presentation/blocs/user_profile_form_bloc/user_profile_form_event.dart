@@ -21,3 +21,16 @@ class UpdateUserProfileEvent extends UserProfileFormEvent {
   @override
   List<Object> get props => [account, name, phoneNumber];
 }
+
+class UpdateUserProfileImageEvent extends UserProfileFormEvent {
+  final Account account;
+  final String photoUrl;
+
+  UpdateUserProfileImageEvent({
+    @required this.account,
+    @required this.photoUrl,
+  });
+
+  @override
+  List<Object> get props => [account, photoUrl];
+}

@@ -20,7 +20,6 @@ class __$UserProfileFormState extends State<_$UserProfileForm> {
   final emailController = TextEditingController();
   final nameController = TextEditingController();
   final phoneNumberController = TextEditingController();
-  String _imageUrl;
 
   void onSubmit(BuildContext context) async {
     if (widget.readOnly) {
@@ -51,7 +50,6 @@ class __$UserProfileFormState extends State<_$UserProfileForm> {
     emailController.text = widget.account?.email;
     nameController.text = widget.account?.name;
     phoneNumberController.text = widget.account?.phoneNumber;
-    _imageUrl = widget.account?.photoUrl;
     super.initState();
   }
 
@@ -70,27 +68,11 @@ class __$UserProfileFormState extends State<_$UserProfileForm> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          _buildImage(context),
           _buildEmail(context),
           _buildName(context),
           _buildPhoneNumber(context),
           _buildButton(context),
         ],
-      ),
-    );
-  }
-
-  Widget _buildImage(BuildContext context) {
-    double width = MediaQuery.of(context).size.width / 4;
-    return Container(
-      padding: const EdgeInsets.all(32),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(width / 2),
-        child: Container(
-          width: width,
-          height: width,
-          child: Icon(Icons.person, size: width / 2),
-        ),
       ),
     );
   }

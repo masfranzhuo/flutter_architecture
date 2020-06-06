@@ -16,6 +16,7 @@ class CustomImagePicker extends StatefulWidget {
   final Function(File) onPicked;
   final bool readOnly;
   final String errorText;
+  final Widget defaultImage;
 
   const CustomImagePicker({
     Key key,
@@ -27,6 +28,7 @@ class CustomImagePicker extends StatefulWidget {
     this.onPicked,
     this.readOnly = false,
     this.errorText,
+    this.defaultImage,
   }) : super(key: key);
 
   @override
@@ -127,21 +129,20 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
   }
 
   Widget _buildImage({@required Widget child}) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-      child: InkWell(
-        onTap: widget.isToggleButton ? null : () => _showOptionDialog(context),
-        child: WrapErrorText(
-          errorText: widget.errorText,
-          child: child,
-        ),
+    return InkWell(
+      onTap: widget.isToggleButton ? null : () => _showOptionDialog(context),
+      child: WrapErrorText(
+        errorText: widget.errorText,
+        child: child,
       ),
     );
   }
 
   Widget _buildImageFile(BuildContext context) {
     return _buildImage(
-      child: _file != null ? Image.file(_file) : Placeholder(),
+      child: _file != null
+          ? Image.file(_file)
+          : widget.defaultImage ?? Placeholder(),
     );
   }
 

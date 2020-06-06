@@ -4,14 +4,15 @@ import 'package:flutter_architecture/features/account/presentation/blocs/user_pr
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  final customer = Customer(
+    id: 'fake_id',
+    name: 'John Doe',
+    email: 'john@doe.com',
+    accountStatus: AccountStatus.active,
+  );
+
   group('UpdateUserProfileEvent', () {
     test('props are [account, name, phoneNumber]', () {
-      final customer = Customer(
-        id: 'fake_id',
-        name: 'John Doe',
-        email: 'john@doe.com',
-        accountStatus: AccountStatus.active,
-      );
       final nameTest = 'John Doe';
       final phoneNumberTest = '081212345678';
       expect(
@@ -21,6 +22,19 @@ void main() {
           phoneNumber: phoneNumberTest,
         ).props,
         [customer, nameTest, phoneNumberTest],
+      );
+    });
+  });
+
+  group('UpdateUserProfileImageEvent', () {
+    test('props are [account, photoUrl]', () {
+      final photoUrlTest = 'https://fakeimage.com/image.jpg';
+      expect(
+        UpdateUserProfileImageEvent(
+          account: customer,
+          photoUrl: photoUrlTest,
+        ).props,
+        [customer, photoUrlTest],
       );
     });
   });

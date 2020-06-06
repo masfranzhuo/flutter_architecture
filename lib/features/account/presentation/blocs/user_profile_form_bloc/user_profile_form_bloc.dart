@@ -36,6 +36,8 @@ class UserProfileFormBloc
   ) async* {
     if (event is UpdateUserProfileEvent) {
       yield* _handleUpdateUserProfileEvent(event);
+    } else if (event is UpdateUserProfileImageEvent) {
+      yield* _handleUpdateUserProfileImageEvent(event);
     }
   }
 
@@ -76,6 +78,32 @@ class UserProfileFormBloc
           (account) => UserProfileFormLoadedState(account: account),
         );
       },
+    );
+  }
+
+  Stream<UserProfileFormState> _handleUpdateUserProfileImageEvent(
+    UpdateUserProfileImageEvent event,
+  ) async* {
+    yield UserProfileFormLoadingState();
+
+    Account updatedAccount;
+    if (event.account is Staff) {
+      updatedAccount = (event.account as Staff).copyWith(
+        photoUrl: event.photoUrl,
+      );
+    } else {
+      updatedAccount = (event.account as Customer).copyWith(
+        photoUrl: event.photoUrl,
+      );
+    }
+
+    final updateResult = await updateUserProfile(uup.Params(
+      account: updatedAccount,
+    ));
+
+    yield updateResult.fold(
+      (failure) => _$mapFailureToError(failure),
+      (account) => UserProfileFormLoadedState(account: account),
     );
   }
 }

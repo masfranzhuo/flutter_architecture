@@ -21,27 +21,54 @@ class HttpClient {
     baseUrl: Url.main,
   );
 
-  static DioCacheManager dioCacheManager = DioCacheManager(
-    CacheConfig(baseUrl: Url.main),
-  );
-
-  static Duration cacheDuration = Duration(hours: 1);
-
   final Dio dio;
   final FirebaseAuthDataSource firebaseAuthDataSource;
+
+  /// [true] to useinterceoptors
+  bool isCached = false;
+  bool isLogged = false;
+
+  /// interceptors
+  DioCacheManager dioCacheManager = DioCacheManager(
+    CacheConfig(baseUrl: Url.main),
+  );
+  LogInterceptor logInterceptor = LogInterceptor(
+    responseBody: true,
+  );
+
+  Duration cacheDuration = Duration(hours: 1);
 
   HttpClient({
     @required this.firebaseAuthDataSource,
     Dio dioHttpClient,
+    this.isCached = false,
+    this.isLogged = false,
   }) : dio = (dioHttpClient == null ? Dio(options) : dioHttpClient);
-          // ..interceptors.add(dioCacheManager.interceptor);
-          // ..interceptors.add(LogInterceptor(responseBody: true));
-  // TODO: option to enable or disable cache
+
+  set cache(bool isCached) {
+    this.isCached = isCached;
+  }
+
+  set logger(bool isLogged) {
+    this.isLogged = isLogged;
+  }
+
+  _interceptors() {
+    if (this.isCached) {
+      this.dio.interceptors.add(dioCacheManager.interceptor);
+    }
+
+    if (this.isLogged) {
+      this.dio.interceptors.add(logInterceptor);
+    }
+  }
 
   Future<Response> postFormData({
     @required String endPoint,
     @required FormData formData,
   }) async {
+    _interceptors();
+
     final idToken = await firebaseAuthDataSource.getCurrentUserIdToken();
 
     if (idToken == null || idToken.isEmpty) {
@@ -71,6 +98,8 @@ class HttpClient {
   Future<Response> getFirebaseData({
     @required String endPoint,
   }) async {
+    _interceptors();
+
     final idToken = await firebaseAuthDataSource.getCurrentUserIdToken();
 
     if (idToken == null || idToken.isEmpty) {
@@ -93,6 +122,8 @@ class HttpClient {
     @required String endPoint,
     @required Map<String, dynamic> formData,
   }) async {
+    _interceptors();
+
     final idToken = await firebaseAuthDataSource.getCurrentUserIdToken();
 
     if (idToken == null || idToken.isEmpty) {
@@ -123,6 +154,8 @@ class HttpClient {
     @required String endPoint,
     @required Map<String, dynamic> formData,
   }) async {
+    _interceptors();
+
     final idToken = await firebaseAuthDataSource.getCurrentUserIdToken();
 
     if (idToken == null || idToken.isEmpty) {

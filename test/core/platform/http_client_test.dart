@@ -30,17 +30,30 @@ void main() {
     mockResponse = MockResponse();
   });
 
-  HttpClient setUpHttpClient() {
-    when(mockDio.interceptors).thenReturn(mockInterceptors);
-    when(mockInterceptors.add(any)).thenReturn(mockDio);
+  final idTokenNullTest = null;
+  final idTokenTest = 'idToken';
 
+  HttpClient setUpHttpClient({
+    bool isCached = false,
+    bool isLogged = false,
+  }) {
     return httpClient = HttpClient(
       dioHttpClient: mockDio,
       firebaseAuthDataSource: mockFirebaseAuthDataSource,
+      isCached: isCached,
+      isLogged: isLogged,
     );
   }
 
-  final idTokenTest = 'idToken';
+  setUpHttpClientWithInterceptor() {
+    httpClient = setUpHttpClient(isCached: true, isLogged: true);
+    when(mockDio.interceptors).thenReturn(mockInterceptors);
+    when(mockInterceptors.add(any)).thenReturn(mockDio);
+    when(mockFirebaseAuthDataSource.getCurrentUserIdToken()).thenAnswer(
+      (_) async => idTokenTest,
+    );
+  }
+
   setUpGetCurrentUserIdTokenSuccessfully() {
     httpClient = setUpHttpClient();
     when(mockFirebaseAuthDataSource.getCurrentUserIdToken()).thenAnswer(
@@ -48,7 +61,6 @@ void main() {
     );
   }
 
-  final idTokenNullTest = null;
   setUpGetCurrentUserIdTokenFailed() {
     httpClient = setUpHttpClient();
     when(mockFirebaseAuthDataSource.getCurrentUserIdToken()).thenAnswer(
@@ -61,12 +73,32 @@ void main() {
       httpClient = setUpHttpClient();
 
       expect(httpClient.dio, mockDio);
-      verify(mockDio.interceptors);
-      verify(mockInterceptors.add(any));
+    });
+
+    test('should set isCached, isLogged', () async {
+      httpClient = setUpHttpClient(isCached: true, isLogged: true);
+      httpClient.cache = false;
+      httpClient.logger = false;
+
+      expect(httpClient.isCached, false);
+      expect(httpClient.isLogged, false);
     });
   });
 
   group('postFormData', () {
+    test('should call interceptors', () async {
+      setUpHttpClientWithInterceptor();
+
+      await httpClient.postFormData(
+        endPoint: EndPoint.auth,
+        formData: FormData(),
+      );
+
+      verify(mockDio.interceptors);
+      verify(mockInterceptors.add(any));
+      verify(mockFirebaseAuthDataSource.getCurrentUserIdToken());
+    });
+
     test('should call getIdToken', () async {
       setUpGetCurrentUserIdTokenSuccessfully();
 

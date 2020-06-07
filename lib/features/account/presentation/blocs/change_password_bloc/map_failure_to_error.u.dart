@@ -16,6 +16,11 @@ ChangePasswordErrorState _$mapFailureToError(Failure failure) {
     message = 'New password must be different from the current password';
   }
 
+  if (failure is FieldEmptyFailure) {
+    errorGroup = ChangePasswordErrorGroup.currentPassword;
+    message = 'Current password can\'t empty';
+  }
+
   if (failure is WrongPasswordFailure) {
     errorGroup = ChangePasswordErrorGroup.currentPassword;
     message = 'Current password is invalid';

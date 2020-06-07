@@ -31,3 +31,8 @@ class PhoneNumberNotValidFailure extends Failure {
   PhoneNumberNotValidFailure({String message = ''})
       : super(message: message, code: 'PHONE_NUMBER_NOT_VALID_ERROR');
 }
+
+class FieldEmptyFailure extends Failure {
+  FieldEmptyFailure({String message = ''})
+      : super(message: message, code: 'FIELD_EMPTY_ERROR');
+}

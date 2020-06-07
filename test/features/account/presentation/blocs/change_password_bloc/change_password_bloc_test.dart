@@ -66,8 +66,9 @@ void main() {
       )),
       verify: (_) async {
         verify(mockValidateChangePassword(vcp.Params(
-          password: passwordTest,
           currentPassword: currentPasswordTest,
+          password: passwordTest,
+          retypedPassword: retypedPasswordTest,
         )));
         verify(mockChangePassword(Params(
           password: passwordTest,
@@ -106,7 +107,7 @@ void main() {
       )),
       expect: [
         ChangePasswordLoadingState(),
-        ChangePasswordLoadedState(),
+        ChangePasswordLoadedState(message: 'Password change successfully'),
       ],
     );
 

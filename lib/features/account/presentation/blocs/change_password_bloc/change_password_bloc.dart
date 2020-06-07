@@ -35,6 +35,7 @@ class ChangePasswordBloc
       final validateChangePasswordResult = validateChangePassword(vcp.Params(
         currentPassword: event.currentPassword,
         password: event.password,
+        retypedPassword: event.retypedPassword,
       ));
 
       yield* validateChangePasswordResult.fold(
@@ -51,7 +52,9 @@ class ChangePasswordBloc
 
           yield changePasswordResult.fold(
             (failure) => _$mapFailureToError(failure),
-            (_) => ChangePasswordLoadedState(),
+            (_) => ChangePasswordLoadedState(
+              message: 'Password change successfully',
+            ),
           );
         },
       );

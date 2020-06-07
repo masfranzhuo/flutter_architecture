@@ -325,29 +325,25 @@ void main() {
     });
   });
 
-  group('getCurrentUserId', () {
-    final idTest = 'id';
-    test('should return id', () async {
+  group('getCurrentUser', () {
+    test('should return FirebaseUser', () async {
       when(mockFirebaseAuth.currentUser())
           .thenAnswer((_) async => mockFirebaseUser);
-      when(mockFirebaseUser.uid).thenReturn(idTest);
 
-      final result = await dataSource.getCurrentUserId();
+      final result = await dataSource.getCurrentUser();
 
-      expect(result, idTest);
+      expect(result, mockFirebaseUser);
       verify(mockFirebaseAuth.currentUser());
-      verify(mockFirebaseUser.uid);
     });
 
     test('should return UnauthorizedException', () async {
       when(mockFirebaseAuth.currentUser()).thenAnswer((_) async => null);
 
       expect(
-        () => dataSource.getCurrentUserId(),
+        () => dataSource.getCurrentUser(),
         throwsA(isA<UnauthorizedException>()),
       );
       verify(mockFirebaseAuth.currentUser());
-      verifyNoMoreInteractions(mockFirebaseAuth);
     });
   });
 
@@ -355,6 +351,133 @@ void main() {
     test('should call FirebaseAuthInstance signOut', () async {
       await dataSource.logout();
       verify(mockFirebaseAuth.signOut());
+    });
+  });
+
+  group('checkCurrentPassword', () {
+    final currentPasswordTest = 'currentPassword';
+    test('should call FirebaseAuthInstance checkCurrentPassword', () async {
+      when(mockFirebaseAuth.currentUser()).thenAnswer(
+        (_) async => mockFirebaseUser,
+      );
+      when(mockFirebaseUser.reauthenticateWithCredential(any)).thenAnswer(
+        (_) async => mockAuthResult,
+      );
+
+      await dataSource.checkCurrentPassword(
+        currentPassword: currentPasswordTest,
+      );
+
+      verify(mockFirebaseAuth.currentUser());
+      verify(mockFirebaseUser.reauthenticateWithCredential(any));
+    });
+
+    test('should throw InvalidCredentialException', () async {
+      when(mockFirebaseAuth.currentUser()).thenAnswer(
+        (_) async => mockFirebaseUser,
+      );
+      when(mockFirebaseUser.reauthenticateWithCredential(any)).thenThrow(
+        PlatformException(code: 'ERROR_INVALID_CREDENTIAL'),
+      );
+
+      expect(
+        () => dataSource.checkCurrentPassword(
+          currentPassword: currentPasswordTest,
+        ),
+        throwsA(isA<InvalidCredentialException>()),
+      );
+
+      verify(mockFirebaseAuth.currentUser());
+    });
+
+    test('should throw UserDisabledException', () async {
+      when(mockFirebaseAuth.currentUser()).thenAnswer(
+        (_) async => mockFirebaseUser,
+      );
+      when(mockFirebaseUser.reauthenticateWithCredential(any)).thenThrow(
+        PlatformException(code: 'ERROR_USER_DISABLED'),
+      );
+
+      expect(
+        () => dataSource.checkCurrentPassword(
+          currentPassword: currentPasswordTest,
+        ),
+        throwsA(isA<UserDisabledException>()),
+      );
+
+      verify(mockFirebaseAuth.currentUser());
+    });
+
+    test('should throw UserNotFoundException', () async {
+      when(mockFirebaseAuth.currentUser()).thenAnswer(
+        (_) async => mockFirebaseUser,
+      );
+      when(mockFirebaseUser.reauthenticateWithCredential(any)).thenThrow(
+        PlatformException(code: 'ERROR_USER_NOT_FOUND'),
+      );
+
+      expect(
+        () => dataSource.checkCurrentPassword(
+          currentPassword: currentPasswordTest,
+        ),
+        throwsA(isA<UserNotFoundException>()),
+      );
+
+      verify(mockFirebaseAuth.currentUser());
+    });
+
+    test('should throw WrongPasswordException', () async {
+      when(mockFirebaseAuth.currentUser()).thenAnswer(
+        (_) async => mockFirebaseUser,
+      );
+      when(mockFirebaseUser.reauthenticateWithCredential(any)).thenThrow(
+        PlatformException(code: 'ERROR_WRONG_PASSWORD'),
+      );
+
+      expect(
+        () => dataSource.checkCurrentPassword(
+          currentPassword: currentPasswordTest,
+        ),
+        throwsA(isA<WrongPasswordException>()),
+      );
+
+      verify(mockFirebaseAuth.currentUser());
+    });
+
+    test('should throw OperationNotAllowedException', () async {
+      when(mockFirebaseAuth.currentUser()).thenAnswer(
+        (_) async => mockFirebaseUser,
+      );
+      when(mockFirebaseUser.reauthenticateWithCredential(any)).thenThrow(
+        PlatformException(code: 'ERROR_OPERATION_NOT_ALLOWED'),
+      );
+
+      expect(
+        () => dataSource.checkCurrentPassword(
+          currentPassword: currentPasswordTest,
+        ),
+        throwsA(isA<OperationNotAllowedException>()),
+      );
+
+      verify(mockFirebaseAuth.currentUser());
+    });
+
+    test('should throw UndefinedFirebaseAuthException', () async {
+      when(mockFirebaseAuth.currentUser()).thenAnswer(
+        (_) async => mockFirebaseUser,
+      );
+      when(mockFirebaseUser.reauthenticateWithCredential(any)).thenThrow(
+        PlatformException(code: ''),
+      );
+
+      expect(
+        () => dataSource.checkCurrentPassword(
+          currentPassword: currentPasswordTest,
+        ),
+        throwsA(isA<UndefinedFirebaseAuthException>()),
+      );
+
+      verify(mockFirebaseAuth.currentUser());
     });
   });
 

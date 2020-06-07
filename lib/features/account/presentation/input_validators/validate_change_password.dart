@@ -14,6 +14,10 @@ class ValidateChangePassword extends InputValidator<Params> {
 
   @override
   Either<Failure, bool> call(Params params) {
+    if (params.currentPassword == null || params.currentPassword.isEmpty) {
+      return Left(FieldEmptyFailure());
+    }
+
     final validatePasswordResult = validatePassword(vp.Params(
       password: params.password,
     ));
@@ -23,15 +27,23 @@ class ValidateChangePassword extends InputValidator<Params> {
       return Left(PasswordAndCurrentPasswordMatchFailure());
     }
 
+    if (params.password != params.retypedPassword) {
+      return Left(PasswordAndRetypedMismatchFailure());
+    }
+
     return Right(true);
   }
 }
 
 class Params extends Equatable {
-  final String password, currentPassword;
+  final String currentPassword, password, retypedPassword;
 
-  Params({this.password, this.currentPassword});
+  Params({
+    @required this.currentPassword,
+    @required this.password,
+    @required this.retypedPassword,
+  });
 
   @override
-  List<Object> get props => [password, currentPassword];
+  List<Object> get props => [currentPassword, password, retypedPassword];
 }

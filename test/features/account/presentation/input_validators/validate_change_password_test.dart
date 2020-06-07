@@ -25,8 +25,22 @@ void main() {
 
   final currentPasswordTest = 'abcdef';
 
+  test('should return FieldEmptyFailure', () {
+    final passwordTest = '123456';
+    final retypedPasswordTest = '123456';
+
+    final result = validateChangePassword(Params(
+      password: passwordTest,
+      retypedPassword: retypedPasswordTest,
+      currentPassword: '',
+    ));
+
+    expect(result, Left(FieldEmptyFailure()));
+  });
+
   test('should return PasswordLessThanCharactersFailure', () {
     final passwordTest = '1234';
+    final retypedPasswordTest = '123456';
 
     when(mockValidatePassword(any)).thenReturn(Left(
       PasswordLessThanCharactersFailure(),
@@ -34,6 +48,7 @@ void main() {
 
     final result = validateChangePassword(Params(
       password: passwordTest,
+      retypedPassword: retypedPasswordTest,
       currentPassword: currentPasswordTest,
     ));
 
@@ -43,11 +58,13 @@ void main() {
 
   test('should return PasswordAndCurrentPasswordMatchFailure', () {
     final passwordTest = 'abcdef';
+    final retypedPasswordTest = passwordTest;
 
     setUpValidatePasswordSuccess();
 
     final result = validateChangePassword(Params(
       password: passwordTest,
+      retypedPassword: retypedPasswordTest,
       currentPassword: currentPasswordTest,
     ));
 
@@ -55,13 +72,31 @@ void main() {
     expect(result, Left(PasswordAndCurrentPasswordMatchFailure()));
   });
 
-  test('should return true', () {
+  test('should return PasswordAndRetypedMismatchFailure', () {
     final passwordTest = '123456';
+    final retypedPasswordTest = '1234567';
 
     setUpValidatePasswordSuccess();
 
     final result = validateChangePassword(Params(
       password: passwordTest,
+      retypedPassword: retypedPasswordTest,
+      currentPassword: currentPasswordTest,
+    ));
+
+    verify(mockValidatePassword(any));
+    expect(result, Left(PasswordAndRetypedMismatchFailure()));
+  });
+
+  test('should return true', () {
+    final passwordTest = '123456';
+    final retypedPasswordTest = passwordTest;
+
+    setUpValidatePasswordSuccess();
+
+    final result = validateChangePassword(Params(
+      password: passwordTest,
+      retypedPassword: retypedPasswordTest,
       currentPassword: currentPasswordTest,
     ));
 

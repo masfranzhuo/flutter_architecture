@@ -7,6 +7,8 @@ import 'package:mockito/mockito.dart';
 
 class MockDio extends Mock implements Dio {}
 
+class MockInterceptors extends Mock implements Interceptors {}
+
 class MockFirebaseAuthDataSource extends Mock
     implements FirebaseAuthDataSource {}
 
@@ -15,28 +17,90 @@ class MockResponse extends Mock implements Response {}
 void main() {
   HttpClient httpClient;
   MockDio mockDio;
+  MockInterceptors mockInterceptors;
   MockFirebaseAuthDataSource mockFirebaseAuthDataSource;
 
   MockResponse mockResponse;
 
   setUp(() {
     mockDio = MockDio();
+    mockInterceptors = MockInterceptors();
     mockFirebaseAuthDataSource = MockFirebaseAuthDataSource();
-    httpClient = HttpClient(
-      dioHttpClient: mockDio,
-      firebaseAuthDataSource: mockFirebaseAuthDataSource,
-    );
 
     mockResponse = MockResponse();
   });
 
+  final idTokenNullTest = null;
+  final idTokenTest = 'idToken';
+
+  HttpClient setUpHttpClient({
+    bool isCached = false,
+    bool isLogged = false,
+  }) {
+    return httpClient = HttpClient(
+      dioHttpClient: mockDio,
+      firebaseAuthDataSource: mockFirebaseAuthDataSource,
+      isCached: isCached,
+      isLogged: isLogged,
+    );
+  }
+
+  setUpHttpClientWithInterceptor() {
+    httpClient = setUpHttpClient(isCached: true, isLogged: true);
+    when(mockDio.interceptors).thenReturn(mockInterceptors);
+    when(mockInterceptors.add(any)).thenReturn(mockDio);
+    when(mockFirebaseAuthDataSource.getCurrentUserIdToken()).thenAnswer(
+      (_) async => idTokenTest,
+    );
+  }
+
+  setUpGetCurrentUserIdTokenSuccessfully() {
+    httpClient = setUpHttpClient();
+    when(mockFirebaseAuthDataSource.getCurrentUserIdToken()).thenAnswer(
+      (_) async => idTokenTest,
+    );
+  }
+
+  setUpGetCurrentUserIdTokenFailed() {
+    httpClient = setUpHttpClient();
+    when(mockFirebaseAuthDataSource.getCurrentUserIdToken()).thenAnswer(
+      (_) async => idTokenNullTest,
+    );
+  }
+
+  group('Dio', () {
+    test('should return existing dio', () async {
+      httpClient = setUpHttpClient();
+
+      expect(httpClient.dio, mockDio);
+    });
+
+    test('should set isCached, isLogged', () async {
+      httpClient = setUpHttpClient(isCached: true, isLogged: true);
+      httpClient.cache = false;
+      httpClient.logger = false;
+
+      expect(httpClient.isCached, false);
+      expect(httpClient.isLogged, false);
+    });
+  });
+
   group('postFormData', () {
-    final idTokenTest = 'idToken';
+    test('should call interceptors', () async {
+      setUpHttpClientWithInterceptor();
+
+      await httpClient.postFormData(
+        endPoint: EndPoint.auth,
+        formData: FormData(),
+      );
+
+      verify(mockDio.interceptors);
+      verify(mockInterceptors.add(any));
+      verify(mockFirebaseAuthDataSource.getCurrentUserIdToken());
+    });
 
     test('should call getIdToken', () async {
-      when(mockFirebaseAuthDataSource.getCurrentUserIdToken()).thenAnswer(
-        (_) async => idTokenTest,
-      );
+      setUpGetCurrentUserIdTokenSuccessfully();
 
       await httpClient.postFormData(
         endPoint: EndPoint.auth,
@@ -49,9 +113,7 @@ void main() {
     test(
       'should call post of dio with correct endpoint along with data and options',
       () async {
-        when(mockFirebaseAuthDataSource.getCurrentUserIdToken()).thenAnswer(
-          (_) async => idTokenTest,
-        );
+        setUpGetCurrentUserIdTokenSuccessfully();
         when(mockDio.post(
           any,
           data: anyNamed('data'),
@@ -79,9 +141,7 @@ void main() {
     test(
       'should return dio error exception response',
       () async {
-        when(mockFirebaseAuthDataSource.getCurrentUserIdToken()).thenAnswer(
-          (_) async => idTokenTest,
-        );
+        setUpGetCurrentUserIdTokenSuccessfully();
         when(mockDio.post(
           any,
           data: anyNamed('data'),
@@ -98,9 +158,7 @@ void main() {
     );
 
     test('should throw InvalidIdTokenException', () async {
-      when(mockFirebaseAuthDataSource.getCurrentUserIdToken()).thenAnswer(
-        (_) async => null,
-      );
+      setUpGetCurrentUserIdTokenFailed();
 
       expect(
         () async => await httpClient.postFormData(
@@ -114,13 +172,10 @@ void main() {
   });
 
   group('postFirebaseData', () {
-    final idTokenTest = 'idToken';
     final idTest = 'user_uid';
 
     test('should call getIdToken', () async {
-      when(mockFirebaseAuthDataSource.getCurrentUserIdToken()).thenAnswer(
-        (_) async => idTokenTest,
-      );
+      setUpGetCurrentUserIdTokenSuccessfully();
 
       await httpClient.postFirebaseData(
         endPoint:
@@ -134,9 +189,7 @@ void main() {
     test(
       'should call post of dio with correct endpoint along with data and options',
       () async {
-        when(mockFirebaseAuthDataSource.getCurrentUserIdToken()).thenAnswer(
-          (_) async => idTokenTest,
-        );
+        setUpGetCurrentUserIdTokenSuccessfully();
         when(mockDio.post(
           any,
           data: anyNamed('data'),
@@ -165,9 +218,7 @@ void main() {
     test(
       'should return dio error exception response',
       () async {
-        when(mockFirebaseAuthDataSource.getCurrentUserIdToken()).thenAnswer(
-          (_) async => idTokenTest,
-        );
+        setUpGetCurrentUserIdTokenSuccessfully();
         when(mockDio.post(
           any,
           data: anyNamed('data'),
@@ -185,14 +236,12 @@ void main() {
     );
 
     test('should throw InvalidIdTokenException', () async {
-      when(mockFirebaseAuthDataSource.getCurrentUserIdToken()).thenAnswer(
-        (_) async => null,
-      );
+      setUpGetCurrentUserIdTokenFailed();
 
       expect(
         () async => await httpClient.postFirebaseData(
           endPoint:
-              '${EndPoint.users}/$idTest.json?${EndPoint.auth}=$idTokenTest',
+              '${EndPoint.users}/$idTest.json?${EndPoint.auth}=$idTokenNullTest',
           formData: {},
         ),
         throwsA(isA<InvalidIdTokenException>()),
@@ -202,13 +251,10 @@ void main() {
   });
 
   group('patchFirebaseData', () {
-    final idTokenTest = 'idToken';
     final idTest = 'user_uid';
 
     test('should call getIdToken', () async {
-      when(mockFirebaseAuthDataSource.getCurrentUserIdToken()).thenAnswer(
-        (_) async => idTokenTest,
-      );
+      setUpGetCurrentUserIdTokenSuccessfully();
 
       await httpClient.patchFirebaseData(
         endPoint:
@@ -222,9 +268,7 @@ void main() {
     test(
       'should call patch of dio with correct endpoint along with data and options',
       () async {
-        when(mockFirebaseAuthDataSource.getCurrentUserIdToken()).thenAnswer(
-          (_) async => idTokenTest,
-        );
+        setUpGetCurrentUserIdTokenSuccessfully();
         when(mockDio.patch(
           any,
           data: anyNamed('data'),
@@ -253,9 +297,7 @@ void main() {
     test(
       'should return dio error exception response',
       () async {
-        when(mockFirebaseAuthDataSource.getCurrentUserIdToken()).thenAnswer(
-          (_) async => idTokenTest,
-        );
+        setUpGetCurrentUserIdTokenSuccessfully();
         when(mockDio.patch(
           any,
           data: anyNamed('data'),
@@ -273,14 +315,12 @@ void main() {
     );
 
     test('should throw InvalidIdTokenException', () async {
-      when(mockFirebaseAuthDataSource.getCurrentUserIdToken()).thenAnswer(
-        (_) async => null,
-      );
+      setUpGetCurrentUserIdTokenFailed();
 
       expect(
         () async => await httpClient.patchFirebaseData(
           endPoint:
-              '${EndPoint.users}/$idTest.json?${EndPoint.auth}=$idTokenTest',
+              '${EndPoint.users}/$idTest.json?${EndPoint.auth}=$idTokenNullTest',
           formData: {},
         ),
         throwsA(isA<InvalidIdTokenException>()),
@@ -290,13 +330,10 @@ void main() {
   });
 
   group('getFirebaseData', () {
-    final idTokenTest = 'idToken';
     final idTest = 'user_uid';
 
     test('should call getIdToken', () async {
-      when(mockFirebaseAuthDataSource.getCurrentUserIdToken()).thenAnswer(
-        (_) async => idTokenTest,
-      );
+      setUpGetCurrentUserIdTokenSuccessfully();
 
       await httpClient.getFirebaseData(
         endPoint:
@@ -309,9 +346,7 @@ void main() {
     test(
       'should call get of dio with correct endpoint along with data and options',
       () async {
-        when(mockFirebaseAuthDataSource.getCurrentUserIdToken()).thenAnswer(
-          (_) async => idTokenTest,
-        );
+        setUpGetCurrentUserIdTokenSuccessfully();
         when(mockDio.get(
           any,
           options: anyNamed('options'),
@@ -337,9 +372,7 @@ void main() {
     test(
       'should return dio error exception response',
       () async {
-        when(mockFirebaseAuthDataSource.getCurrentUserIdToken()).thenAnswer(
-          (_) async => idTokenTest,
-        );
+        setUpGetCurrentUserIdTokenSuccessfully();
         when(mockDio.get(
           any,
           options: anyNamed('options'),
@@ -355,14 +388,12 @@ void main() {
     );
 
     test('should throw InvalidIdTokenException', () async {
-      when(mockFirebaseAuthDataSource.getCurrentUserIdToken()).thenAnswer(
-        (_) async => null,
-      );
+      setUpGetCurrentUserIdTokenFailed();
 
       expect(
         () async => await httpClient.getFirebaseData(
           endPoint:
-              '${EndPoint.users}/$idTest.json?${EndPoint.auth}=$idTokenTest',
+              '${EndPoint.users}/$idTest.json?${EndPoint.auth}=$idTokenNullTest',
         ),
         throwsA(isA<InvalidIdTokenException>()),
       );

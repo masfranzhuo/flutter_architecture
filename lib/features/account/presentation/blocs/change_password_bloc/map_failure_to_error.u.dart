@@ -1,12 +1,27 @@
 part of 'change_password_bloc.dart';
 
-enum ChangePasswordErrorGroup { general, currentPassword, password, retypedPassword }
+enum ChangePasswordErrorGroup {
+  general,
+  currentPassword,
+  password,
+  retypedPassword
+}
 
 ChangePasswordErrorState _$mapFailureToError(Failure failure) {
   ChangePasswordErrorGroup errorGroup = ChangePasswordErrorGroup.general;
   String message = 'Undefined Error. ${failure.code} - ${failure.message}';
 
- if (failure is PasswordAndCurrentPasswordMatchFailure) {
+  if (failure is PasswordAndCurrentPasswordMatchFailure) {
+    errorGroup = ChangePasswordErrorGroup.currentPassword;
+    message = 'New password must be different from the current password';
+  }
+
+  if (failure is FieldEmptyFailure) {
+    errorGroup = ChangePasswordErrorGroup.currentPassword;
+    message = 'Current password can\'t empty';
+  }
+
+  if (failure is WrongPasswordFailure) {
     errorGroup = ChangePasswordErrorGroup.currentPassword;
     message = 'Current password is invalid';
   }

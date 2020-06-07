@@ -36,9 +36,11 @@ abstract class FirebaseAuthDataSource {
   /// Won't throw any exception
   Future<String> getCurrentUserIdToken();
 
-  Future<String> getCurrentUserId();
+  Future<FirebaseUser> getCurrentUser();
 
   Future<void> logout();
+
+  Future<void> checkCurrentPassword({@required String currentPassword});
 
   Future<void> changePassword({@required String password});
 
@@ -128,16 +130,45 @@ class FirebaseAuthDataSourceImpl extends FirebaseAuthDataSource {
   }
 
   @override
-  Future<String> getCurrentUserId() async {
+  Future<FirebaseUser> getCurrentUser() async {
     final currentUser = await firebaseAuthInstance.currentUser();
 
     if (currentUser == null) throw UnauthorizedException();
-    return currentUser.uid;
+    return currentUser;
   }
 
   @override
   Future<void> logout() async {
     return await firebaseAuthInstance.signOut();
+  }
+
+  @override
+  Future<void> checkCurrentPassword({@required String currentPassword}) async {
+    try {
+      final firebaseUser = await firebaseAuthInstance.currentUser();
+
+      final credential = EmailAuthProvider.getCredential(
+        email: firebaseUser.email,
+        password: currentPassword,
+      );
+
+      await firebaseUser.reauthenticateWithCredential(credential);
+    } on PlatformException catch (e) {
+      switch (e.code) {
+        case 'ERROR_INVALID_CREDENTIAL':
+          throw InvalidCredentialException(code: e.code);
+        case 'ERROR_USER_DISABLED':
+          throw UserDisabledException(code: e.code);
+        case 'ERROR_USER_NOT_FOUND':
+          throw UserNotFoundException(code: e.code);
+        case 'ERROR_WRONG_PASSWORD':
+          throw WrongPasswordException(code: e.code);
+        case 'ERROR_OPERATION_NOT_ALLOWED':
+          throw OperationNotAllowedException(code: e.code);
+        default:
+          throw UndefinedFirebaseAuthException(code: e.code);
+      }
+    }
   }
 
   @override

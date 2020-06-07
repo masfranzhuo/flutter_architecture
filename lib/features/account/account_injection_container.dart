@@ -9,18 +9,22 @@ import 'package:flutter_architecture/features/account/data/data_sources/firebase
 import 'package:flutter_architecture/features/account/data/repositories/account_repository_impl.dart';
 import 'package:flutter_architecture/features/account/domain/repositories/account_repository.dart';
 import 'package:flutter_architecture/features/account/domain/use_cases/change_password.dart';
+import 'package:flutter_architecture/features/account/domain/use_cases/get_user_profile.dart';
 import 'package:flutter_architecture/features/account/domain/use_cases/login_with_password.dart';
 import 'package:flutter_architecture/features/account/domain/use_cases/logout.dart';
 import 'package:flutter_architecture/features/account/domain/use_cases/register_with_password.dart';
 import 'package:flutter_architecture/features/account/domain/use_cases/reset_password.dart';
+import 'package:flutter_architecture/features/account/domain/use_cases/update_user_profile.dart';
 import 'package:flutter_architecture/features/account/presentation/blocs/change_password_bloc/change_password_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/blocs/login_bloc/login_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/blocs/register_bloc/register_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/blocs/forget_password_bloc/forget_password_bloc.dart';
+import 'package:flutter_architecture/features/account/presentation/blocs/user_profile_form_bloc/user_profile_form_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/input_validators/validate_change_password.dart';
 import 'package:flutter_architecture/features/account/presentation/input_validators/validate_login.dart';
 import 'package:flutter_architecture/features/account/presentation/input_validators/validate_register.dart';
 import 'package:flutter_architecture/features/account/presentation/input_validators/validate_forget_password.dart';
+import 'package:flutter_architecture/features/account/presentation/input_validators/validate_update_user_profile.dart';
 import 'package:get_it/get_it.dart';
 
 void init() {
@@ -49,6 +53,12 @@ void init() {
       validateChangePassword: GetIt.I(),
     ),
   );
+  GetIt.I.registerFactory(
+    () => UserProfileFormBloc(
+      updateUserProfile: GetIt.I(),
+      validateUpdateUserProfile: GetIt.I(),
+    ),
+  );
 
   // Use cases
   GetIt.I.registerLazySingleton(
@@ -58,13 +68,13 @@ void init() {
   GetIt.I.registerLazySingleton(() => ResetPassword(repository: GetIt.I()));
   GetIt.I.registerLazySingleton(() => ChangePassword(repository: GetIt.I()));
   GetIt.I.registerLazySingleton(() => Logout(repository: GetIt.I()));
+  GetIt.I.registerLazySingleton(() => GetUserProfile(repository: GetIt.I()));
+  GetIt.I.registerLazySingleton(() => UpdateUserProfile(repository: GetIt.I()));
 
   // Form validators
   GetIt.I.registerLazySingleton(
-    () => ValidateRegister(
-      validateEmail: GetIt.I(),
-      validatePassword: GetIt.I()
-    ),
+    () =>
+        ValidateRegister(validateEmail: GetIt.I(), validatePassword: GetIt.I()),
   );
   GetIt.I.registerLazySingleton(
     () => ValidateLogin(
@@ -77,6 +87,9 @@ void init() {
   );
   GetIt.I.registerFactory(
     () => ValidateChangePassword(validatePassword: GetIt.I()),
+  );
+  GetIt.I.registerFactory(
+    () => ValidateUpdateUserProfile(),
   );
 
   // Input validators

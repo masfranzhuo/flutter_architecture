@@ -3,13 +3,24 @@ import 'package:flutter_architecture/core/presentation/custom_page_route.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_snack_bar.dart';
 import 'package:flutter_architecture/features/account/domain/entities/staff.dart';
 import 'package:flutter_architecture/features/account/presentation/blocs/account_bloc.dart';
+import 'package:flutter_architecture/features/account/presentation/pages/change_password_page/change_password_page.dart';
 import 'package:flutter_architecture/features/account/presentation/pages/login_page/login_page.dart';
+import 'package:flutter_architecture/features/account/presentation/pages/user_profile_form_page/user_profile_form_page.dart';
 import 'package:flutter_architecture/features/account/presentation/widgets/menus/admin_menu.dart';
 import 'package:flutter_architecture/features/account/presentation/widgets/menus/customer_menu.dart';
 import 'package:flutter_architecture/features/account/presentation/widgets/menus/super_admin.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MenuDrawer extends StatelessWidget {
+  void changePassword(BuildContext context) {
+    Navigator.of(context).push(
+      CustomPageRoute.slide(
+        page: ChangePasswordPage(),
+        pageType: PageType.changePassword,
+      ),
+    );
+  }
+
   void logout(BuildContext context) {
     showDialog(
       context: context,
@@ -44,11 +55,10 @@ class MenuDrawer extends StatelessWidget {
         if (state is AccountErrorState &&
             state.error == AccountErrorGroup.general) {
           Navigator.of(context).pop();
-          CustomSnackBar.showSnackBar(
-            context: context,
+          Scaffold.of(context).showSnackBar(CustomSnackBar(
             message: state.message,
             mode: SnackBarMode.error,
-          );
+          ));
         }
 
         if (state is AccountLoadedState && !state.isLogin) {
@@ -70,11 +80,18 @@ class MenuDrawer extends StatelessWidget {
           _userAccount = UserAccountsDrawerHeader(
             accountName: Text(state.account?.name ?? 'Name'),
             accountEmail: Text(state.account?.email ?? 'Email'),
-            currentAccountPicture: CircleAvatar(
-              child: Icon(Icons.person),
+            currentAccountPicture: ClipRRect(
+              borderRadius: BorderRadius.circular(32),
+              child: state.account?.photoUrl != null
+                  ? Image.network(state.account.photoUrl)
+                  : CircleAvatar(child: Icon(Icons.person)),
             ),
             onDetailsPressed: () {
               Navigator.of(context).pop();
+              Navigator.of(context).push(CustomPageRoute.slide(
+                page: UserProfileFormPage(),
+                pageType: PageType.userProfile,
+              ));
             },
           );
 
@@ -92,6 +109,11 @@ class MenuDrawer extends StatelessWidget {
             children: <Widget>[
               _userAccount,
               _menuWidget,
+              ListTile(
+                title: Text('Change Password'),
+                trailing: Icon(Icons.lock),
+                onTap: () => changePassword(context),
+              ),
               ListTile(
                 title: Text('Logout'),
                 trailing: Icon(Icons.exit_to_app),

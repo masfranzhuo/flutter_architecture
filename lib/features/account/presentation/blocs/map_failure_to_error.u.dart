@@ -1,6 +1,6 @@
 part of 'account_bloc.dart';
 
-enum AccountErrorGroup { general }
+enum AccountErrorGroup { general, name, phoneNumber }
 
 AccountErrorState _$mapFailureToError(Failure failure) {
   AccountErrorGroup errorGroup = AccountErrorGroup.general;

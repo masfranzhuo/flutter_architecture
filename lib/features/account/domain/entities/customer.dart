@@ -54,6 +54,29 @@ class Customer extends Account {
   @override
   bool get stringify => true;
 
+  Customer copyWith({
+    String id,
+    String name,
+    String email,
+    String accountStatus,
+    String phoneNumber,
+    String photoUrl,
+    String gender,
+    String birthPlace,
+    DateTime birthDate,
+  }) =>
+      Customer(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        email: email ?? this.email,
+        accountStatus: accountStatus ?? this.accountStatus,
+        phoneNumber: phoneNumber ?? this.phoneNumber,
+        photoUrl: photoUrl ?? this.photoUrl,
+        gender: gender ?? this.gender,
+        birthPlace: birthPlace ?? this.birthPlace,
+        birthDate: birthDate ?? this.birthDate,
+      );
+
   factory Customer.fromJson(Map<String, dynamic> json) =>
       _$CustomerFromJson(json);
 

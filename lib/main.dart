@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
                 logout: GetIt.I(),
                 loginBloc: BlocProvider.of<LoginBloc>(context),
                 registerBloc: BlocProvider.of<RegisterBloc>(context),
+                getUserProfile: GetIt.I(),
               ),
             ),
             BlocProvider<StorageBloc>(create: (_) => GetIt.I()),

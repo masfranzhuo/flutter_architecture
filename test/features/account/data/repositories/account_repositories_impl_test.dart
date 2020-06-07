@@ -362,10 +362,13 @@ void main() {
   });
   group('logout', () {
     test('should call all dependencies in order', () async {
+      when(mockFirebaseAuthDataSource.getCurrentUser())
+          .thenAnswer((_) async => mockFirebaseUser);
+
       await repository.logout();
 
       verifyInOrder([
-        mockFirebaseAuthDataSource.getCurrentUserId(),
+        mockFirebaseAuthDataSource.getCurrentUser(),
         mockFirebaseMessagingDataSource.getDeviceToken(),
         mockAccountDataSource.removeDeviceToken(
           id: anyNamed('id'),
@@ -376,6 +379,8 @@ void main() {
     });
 
     test('should return Right(true)', () async {
+      when(mockFirebaseAuthDataSource.getCurrentUser())
+          .thenAnswer((_) async => mockFirebaseUser);
       when(mockAccountDataSource.removeDeviceToken(
         id: anyNamed('id'),
         deviceToken: anyNamed('deviceToken'),
@@ -387,6 +392,8 @@ void main() {
     });
 
     test('should return UnexpectedFailure', () async {
+      when(mockFirebaseAuthDataSource.getCurrentUser())
+          .thenAnswer((_) async => mockFirebaseUser);
       when(mockAccountDataSource.removeDeviceToken(
         id: anyNamed('id'),
         deviceToken: anyNamed('deviceToken'),
@@ -400,6 +407,8 @@ void main() {
     test(
       'should call toFailure if exception is AppException',
       () async {
+        when(mockFirebaseAuthDataSource.getCurrentUser())
+            .thenAnswer((_) async => mockFirebaseUser);
         when(mockAppException.toFailure()).thenReturn(mockFailure);
         when(mockAccountDataSource.removeDeviceToken(
           id: anyNamed('id'),
@@ -477,11 +486,61 @@ void main() {
     );
   });
 
+  group('updateUserProfile', () {
+    test('should update customer', () async {
+      when(mockAccountDataSource.updateUserProfile(
+        account: anyNamed('account'),
+      )).thenAnswer((_) async => mockCustomer);
+
+      final result = await repository.updateUserProfile(account: mockCustomer);
+
+      expect(result, Right(mockCustomer));
+    });
+
+    test('should update staff', () async {
+      when(mockAccountDataSource.updateUserProfile(
+        account: anyNamed('account'),
+      )).thenAnswer((_) async => mockStaff);
+
+      final result = await repository.updateUserProfile(account: mockStaff);
+
+      expect(result, Right(mockStaff));
+    });
+
+    test('should return UnexpectedFailure', () async {
+      when(mockAccountDataSource.updateUserProfile(
+        account: anyNamed('account'),
+      )).thenThrow(UnexpectedException());
+
+      final result = await repository.updateUserProfile(account: mockStaff);
+
+      expect((result as Left).value, isA<UnexpectedFailure>());
+    });
+
+    test(
+      'should call toFailure if exception is AppException',
+      () async {
+        when(mockAppException.toFailure()).thenReturn(mockFailure);
+        when(mockAccountDataSource.updateUserProfile(
+          account: anyNamed('account'),
+        )).thenThrow(mockAppException);
+
+        final result = await repository.updateUserProfile(account: mockStaff);
+
+        expect((result as Left).value, mockFailure);
+        expect((result as Left).value, isA<Failure>());
+      },
+    );
+  });
+
   group('changePassword', () {
     final passwordTest = 'password';
     final currentPasswordTest = 'currentPassword';
 
     test('should return true', () async {
+      when(mockFirebaseAuthDataSource.checkCurrentPassword(
+        currentPassword: anyNamed('currentPassword'),
+      )).thenAnswer((_) async => Right(true));
       when(mockFirebaseAuthDataSource.changePassword(
         password: anyNamed('password'),
       )).thenAnswer((_) async => Right(true));

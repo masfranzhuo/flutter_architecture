@@ -58,7 +58,7 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
         hintText: widget.hintText,
         iconData: widget.iconData,
         errorText: widget.errorText,
-        suffixIcon: GestureDetector(
+        suffixIcon: InkWell(
           onTap: () => _selectTime(context),
           child: Icon(Icons.timer),
         ),

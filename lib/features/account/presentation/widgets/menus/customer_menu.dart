@@ -11,7 +11,7 @@ class CustomerMenu extends StatelessWidget {
           title: Text('Customer'),
           trailing: Icon(Icons.person),
           onTap: () {
-            Navigator.of(context).pushReplacement(CustomPageRoute.slide(
+            Navigator.of(context).push(CustomPageRoute.slide(
               page: CustomerHomePage(),
               pageType: PageType.customerHome,
             ));

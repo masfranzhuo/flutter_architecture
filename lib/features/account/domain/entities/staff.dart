@@ -48,6 +48,25 @@ class Staff extends Account {
   @override
   bool get stringify => true;
 
+  Staff copyWith({
+    String id,
+    String name,
+    String email,
+    String accountStatus,
+    String role,
+    String phoneNumber,
+    String photoUrl,
+  }) =>
+      Staff(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        email: email ?? this.email,
+        accountStatus: accountStatus ?? this.accountStatus,
+        role: role ?? this.role,
+        phoneNumber: phoneNumber ?? this.phoneNumber,
+        photoUrl: photoUrl ?? this.photoUrl,
+      );
+
   factory Staff.fromJson(Map<String, dynamic> json) => _$StaffFromJson(json);
 
   Map<String, dynamic> toJson() => _$StaffToJson(this);

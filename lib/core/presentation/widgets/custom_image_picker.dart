@@ -16,6 +16,7 @@ class CustomImagePicker extends StatefulWidget {
   final Function(File) onPicked;
   final bool readOnly;
   final String errorText;
+  final Widget defaultImage;
 
   const CustomImagePicker({
     Key key,
@@ -27,6 +28,7 @@ class CustomImagePicker extends StatefulWidget {
     this.onPicked,
     this.readOnly = false,
     this.errorText,
+    this.defaultImage,
   }) : super(key: key);
 
   @override
@@ -59,31 +61,43 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
   }
 
   void _showOptionDialog(BuildContext context) {
+    List<Widget> widgets = [];
+
+    if (widget.isTakePhotoAvailable) {
+      widgets.add(
+        ListTile(
+          title: Text('Camera'),
+          leading: Icon(Icons.photo_camera),
+          onTap: () {
+            _pickImage(ImagePickerSource.camera);
+            Navigator.pop(context);
+          },
+        ),
+      );
+
+      if (widget.isPickImageAvailable) widgets.add(Divider());
+    }
+
+    if (widget.isPickImageAvailable) {
+      widgets.add(
+        ListTile(
+          title: Text('Gallery'),
+          leading: Icon(Icons.image),
+          onTap: () {
+            _pickImage(ImagePickerSource.gallery);
+            Navigator.pop(context);
+          },
+        ),
+      );
+    }
+
     showModalBottomSheet(
       context: context,
       builder: (context) {
         return SafeArea(
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              ListTile(
-                title: Text('Camera'),
-                leading: Icon(Icons.photo_camera),
-                onTap: () {
-                  _pickImage(ImagePickerSource.camera);
-                  Navigator.pop(context);
-                },
-              ),
-              Divider(),
-              ListTile(
-                title: Text('Gallery'),
-                leading: Icon(Icons.image),
-                onTap: () {
-                  _pickImage(ImagePickerSource.gallery);
-                  Navigator.pop(context);
-                },
-              ),
-            ],
+            children: widgets,
           ),
         );
       },
@@ -115,21 +129,20 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
   }
 
   Widget _buildImage({@required Widget child}) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-      child: InkWell(
-        onTap: widget.isToggleButton ? null : () => _showOptionDialog(context),
-        child: WrapErrorText(
-          errorText: widget.errorText,
-          child: child,
-        ),
+    return InkWell(
+      onTap: widget.isToggleButton ? null : () => _showOptionDialog(context),
+      child: WrapErrorText(
+        errorText: widget.errorText,
+        child: child,
       ),
     );
   }
 
   Widget _buildImageFile(BuildContext context) {
     return _buildImage(
-      child: _file != null ? Image.file(_file) : Placeholder(),
+      child: _file != null
+          ? Image.file(_file)
+          : widget.defaultImage ?? Placeholder(),
     );
   }
 

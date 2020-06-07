@@ -95,10 +95,10 @@ class AccountRepositoryImpl extends AccountRepository {
   @override
   Future<Either<Failure, bool>> logout() async {
     try {
-      final id = await firebaseAuthDataSource.getCurrentUserId();
+      final firebaseUser = await firebaseAuthDataSource.getCurrentUser();
       final deviceToken = await firebaseMessagingDataSource.getDeviceToken();
       final logoutResult = await accountDataSource.removeDeviceToken(
-        id: id,
+        id: firebaseUser.uid,
         deviceToken: deviceToken,
       );
       await firebaseAuthDataSource.logout();
@@ -133,11 +133,41 @@ class AccountRepositoryImpl extends AccountRepository {
   }
 
   @override
+  Future<Either<Failure, Account>> updateUserProfile({
+    @required Account account,
+  }) async {
+    try {
+      final userUpdateInfo = UserUpdateInfo();
+      userUpdateInfo.displayName = account.name;
+
+      if (account?.photoUrl != null) {
+        userUpdateInfo.photoUrl = account.photoUrl;
+      }
+
+      await firebaseAuthDataSource.updateProfile(updateInfo: userUpdateInfo);
+
+      final resultAccount = await accountDataSource.updateUserProfile(
+        account: account,
+      );
+
+      return Right(resultAccount);
+    } on AppException catch (e) {
+      return Left(e.toFailure());
+    } on Exception catch (e) {
+      return Left(UnexpectedFailure(message: e.toString()));
+    }
+  }
+
+  @override
   Future<Either<Failure, bool>> changePassword({
     @required String password,
     @required String currentPassword,
   }) async {
     try {
+      await firebaseAuthDataSource.checkCurrentPassword(
+        currentPassword: currentPassword,
+      );
+
       await firebaseAuthDataSource.changePassword(password: password);
       return Right(true);
     } on AppException catch (e) {

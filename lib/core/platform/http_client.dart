@@ -2,13 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:flutter_architecture/core/error/exceptions/app_exception.dart';
 import 'package:flutter_architecture/features/account/data/data_sources/firebase_auth_data_source.dart';
 import 'package:meta/meta.dart';
 
 class Url {
   static const main = 'https://flutter-architecture-b8cfd.firebaseio.com';
-  static const storage = 'https://flutter-architecture-b8cfd.firebaseio.com';
 }
 
 class EndPoint {
@@ -17,20 +17,58 @@ class EndPoint {
 }
 
 class HttpClient {
+  static BaseOptions options = BaseOptions(
+    baseUrl: Url.main,
+  );
+
   final Dio dio;
   final FirebaseAuthDataSource firebaseAuthDataSource;
+
+  /// [true] to useinterceoptors
+  bool isCached = false;
+  bool isLogged = false;
+
+  /// interceptors
+  DioCacheManager dioCacheManager = DioCacheManager(
+    CacheConfig(baseUrl: Url.main),
+  );
+  LogInterceptor logInterceptor = LogInterceptor(
+    responseBody: true,
+  );
+
+  Duration cacheDuration = Duration(hours: 1);
 
   HttpClient({
     @required this.firebaseAuthDataSource,
     Dio dioHttpClient,
-  }) : dio = dioHttpClient == null
-            ? Dio(BaseOptions(baseUrl: Url.main))
-            : dioHttpClient;
+    this.isCached = false,
+    this.isLogged = false,
+  }) : dio = (dioHttpClient == null ? Dio(options) : dioHttpClient);
+
+  set cache(bool isCached) {
+    this.isCached = isCached;
+  }
+
+  set logger(bool isLogged) {
+    this.isLogged = isLogged;
+  }
+
+  _interceptors() {
+    if (this.isCached) {
+      this.dio.interceptors.add(dioCacheManager.interceptor);
+    }
+
+    if (this.isLogged) {
+      this.dio.interceptors.add(logInterceptor);
+    }
+  }
 
   Future<Response> postFormData({
     @required String endPoint,
     @required FormData formData,
   }) async {
+    _interceptors();
+
     final idToken = await firebaseAuthDataSource.getCurrentUserIdToken();
 
     if (idToken == null || idToken.isEmpty) {
@@ -41,10 +79,13 @@ class HttpClient {
       final response = await dio.post(
         endPoint,
         data: formData,
-        options: Options(
-          headers: {
-            HttpHeaders.authorizationHeader: 'Bearer $idToken',
-          },
+        options: buildCacheOptions(
+          cacheDuration,
+          options: Options(
+            headers: {
+              HttpHeaders.authorizationHeader: 'Bearer $idToken',
+            },
+          ),
         ),
       );
 
@@ -57,6 +98,8 @@ class HttpClient {
   Future<Response> getFirebaseData({
     @required String endPoint,
   }) async {
+    _interceptors();
+
     final idToken = await firebaseAuthDataSource.getCurrentUserIdToken();
 
     if (idToken == null || idToken.isEmpty) {
@@ -66,6 +109,7 @@ class HttpClient {
     try {
       final response = await dio.get(
         '$endPoint?${EndPoint.auth}=$idToken',
+        options: buildCacheOptions(cacheDuration),
       );
 
       return response;
@@ -78,6 +122,8 @@ class HttpClient {
     @required String endPoint,
     @required Map<String, dynamic> formData,
   }) async {
+    _interceptors();
+
     final idToken = await firebaseAuthDataSource.getCurrentUserIdToken();
 
     if (idToken == null || idToken.isEmpty) {
@@ -88,10 +134,13 @@ class HttpClient {
       final response = await dio.post(
         '$endPoint?${EndPoint.auth}=$idToken',
         data: json.encode(formData),
-        options: Options(
-          headers: {
-            HttpHeaders.contentTypeHeader: 'application/json',
-          },
+        options: buildCacheOptions(
+          cacheDuration,
+          options: Options(
+            headers: {
+              HttpHeaders.contentTypeHeader: 'application/json',
+            },
+          ),
         ),
       );
 
@@ -105,6 +154,8 @@ class HttpClient {
     @required String endPoint,
     @required Map<String, dynamic> formData,
   }) async {
+    _interceptors();
+
     final idToken = await firebaseAuthDataSource.getCurrentUserIdToken();
 
     if (idToken == null || idToken.isEmpty) {
@@ -115,10 +166,13 @@ class HttpClient {
       final response = await dio.patch(
         '$endPoint?${EndPoint.auth}=$idToken',
         data: json.encode(formData),
-        options: Options(
-          headers: {
-            HttpHeaders.contentTypeHeader: 'application/json',
-          },
+        options: buildCacheOptions(
+          cacheDuration,
+          options: Options(
+            headers: {
+              HttpHeaders.contentTypeHeader: 'application/json',
+            },
+          ),
         ),
       );
 

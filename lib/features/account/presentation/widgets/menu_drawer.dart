@@ -114,6 +114,7 @@ class MenuDrawer extends StatelessWidget {
                 trailing: Icon(Icons.lock),
                 onTap: () => changePassword(context),
               ),
+              Divider(),
               ListTile(
                 title: Text('Logout'),
                 trailing: Icon(Icons.exit_to_app),

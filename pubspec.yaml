@@ -25,6 +25,7 @@ dependencies:
   image_picker: ^0.6.6+4
   image_cropper: ^1.2.2
   intl: ^0.16.1
+  charts_flutter: ^0.9.0
 
 dev_dependencies:
   flutter_test:

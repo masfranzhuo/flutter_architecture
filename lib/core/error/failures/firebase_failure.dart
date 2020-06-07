@@ -44,3 +44,8 @@ class EmailAlreadyInUseFailure extends Failure {
   EmailAlreadyInUseFailure({String message = '', String code})
       : super(message: message, code: code);
 }
+
+class InvalidCredentialFailure extends Failure {
+  InvalidCredentialFailure({String message = '', String code})
+      : super(message: message, code: code);
+}

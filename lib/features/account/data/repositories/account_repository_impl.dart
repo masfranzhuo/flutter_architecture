@@ -164,6 +164,10 @@ class AccountRepositoryImpl extends AccountRepository {
     @required String currentPassword,
   }) async {
     try {
+      await firebaseAuthDataSource.checkCurrentPassword(
+        currentPassword: currentPassword,
+      );
+
       await firebaseAuthDataSource.changePassword(password: password);
       return Right(true);
     } on AppException catch (e) {

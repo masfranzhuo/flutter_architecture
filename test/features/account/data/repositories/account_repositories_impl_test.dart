@@ -538,6 +538,9 @@ void main() {
     final currentPasswordTest = 'currentPassword';
 
     test('should return true', () async {
+      when(mockFirebaseAuthDataSource.checkCurrentPassword(
+        currentPassword: anyNamed('currentPassword'),
+      )).thenAnswer((_) async => Right(true));
       when(mockFirebaseAuthDataSource.changePassword(
         password: anyNamed('password'),
       )).thenAnswer((_) async => Right(true));

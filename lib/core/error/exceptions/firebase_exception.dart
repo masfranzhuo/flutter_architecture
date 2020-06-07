@@ -75,3 +75,11 @@ class EmailAlreadyInUseException extends AppException {
   @override
   Failure toFailure() => EmailAlreadyInUseFailure(message: message, code: code);
 }
+
+class InvalidCredentialException extends AppException {
+  InvalidCredentialException({String message, String code})
+      : super(message: message, code: code);
+
+  @override
+  Failure toFailure() => InvalidCredentialFailure(message: message, code: code);
+}

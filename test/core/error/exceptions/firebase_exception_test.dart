@@ -57,5 +57,11 @@ void main() {
 
       expect(exceptionTest.toFailure(), isA<EmailAlreadyInUseFailure>());
     });
+
+    test('should return InvalidCredentialFailure', () {
+      final exceptionTest = InvalidCredentialException();
+
+      expect(exceptionTest.toFailure(), isA<InvalidCredentialFailure>());
+    });
   });
 }

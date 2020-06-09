@@ -51,6 +51,36 @@ class AccountRepositoryImpl extends AccountRepository {
   }
 
   @override
+  Future<Either<Failure, Account>> autoLogin() async {
+    try {
+      final currentUser = await firebaseAuthDataSource.getCurrentUser();
+      if (currentUser == null) {
+        return Left(UnauthorizedFailure());
+      }
+
+      final deviceToken = await firebaseMessagingDataSource.getDeviceToken();
+      if (deviceToken == null) {
+        return Left(UnauthorizedFailure());
+      }
+
+      final firebaseUser = await firebaseAuthDataSource.signInWithCredential(
+        deviceToken: deviceToken,
+        providerId: currentUser.providerId,
+      );
+
+      final account = await accountDataSource.getUserProfile(
+        id: firebaseUser.uid,
+      );
+
+      return Right(account);
+    } on AppException catch (e) {
+      return Left(e.toFailure());
+    } on Exception catch (e) {
+      return Left(UnexpectedFailure(message: e.toString()));
+    }
+  }
+
+  @override
   Future<Either<Failure, Account>> registerWithPassword({
     @required String name,
     @required String email,

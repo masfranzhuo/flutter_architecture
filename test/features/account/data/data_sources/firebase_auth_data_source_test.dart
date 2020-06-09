@@ -561,4 +561,40 @@ void main() {
       verify(mockFirebaseAuth.sendPasswordResetEmail(email: emailTest));
     });
   });
+
+  group('signInWithCredential', () {
+    final deviceTokenTest = 'token';
+    final providerIdTest = 'providerId';
+
+    test('should call FirebaseAuthInstance signInWithCredential', () async {
+      when(mockFirebaseAuth.currentUser()).thenAnswer(
+        (_) async => mockFirebaseUser,
+      );
+      when(mockFirebaseAuth.signInWithCredential(any)).thenAnswer(
+        (_) async => mockAuthResult,
+      );
+      when(mockAuthResult.user).thenReturn(mockFirebaseUser);
+
+      final result = await dataSource.signInWithCredential(
+        deviceToken: deviceTokenTest,
+        providerId: providerIdTest,
+      );
+
+      expect(result, mockFirebaseUser);
+    });
+
+    test('should throw UndefinedFirebaseAuthException', () async {
+      when(mockFirebaseAuth.signInWithCredential(any)).thenThrow(
+        PlatformException(code: ''),
+      );
+
+      expect(
+        () => dataSource.signInWithCredential(
+          deviceToken: deviceTokenTest,
+          providerId: providerIdTest,
+        ),
+        throwsA(isA<UndefinedFirebaseAuthException>()),
+      );
+    });
+  });
 }

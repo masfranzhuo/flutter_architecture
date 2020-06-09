@@ -623,4 +623,128 @@ void main() {
       },
     );
   });
+
+  group('autoLogin', () {
+    final deviceTokenTest = 'token';
+
+    test('should get customer', () async {
+      when(mockFirebaseAuthDataSource.getCurrentUser()).thenAnswer(
+        (_) async => mockFirebaseUser,
+      );
+      when(mockFirebaseMessagingDataSource.getDeviceToken()).thenAnswer(
+        (_) async => deviceTokenTest,
+      );
+      when(mockFirebaseAuthDataSource.signInWithCredential(
+        deviceToken: anyNamed('deviceToken'),
+        providerId: anyNamed('providerId'),
+      )).thenAnswer((_) async => mockFirebaseUser);
+      when(mockAccountDataSource.getUserProfile(
+        id: anyNamed('id'),
+      )).thenAnswer((_) async => mockCustomer);
+
+      final result = await repository.autoLogin();
+
+      verifyInOrder([
+        mockFirebaseAuthDataSource.getCurrentUser(),
+        mockFirebaseMessagingDataSource.getDeviceToken(),
+        mockFirebaseAuthDataSource.signInWithCredential(
+          deviceToken: anyNamed('deviceToken'),
+          providerId: anyNamed('providerId'),
+        ),
+        mockAccountDataSource.getUserProfile(id: anyNamed('id')),
+      ]);
+      expect(result, Right(mockCustomer));
+    });
+
+    test('should get staff', () async {
+      when(mockFirebaseAuthDataSource.getCurrentUser()).thenAnswer(
+        (_) async => mockFirebaseUser,
+      );
+      when(mockFirebaseMessagingDataSource.getDeviceToken()).thenAnswer(
+        (_) async => deviceTokenTest,
+      );
+      when(mockFirebaseAuthDataSource.signInWithCredential(
+        deviceToken: anyNamed('deviceToken'),
+        providerId: anyNamed('providerId'),
+      )).thenAnswer((_) async => mockFirebaseUser);
+      when(mockAccountDataSource.getUserProfile(
+        id: anyNamed('id'),
+      )).thenAnswer((_) async => mockStaff);
+
+      final result = await repository.autoLogin();
+
+      verifyInOrder([
+        mockFirebaseAuthDataSource.getCurrentUser(),
+        mockFirebaseMessagingDataSource.getDeviceToken(),
+        mockFirebaseAuthDataSource.signInWithCredential(
+          deviceToken: anyNamed('deviceToken'),
+          providerId: anyNamed('providerId'),
+        ),
+        mockAccountDataSource.getUserProfile(id: anyNamed('id')),
+      ]);
+      expect(result, Right(mockStaff));
+    });
+
+    test('should return UnauthorizedFailure', () async {
+      when(mockFirebaseAuthDataSource.getCurrentUser()).thenAnswer(
+        (_) async => null,
+      );
+
+      final result = await repository.autoLogin();
+
+      expect((result as Left).value, isA<UnauthorizedFailure>());
+    });
+
+    test('should return UnauthorizedFailure', () async {
+      when(mockFirebaseAuthDataSource.getCurrentUser()).thenAnswer(
+        (_) async => mockFirebaseUser,
+      );
+      when(mockFirebaseMessagingDataSource.getDeviceToken()).thenAnswer(
+        (_) async => null,
+      );
+
+      final result = await repository.autoLogin();
+
+      expect((result as Left).value, isA<UnauthorizedFailure>());
+    });
+
+    test('should return UnexpectedFailure', () async {
+      when(mockFirebaseAuthDataSource.getCurrentUser()).thenAnswer(
+        (_) async => mockFirebaseUser,
+      );
+      when(mockFirebaseMessagingDataSource.getDeviceToken()).thenAnswer(
+        (_) async => deviceTokenTest,
+      );
+      when(mockFirebaseAuthDataSource.signInWithCredential(
+        deviceToken: anyNamed('deviceToken'),
+        providerId: anyNamed('providerId'),
+      )).thenThrow(UnexpectedException());
+
+      final result = await repository.autoLogin();
+
+      expect((result as Left).value, isA<UnexpectedFailure>());
+    });
+
+    test(
+      'should call toFailure if exception is AppException',
+      () async {
+        when(mockAppException.toFailure()).thenReturn(mockFailure);
+        when(mockFirebaseAuthDataSource.getCurrentUser()).thenAnswer(
+          (_) async => mockFirebaseUser,
+        );
+        when(mockFirebaseMessagingDataSource.getDeviceToken()).thenAnswer(
+          (_) async => deviceTokenTest,
+        );
+        when(mockFirebaseAuthDataSource.signInWithCredential(
+          deviceToken: anyNamed('deviceToken'),
+          providerId: anyNamed('providerId'),
+        )).thenThrow(mockAppException);
+
+        final result = await repository.autoLogin();
+
+        expect((result as Left).value, mockFailure);
+        expect((result as Left).value, isA<Failure>());
+      },
+    );
+  });
 }

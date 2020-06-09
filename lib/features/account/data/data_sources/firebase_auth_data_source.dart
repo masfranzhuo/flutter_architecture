@@ -13,6 +13,11 @@ abstract class FirebaseAuthDataSource {
     @required String password,
   });
 
+  Future<FirebaseUser> signInWithCredential({
+    @required String deviceToken,
+    @required String providerId,
+  });
+
   /// Register a new firebase auth user with email and password.
   Future<FirebaseUser> signUpWithPassword({
     @required String email,
@@ -59,7 +64,10 @@ class FirebaseAuthDataSourceImpl extends FirebaseAuthDataSource {
   }) async {
     try {
       final authResult = await firebaseAuthInstance.signInWithEmailAndPassword(
-          email: email, password: password);
+        email: email,
+        password: password,
+      );
+
       return authResult.user;
     } on PlatformException catch (e) {
       switch (e.code) {
@@ -81,14 +89,54 @@ class FirebaseAuthDataSourceImpl extends FirebaseAuthDataSource {
     }
   }
 
+  Future<FirebaseUser> signInWithCredential({
+    @required String deviceToken,
+    @required String providerId,
+  }) async {
+    try {
+      final oAuthProvider = OAuthProvider(
+        providerId: providerId,
+      );
+
+      final credential = oAuthProvider.getCredential(
+        idToken: deviceToken,
+      );
+
+      final authResult = await firebaseAuthInstance.signInWithCredential(
+        credential,
+      );
+
+      return authResult.user;
+    } on PlatformException catch (e) {
+      switch (e.code) {
+        case 'ERROR_INVALID_CREDENTIAL':
+          throw InvalidCredentialException(code: e.code);
+        case 'ERROR_USER_DISABLED':
+          throw UserDisabledException(code: e.code);
+        case 'ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL':
+          throw AccountExistsWithDifferentCredentialException(code: e.code);
+        case 'ERROR_OPERATION_NOT_ALLOWED':
+          throw OperationNotAllowedException(code: e.code);
+        case 'ERROR_INVALID_ACTION_CODE':
+          throw InvalidActionCodeException(code: e.code);
+        default:
+          throw UndefinedFirebaseAuthException(code: e.code);
+      }
+    }
+  }
+
   @override
   Future<FirebaseUser> signUpWithPassword({
     @required String email,
     @required String password,
   }) async {
     try {
-      final authResult = await firebaseAuthInstance
-          .createUserWithEmailAndPassword(email: email, password: password);
+      final authResult =
+          await firebaseAuthInstance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
       return authResult?.user;
     } on PlatformException catch (e) {
       switch (e.code) {

@@ -83,3 +83,19 @@ class InvalidCredentialException extends AppException {
   @override
   Failure toFailure() => InvalidCredentialFailure(message: message, code: code);
 }
+
+class AccountExistsWithDifferentCredentialException extends AppException {
+  AccountExistsWithDifferentCredentialException({String message, String code})
+      : super(message: message, code: code);
+
+  @override
+  Failure toFailure() => AccountExistsWithDifferentCredentialFailure(message: message, code: code);
+}
+
+class InvalidActionCodeException extends AppException {
+  InvalidActionCodeException({String message, String code})
+      : super(message: message, code: code);
+
+  @override
+  Failure toFailure() => InvalidActionCodeFailure(message: message, code: code);
+}

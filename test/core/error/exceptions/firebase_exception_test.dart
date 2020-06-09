@@ -63,5 +63,17 @@ void main() {
 
       expect(exceptionTest.toFailure(), isA<InvalidCredentialFailure>());
     });
+
+    test('should return AccountExistsWithDifferentCredentialFailure', () {
+      final exceptionTest = AccountExistsWithDifferentCredentialException();
+
+      expect(exceptionTest.toFailure(), isA<AccountExistsWithDifferentCredentialFailure>());
+    });
+
+    test('should return InvalidActionCodeFailure', () {
+      final exceptionTest = InvalidActionCodeException();
+
+      expect(exceptionTest.toFailure(), isA<InvalidActionCodeFailure>());
+    });
   });
 }

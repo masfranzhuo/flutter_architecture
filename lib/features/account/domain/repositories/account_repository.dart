@@ -11,6 +11,8 @@ abstract class AccountRepository {
     @required String password,
   });
 
+  Future<Either<Failure, Account>> autoLogin();
+
   Future<Either<Failure, Account>> registerWithPassword({
     @required String name,
     @required String email,

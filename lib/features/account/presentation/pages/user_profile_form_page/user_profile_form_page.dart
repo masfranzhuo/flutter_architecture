@@ -94,6 +94,11 @@ class UserProfileFormPage extends StatelessWidget {
               BlocListener<StorageBloc, StorageState>(
                 listener: (context, state) {
                   if (state is StorageUploadedState) {
+                    if (accountState.account?.photoUrl != null) {
+                      BlocProvider.of<StorageBloc>(context).add(
+                        DeleteImageEvent(url: accountState.account.photoUrl),
+                      );
+                    }
                     BlocProvider.of<UserProfileFormBloc>(context).add(
                       UpdateUserProfileImageEvent(
                         account: accountState.account,

@@ -24,8 +24,7 @@ class __$UserProfileImageState extends State<_$UserProfileImage> {
     double width = MediaQuery.of(context).size.width / 4;
     return Container(
       padding: EdgeInsets.symmetric(vertical: 32, horizontal: width),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(width),
+      child: ClipOval(
         child: CustomImagePicker(
           imageUrl: _imageUrl,
           defaultImage: Icon(Icons.person, size: width),

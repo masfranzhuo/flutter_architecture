@@ -13,6 +13,7 @@ abstract class FirebaseAuthDataSource {
     @required String password,
   });
 
+  /// This is not working unused function
   Future<FirebaseUser> signInWithCredential({
     @required String deviceToken,
     @required String providerId,

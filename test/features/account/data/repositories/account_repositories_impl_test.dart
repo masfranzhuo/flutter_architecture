@@ -634,10 +634,6 @@ void main() {
       when(mockFirebaseMessagingDataSource.getDeviceToken()).thenAnswer(
         (_) async => deviceTokenTest,
       );
-      when(mockFirebaseAuthDataSource.signInWithCredential(
-        deviceToken: anyNamed('deviceToken'),
-        providerId: anyNamed('providerId'),
-      )).thenAnswer((_) async => mockFirebaseUser);
       when(mockAccountDataSource.getUserProfile(
         id: anyNamed('id'),
       )).thenAnswer((_) async => mockCustomer);
@@ -647,10 +643,6 @@ void main() {
       verifyInOrder([
         mockFirebaseAuthDataSource.getCurrentUser(),
         mockFirebaseMessagingDataSource.getDeviceToken(),
-        mockFirebaseAuthDataSource.signInWithCredential(
-          deviceToken: anyNamed('deviceToken'),
-          providerId: anyNamed('providerId'),
-        ),
         mockAccountDataSource.getUserProfile(id: anyNamed('id')),
       ]);
       expect(result, Right(mockCustomer));
@@ -663,10 +655,6 @@ void main() {
       when(mockFirebaseMessagingDataSource.getDeviceToken()).thenAnswer(
         (_) async => deviceTokenTest,
       );
-      when(mockFirebaseAuthDataSource.signInWithCredential(
-        deviceToken: anyNamed('deviceToken'),
-        providerId: anyNamed('providerId'),
-      )).thenAnswer((_) async => mockFirebaseUser);
       when(mockAccountDataSource.getUserProfile(
         id: anyNamed('id'),
       )).thenAnswer((_) async => mockStaff);
@@ -676,10 +664,6 @@ void main() {
       verifyInOrder([
         mockFirebaseAuthDataSource.getCurrentUser(),
         mockFirebaseMessagingDataSource.getDeviceToken(),
-        mockFirebaseAuthDataSource.signInWithCredential(
-          deviceToken: anyNamed('deviceToken'),
-          providerId: anyNamed('providerId'),
-        ),
         mockAccountDataSource.getUserProfile(id: anyNamed('id')),
       ]);
       expect(result, Right(mockStaff));
@@ -715,10 +699,9 @@ void main() {
       when(mockFirebaseMessagingDataSource.getDeviceToken()).thenAnswer(
         (_) async => deviceTokenTest,
       );
-      when(mockFirebaseAuthDataSource.signInWithCredential(
-        deviceToken: anyNamed('deviceToken'),
-        providerId: anyNamed('providerId'),
-      )).thenThrow(UnexpectedException());
+      when(mockAccountDataSource.getUserProfile(id: anyNamed('id'))).thenThrow(
+        UnexpectedException(),
+      );
 
       final result = await repository.autoLogin();
 
@@ -735,9 +718,8 @@ void main() {
         when(mockFirebaseMessagingDataSource.getDeviceToken()).thenAnswer(
           (_) async => deviceTokenTest,
         );
-        when(mockFirebaseAuthDataSource.signInWithCredential(
-          deviceToken: anyNamed('deviceToken'),
-          providerId: anyNamed('providerId'),
+        when(mockAccountDataSource.getUserProfile(
+          id: anyNamed('id'),
         )).thenThrow(mockAppException);
 
         final result = await repository.autoLogin();

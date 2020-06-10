@@ -10,6 +10,7 @@ class PageType {
   static const imagePicker = '/image-picker';
   static const userProfile = '/user-profile';
   static const changePassword = '/change-password';
+  static const splashScreen = '/splash-screen';
 }
 
 enum PageFormType { create, read, update }

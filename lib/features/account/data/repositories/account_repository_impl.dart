@@ -53,8 +53,8 @@ class AccountRepositoryImpl extends AccountRepository {
   @override
   Future<Either<Failure, Account>> autoLogin() async {
     try {
-      final currentUser = await firebaseAuthDataSource.getCurrentUser();
-      if (currentUser == null) {
+      final firebaseUser = await firebaseAuthDataSource.getCurrentUser();
+      if (firebaseUser == null) {
         return Left(UnauthorizedFailure());
       }
 
@@ -62,11 +62,6 @@ class AccountRepositoryImpl extends AccountRepository {
       if (deviceToken == null) {
         return Left(UnauthorizedFailure());
       }
-
-      final firebaseUser = await firebaseAuthDataSource.signInWithCredential(
-        deviceToken: deviceToken,
-        providerId: currentUser.providerId,
-      );
 
       final account = await accountDataSource.getUserProfile(
         id: firebaseUser.uid,

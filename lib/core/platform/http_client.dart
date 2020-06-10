@@ -63,6 +63,7 @@ class HttpClient {
     }
   }
 
+  /// Start of Rest API
   Future<Response> postFormData({
     @required String endPoint,
     @required FormData formData,
@@ -94,7 +95,9 @@ class HttpClient {
       return e.response;
     }
   }
-
+  /// End of Rest API
+  
+  /// Start of Firebase Rest API
   Future<Response> getFirebaseData({
     @required String endPoint,
   }) async {
@@ -181,4 +184,5 @@ class HttpClient {
       return e.response;
     }
   }
+  /// End of Firebase Rest API
 }

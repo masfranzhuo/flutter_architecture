@@ -62,8 +62,6 @@ class FirebaseRealtimeDataSourceImpl extends FirebaseRealtimeDataSource {
       },
     ];
 
-    /// TODO:
-    /// add in different bloc for this 2 use cases
     return result;
   }
 }

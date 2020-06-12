@@ -25,6 +25,7 @@ import 'package:flutter_architecture/features/account/presentation/blocs/login_b
 import 'package:flutter_architecture/features/account/presentation/blocs/register_bloc/register_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/blocs/forget_password_bloc/forget_password_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/blocs/user_profile_form_bloc/user_profile_form_bloc.dart';
+import 'package:flutter_architecture/features/account/presentation/blocs/users_data_bloc/users_data_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/input_validators/validate_change_password.dart';
 import 'package:flutter_architecture/features/account/presentation/input_validators/validate_login.dart';
 import 'package:flutter_architecture/features/account/presentation/input_validators/validate_register.dart';
@@ -64,6 +65,7 @@ void init() {
       validateUpdateUserProfile: GetIt.I(),
     ),
   );
+  GetIt.I.registerFactory(() => UsersDataBloc(getUsersData: GetIt.I()));
 
   // Use cases
   GetIt.I.registerLazySingleton(

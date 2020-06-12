@@ -499,7 +499,7 @@ void main() {
 
   group('updateUserProfile', () {
     final customerFixture = json.decode(
-      fixture('fixtures/customers/minimum_valid.json'),
+      fixture('fixtures/customers/complete_valid.json'),
     );
     final customer = Customer.fromJson(
       Map<String, dynamic>.from(customerFixture),

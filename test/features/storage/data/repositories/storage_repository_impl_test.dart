@@ -65,7 +65,7 @@ void main() {
       when(mockFirebaseStorageDataSource.storageUploadTask(
         file: anyNamed('file'),
         fileType: anyNamed('fileType'),
-      )).thenThrow(UnexpectedException());
+      )).thenThrow(Exception());
 
       final result = await repository.uploadFile(
         file: mockFile,
@@ -112,7 +112,7 @@ void main() {
     test('should return UnexpectedFailure', () async {
       when(mockFirebaseStorageDataSource.deleteStorageFile(
         url: anyNamed('url'),
-      )).thenThrow(UnexpectedException());
+      )).thenThrow(Exception());
 
       final result = await repository.deleteFile(url: urlTest);
 

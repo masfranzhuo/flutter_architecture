@@ -46,4 +46,11 @@ void main() {
     final profile = await getUserProfile(Params(id: customerTest.id));
     expect(profile, Right(customerTest));
   });
+
+  group('Params', () {
+    test('props are [id]', () {
+      final idTest = 'fake_id';
+      expect(Params(id: idTest).props, [idTest]);
+    });
+  });
 }

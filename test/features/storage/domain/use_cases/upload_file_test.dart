@@ -19,13 +19,23 @@ void main() {
     uploadFile = UploadFile(repository: mockStorageRepository);
   });
 
+  final mockFile = MockFile();
+  final fileTypeTest = FileType.image;
+
   test('should call uploadFile in repository', () async {
-    final mockFile = MockFile();
-    final fileTypeTest = FileType.image;
     await uploadFile(Params(file: mockFile, fileType: fileTypeTest));
     verify(mockStorageRepository.uploadFile(
       file: mockFile,
       fileType: fileTypeTest,
     ));
+  });
+
+  group('Params', () {
+    test('props are [file, fileType]', () {
+      expect(
+        Params(file: mockFile, fileType: fileTypeTest).props,
+        [mockFile, fileTypeTest],
+      );
+    });
   });
 }

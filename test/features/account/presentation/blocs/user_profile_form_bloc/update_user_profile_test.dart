@@ -4,6 +4,7 @@ import 'package:flutter_architecture/core/error/failures/firebase_failure.dart';
 import 'package:flutter_architecture/core/error/failures/form_failure.dart';
 import 'package:flutter_architecture/features/account/domain/entities/account.dart';
 import 'package:flutter_architecture/features/account/domain/entities/customer.dart';
+import 'package:flutter_architecture/features/account/domain/entities/staff.dart';
 import 'package:flutter_architecture/features/account/domain/use_cases/update_user_profile.dart'
     as uup;
 import 'package:flutter_architecture/features/account/presentation/blocs/user_profile_form_bloc/user_profile_form_bloc.dart';
@@ -47,6 +48,13 @@ void main() {
       birthPlace: 'Indonesia',
       birthDate: DateTime.now(),
     );
+    final staff = Staff(
+      id: 'fake_id',
+      name: 'John Doe',
+      email: 'john@doe.com',
+      accountStatus: AccountStatus.active,
+      role: StaffRole.admin,
+    );
     final nameTest = 'John Doe2';
     final phoneNumberTest = '081234567890';
 
@@ -54,15 +62,15 @@ void main() {
       when(mockValidateUpdateUserProfile(any)).thenReturn(Right(true));
     }
 
-    void setUpSuccessfulUpdate() {
-      when(mockUpdateUserProfile(any)).thenAnswer((_) async => Right(customer));
+    void setUpSuccessfulUpdate(Account account) {
+      when(mockUpdateUserProfile(any)).thenAnswer((_) async => Right(account));
     }
 
     blocTest(
       'should call validateUpdateUserProfile and updateUserProfile',
       build: () async {
         setUpSuccessfulValidate();
-        setUpSuccessfulUpdate();
+        setUpSuccessfulUpdate(customer);
         return bloc;
       },
       act: (bloc) => bloc.add(UpdateUserProfileEvent(
@@ -98,10 +106,10 @@ void main() {
     );
 
     blocTest(
-      'should emit [UserProfileFormLoadingState,UserProfileFormLoadedState] when UpdateUserProfile is successful',
+      'should emit [UserProfileFormLoadingState,UserProfileFormLoadedState] when UpdateUserProfile customer is successful',
       build: () async {
         setUpSuccessfulValidate();
-        setUpSuccessfulUpdate();
+        setUpSuccessfulUpdate(customer);
         return bloc;
       },
       act: (bloc) => bloc.add(UpdateUserProfileEvent(
@@ -112,6 +120,24 @@ void main() {
       expect: [
         UserProfileFormLoadingState(),
         UserProfileFormLoadedState(account: customer),
+      ],
+    );
+
+    blocTest(
+      'should emit [UserProfileFormLoadingState,UserProfileFormLoadedState] when UpdateUserProfile staff is successful',
+      build: () async {
+        setUpSuccessfulValidate();
+        setUpSuccessfulUpdate(staff);
+        return bloc;
+      },
+      act: (bloc) => bloc.add(UpdateUserProfileEvent(
+        account: staff,
+        name: nameTest,
+        phoneNumber: phoneNumberTest,
+      )),
+      expect: [
+        UserProfileFormLoadingState(),
+        UserProfileFormLoadedState(account: staff),
       ],
     );
 

@@ -10,8 +10,7 @@ class MockAccountEvent extends Mock implements AccountEvent {}
 void main() {
   group('AccountEvent', () {
     test('props are null', () {
-      final account = MockAccountEvent();
-      expect(account.props, null);
+      expect(MockAccountEvent().props, null);
     });
   });
 

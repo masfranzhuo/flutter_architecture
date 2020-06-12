@@ -14,9 +14,16 @@ void main() {
     deleteFile = DeleteFile(repository: mockStorageRepository);
   });
 
+  final urlTest = 'https://fakeimage.com/image.jpg';
+
   test('should call deleteFile in repository', () async {
-    final urlTest = 'https://fakeimage.com/image.jpg';
     await deleteFile(Params(url: urlTest));
     verify(mockStorageRepository.deleteFile(url: urlTest));
+  });
+
+  group('Params', () {
+    test('props are [url]', () {
+      expect(Params(url: urlTest).props, [urlTest]);
+    });
   });
 }

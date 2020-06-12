@@ -142,7 +142,7 @@ void main() {
       when(mockFirebaseAuthDataSource.signInWithPassword(
         email: emailTest,
         password: passwordTest,
-      )).thenThrow(UnexpectedException());
+      )).thenThrow(Exception());
 
       final result = await repository.loginWithPassword(
         email: emailTest,
@@ -179,7 +179,7 @@ void main() {
       when(mockAccountDataSource.setUserProfile(
         id: anyNamed('id'),
         deviceToken: anyNamed('deviceToken'),
-      )).thenThrow(UnexpectedException());
+      )).thenThrow(Exception());
 
       final result = await repository.loginWithPassword(
         email: emailTest,
@@ -293,7 +293,7 @@ void main() {
       when(mockFirebaseAuthDataSource.signUpWithPassword(
         email: emailTest,
         password: passwordTest,
-      )).thenThrow(UnexpectedException());
+      )).thenThrow(Exception());
 
       final result = await repository.registerWithPassword(
         name: nameTest,
@@ -334,7 +334,7 @@ void main() {
         deviceToken: anyNamed('deviceToken'),
         name: anyNamed('name'),
         email: anyNamed('email'),
-      )).thenThrow(UnexpectedException());
+      )).thenThrow(Exception());
 
       final result = await repository.registerWithPassword(
         name: nameTest,
@@ -408,7 +408,7 @@ void main() {
       when(mockAccountDataSource.removeDeviceToken(
         id: anyNamed('id'),
         deviceToken: anyNamed('deviceToken'),
-      )).thenThrow(UnexpectedException());
+      )).thenThrow(Exception());
 
       final result = await repository.logout();
 
@@ -475,7 +475,7 @@ void main() {
 
     test('should return UnexpectedFailure', () async {
       when(mockAccountDataSource.getUserProfile(id: anyNamed('id')))
-          .thenThrow(UnexpectedException());
+          .thenThrow(Exception());
 
       final result = await repository.getUserProfile(id: idTest);
 
@@ -528,7 +528,7 @@ void main() {
     test('should return UnexpectedFailure', () async {
       when(mockAccountDataSource.updateUserProfile(
         account: anyNamed('account'),
-      )).thenThrow(UnexpectedException());
+      )).thenThrow(Exception());
 
       final result = await repository.updateUserProfile(account: mockStaff);
 
@@ -574,7 +574,7 @@ void main() {
     test('should return UnexpectedFailure', () async {
       when(mockFirebaseAuthDataSource.changePassword(
         password: anyNamed('password'),
-      )).thenThrow(UnexpectedException());
+      )).thenThrow(Exception());
 
       final result = await repository.changePassword(
         password: passwordTest,
@@ -619,7 +619,7 @@ void main() {
     test('should return UnexpectedFailure', () async {
       when(mockFirebaseAuthDataSource.resetPassword(
         email: anyNamed('email'),
-      )).thenThrow(UnexpectedException());
+      )).thenThrow(Exception());
 
       final result = await repository.resetPassword(email: emailTest);
 
@@ -718,7 +718,7 @@ void main() {
         (_) async => deviceTokenTest,
       );
       when(mockAccountDataSource.getUserProfile(id: anyNamed('id'))).thenThrow(
-        UnexpectedException(),
+        Exception(),
       );
 
       final result = await repository.autoLogin();
@@ -763,7 +763,7 @@ void main() {
 
     test('should return UnexpectedFailure', () async {
       when(mockFirebaseRealtimeDataSource.getUsers()).thenThrow(
-        UnexpectedException(),
+        Exception(),
       );
 
       final result = await repository.getUsers();

@@ -2,8 +2,18 @@ import 'package:flutter_architecture/features/account/domain/entities/account.da
 import 'package:flutter_architecture/features/account/domain/entities/customer.dart';
 import 'package:flutter_architecture/features/account/presentation/blocs/account_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
+
+// ignore: must_be_immutable
+class MockAccountEvent extends Mock implements AccountEvent {}
 
 void main() {
+  group('AccountEvent', () {
+    test('props are []', () {
+      expect(MockAccountEvent().props, []);
+    });
+  });
+
   group('LoginEvent', () {
     test('props are [account]', () {
       final customer = Customer(

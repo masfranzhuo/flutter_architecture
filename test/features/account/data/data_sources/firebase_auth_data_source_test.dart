@@ -583,6 +583,76 @@ void main() {
       expect(result, mockFirebaseUser);
     });
 
+    test('should throw InvalidCredentialException', () async {
+      when(mockFirebaseAuth.signInWithCredential(any)).thenThrow(
+        PlatformException(code: 'ERROR_INVALID_CREDENTIAL'),
+      );
+
+      expect(
+        () => dataSource.signInWithCredential(
+          deviceToken: deviceTokenTest,
+          providerId: providerIdTest,
+        ),
+        throwsA(isA<InvalidCredentialException>()),
+      );
+    });
+
+    test('should throw UserDisabledException', () async {
+      when(mockFirebaseAuth.signInWithCredential(any)).thenThrow(
+        PlatformException(code: 'ERROR_USER_DISABLED'),
+      );
+
+      expect(
+        () => dataSource.signInWithCredential(
+          deviceToken: deviceTokenTest,
+          providerId: providerIdTest,
+        ),
+        throwsA(isA<UserDisabledException>()),
+      );
+    });
+
+    test('should throw AccountExistsWithDifferentCredentialException', () async {
+      when(mockFirebaseAuth.signInWithCredential(any)).thenThrow(
+        PlatformException(code: 'ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL'),
+      );
+
+      expect(
+        () => dataSource.signInWithCredential(
+          deviceToken: deviceTokenTest,
+          providerId: providerIdTest,
+        ),
+        throwsA(isA<AccountExistsWithDifferentCredentialException>()),
+      );
+    });
+
+    test('should throw OperationNotAllowedException', () async {
+      when(mockFirebaseAuth.signInWithCredential(any)).thenThrow(
+        PlatformException(code: 'ERROR_OPERATION_NOT_ALLOWED'),
+      );
+
+      expect(
+        () => dataSource.signInWithCredential(
+          deviceToken: deviceTokenTest,
+          providerId: providerIdTest,
+        ),
+        throwsA(isA<OperationNotAllowedException>()),
+      );
+    });
+
+    test('should throw InvalidActionCodeException', () async {
+      when(mockFirebaseAuth.signInWithCredential(any)).thenThrow(
+        PlatformException(code: 'ERROR_INVALID_ACTION_CODE'),
+      );
+
+      expect(
+        () => dataSource.signInWithCredential(
+          deviceToken: deviceTokenTest,
+          providerId: providerIdTest,
+        ),
+        throwsA(isA<InvalidActionCodeException>()),
+      );
+    });
+
     test('should throw UndefinedFirebaseAuthException', () async {
       when(mockFirebaseAuth.signInWithCredential(any)).thenThrow(
         PlatformException(code: ''),

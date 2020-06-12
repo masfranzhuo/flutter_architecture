@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_architecture/core/error/exceptions/app_exception.dart';
@@ -13,6 +15,8 @@ import 'package:flutter_architecture/features/account/domain/entities/customer.d
 import 'package:flutter_architecture/features/account/domain/entities/staff.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+
+import '../../../../fixtures/fixtures_reader.dart';
 
 class MockAccountDataSource extends Mock implements AccountDataSource {}
 
@@ -494,14 +498,21 @@ void main() {
   });
 
   group('updateUserProfile', () {
+    final customerFixture = json.decode(
+      fixture('fixtures/customers/minimum_valid.json'),
+    );
+    final customer = Customer.fromJson(
+      Map<String, dynamic>.from(customerFixture),
+    );
+
     test('should update customer', () async {
       when(mockAccountDataSource.updateUserProfile(
         account: anyNamed('account'),
-      )).thenAnswer((_) async => mockCustomer);
+      )).thenAnswer((_) async => customer);
 
-      final result = await repository.updateUserProfile(account: mockCustomer);
+      final result = await repository.updateUserProfile(account: customer);
 
-      expect(result, Right(mockCustomer));
+      expect(result, Right(customer));
     });
 
     test('should update staff', () async {
@@ -792,7 +803,7 @@ void main() {
 
     test('should return UnexpectedFailure', () async {
       when(mockFirebaseRealtimeDataSource.getUsersData()).thenThrow(
-        UnexpectedException(),
+        Exception(),
       );
 
       final result = await repository.getUsersData();

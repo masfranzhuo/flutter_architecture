@@ -1,8 +1,10 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_architecture/core/error/failures/failure.dart';
+import 'package:flutter_architecture/core/error/failures/http_failure.dart';
 import 'package:flutter_architecture/features/account/domain/entities/account.dart';
 import 'package:flutter_architecture/features/account/domain/entities/customer.dart';
+import 'package:flutter_architecture/features/account/domain/use_cases/auto_login.dart';
 import 'package:flutter_architecture/features/account/domain/use_cases/get_user_profile.dart'
     as gup;
 import 'package:flutter_architecture/features/account/domain/use_cases/logout.dart';
@@ -16,6 +18,8 @@ import 'package:mockito/mockito.dart';
 
 class MockLogout extends Mock implements Logout {}
 
+class MockAutoLogin extends Mock implements AutoLogin {}
+
 class MockLoginBloc extends Mock implements lb.LoginBloc {}
 
 class MockRegisterBloc extends Mock implements rb.RegisterBloc {}
@@ -25,6 +29,7 @@ class MockGetUserProfile extends Mock implements gup.GetUserProfile {}
 void main() {
   AccountBloc bloc;
   MockLogout mockLogout;
+  MockAutoLogin mockAutoLogin;
   MockLoginBloc mockLoginBloc;
   MockRegisterBloc mockRegisterBloc;
   MockGetUserProfile mockGetUserProfile;
@@ -43,11 +48,13 @@ void main() {
 
   setUp(() {
     mockLogout = MockLogout();
+    mockAutoLogin = MockAutoLogin();
     mockLoginBloc = MockLoginBloc();
     mockRegisterBloc = MockRegisterBloc();
     mockGetUserProfile = MockGetUserProfile();
     bloc = AccountBloc(
       logout: mockLogout,
+      autoLogin: mockAutoLogin,
       loginBloc: mockLoginBloc,
       registerBloc: mockRegisterBloc,
       getUserProfile: mockGetUserProfile,
@@ -92,6 +99,36 @@ void main() {
       expect: [
         AccountLoadingState(),
         AccountErrorState(failure: InvalidIdTokenFailure()),
+      ],
+    );
+  });
+
+  group('AutoLoginEvent', () {
+    blocTest(
+      'should emit [AccountLoadingState, AccountLoadedState] when AutoLogin is successful',
+      build: () async {
+        when(mockAutoLogin(any)).thenAnswer((_) async => Right(customer));
+        return bloc;
+      },
+      act: (bloc) => bloc.add(AutoLoginEvent()),
+      expect: [
+        AccountLoadingState(),
+        AccountLoadedState(account: customer),
+      ],
+    );
+
+    blocTest(
+      'should emit [AccountLoadingState, AccountErrorState] when AutoLogin failed',
+      build: () async {
+        when(mockAutoLogin(any)).thenAnswer(
+          (_) async => Left(UnauthorizedFailure()),
+        );
+        return bloc;
+      },
+      act: (bloc) => bloc.add(AutoLoginEvent()),
+      expect: [
+        AccountLoadingState(),
+        AccountErrorState(failure: UnauthorizedFailure()),
       ],
     );
   });
@@ -152,6 +189,7 @@ void main() {
 
         return AccountBloc(
           logout: mockLogout,
+          autoLogin: mockAutoLogin,
           loginBloc: mockLoginBloc,
           registerBloc: mockRegisterBloc,
           getUserProfile: mockGetUserProfile,
@@ -173,6 +211,7 @@ void main() {
 
         return AccountBloc(
           logout: mockLogout,
+          autoLogin: mockAutoLogin,
           loginBloc: mockLoginBloc,
           registerBloc: mockRegisterBloc,
           getUserProfile: mockGetUserProfile,

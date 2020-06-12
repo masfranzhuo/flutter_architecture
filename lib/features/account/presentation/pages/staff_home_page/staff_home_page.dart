@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_architecture/core/presentation/custom_page_route.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_safe_area.dart';
 import 'package:flutter_architecture/features/account/presentation/blocs/account_bloc.dart';
+import 'package:flutter_architecture/features/account/presentation/pages/staff_home_page/users_chart.dart';
 import 'package:flutter_architecture/features/account/presentation/widgets/menu_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -29,7 +30,9 @@ class StaffHomePage extends StatelessWidget {
       width: constraints.maxWidth,
       height: constraints.maxHeight,
       child: ListView(
-        children: <Widget>[],
+        children: <Widget>[
+          UsersChart(),
+        ],
       ),
     );
   }

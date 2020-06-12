@@ -11,6 +11,8 @@ abstract class AccountRepository {
     @required String password,
   });
 
+  Future<Either<Failure, Account>> autoLogin();
+
   Future<Either<Failure, Account>> registerWithPassword({
     @required String name,
     @required String email,
@@ -37,4 +39,8 @@ abstract class AccountRepository {
   });
 
   Future<Either<Failure, bool>> resetPassword({@required String email});
+
+  Future<Either<Failure, List<Account>>> getUsers();
+
+  Future<Either<Failure, List<Map<String, dynamic>>>> getUsersData();
 }

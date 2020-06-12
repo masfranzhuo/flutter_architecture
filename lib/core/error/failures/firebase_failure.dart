@@ -49,3 +49,13 @@ class InvalidCredentialFailure extends Failure {
   InvalidCredentialFailure({String message = '', String code})
       : super(message: message, code: code);
 }
+
+class AccountExistsWithDifferentCredentialFailure extends Failure {
+  AccountExistsWithDifferentCredentialFailure({String message = '', String code})
+      : super(message: message, code: code);
+}
+
+class InvalidActionCodeFailure extends Failure {
+  InvalidActionCodeFailure({String message = '', String code})
+      : super(message: message, code: code);
+}

@@ -6,6 +6,7 @@ import 'package:flutter_architecture/core/error/failures/failure.dart';
 import 'package:flutter_architecture/core/util/use_case.dart';
 import 'package:flutter_architecture/features/account/domain/entities/account.dart';
 import 'package:flutter_architecture/features/account/domain/entities/staff.dart';
+import 'package:flutter_architecture/features/account/domain/use_cases/auto_login.dart';
 import 'package:flutter_architecture/features/account/domain/use_cases/get_user_profile.dart'
     as gup;
 import 'package:flutter_architecture/features/account/domain/use_cases/logout.dart';
@@ -22,6 +23,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   final LoginBloc loginBloc;
   final RegisterBloc registerBloc;
   final gup.GetUserProfile getUserProfile;
+  final AutoLogin autoLogin;
 
   StreamSubscription loginBlocSubscription;
   StreamSubscription registerBlocSubscription;
@@ -30,7 +32,8 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     @required this.logout,
     @required this.loginBloc,
     @required this.registerBloc,
-    this.getUserProfile,
+    @required this.autoLogin,
+    @required this.getUserProfile,
   }) {
     loginBlocSubscription = loginBloc.listen((state) {
       if (state is LoginLoadedState) {
@@ -57,6 +60,8 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       yield* _handleLoginEvent(event);
     } else if (event is GetUserProfileEvent) {
       yield* _handleGetUserProfileEvent(event);
+    } else if (event is AutoLoginEvent) {
+      yield* _handleAutoLoginEvent(event);
     }
   }
 
@@ -88,6 +93,17 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     final getUserProfileResult = await getUserProfile(gup.Params(id: event.id));
 
     yield getUserProfileResult.fold(
+      (failure) => _$mapFailureToError(failure),
+      (account) => AccountLoadedState(account: account),
+    );
+  }
+
+  Stream<AccountState> _handleAutoLoginEvent(AutoLoginEvent event) async* {
+    yield AccountLoadingState();
+
+    final autoLoginResult = await autoLogin(NoParams());
+
+    yield autoLoginResult.fold(
       (failure) => _$mapFailureToError(failure),
       (account) => AccountLoadedState(account: account),
     );

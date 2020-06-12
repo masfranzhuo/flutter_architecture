@@ -5,7 +5,7 @@ import 'package:flutter_architecture/core/presentation/pages/custom_page.dart';
 import 'package:flutter_architecture/features/account/presentation/blocs/account_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/blocs/login_bloc/login_bloc.dart';
 import 'package:flutter_architecture/features/account/presentation/blocs/register_bloc/register_bloc.dart';
-import 'package:flutter_architecture/features/account/presentation/pages/login_page/login_page.dart';
+import 'package:flutter_architecture/features/account/presentation/pages/splash_screen_page/splash_screen_page.dart';
 import 'package:flutter_architecture/features/storage/presentation/blocs/storage_bloc/storage_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
                 logout: GetIt.I(),
                 loginBloc: BlocProvider.of<LoginBloc>(context),
                 registerBloc: BlocProvider.of<RegisterBloc>(context),
+                autoLogin: GetIt.I(),
                 getUserProfile: GetIt.I(),
               ),
             ),
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
               Locale('en', 'US'),
               Locale('id', 'ID'),
             ],
-            home: LoginPage() ?? CustomPage() ?? LoginPage(),
+            home: SplashScreenPage() ?? CustomPage(),
           ),
         ),
       ),

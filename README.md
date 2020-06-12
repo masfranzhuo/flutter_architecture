@@ -27,6 +27,8 @@ A few resources to get you started if this is your first Flutter project:
 - [image_picker ^0.6.6+4](https://pub.dev/packages/image_picker)
 - [image_cropper: ^1.2.2](https://pub.dev/packages/image_cropper)
 - [intl: ^0.16.1](https://pub.dev/packages/intl)
+- [charts_flutter: ^0.9.0](https://pub.dev/packages/charts_flutter)
+- [firebase_database: ^3.1.6](https://pub.dev/packages/firebase_database)
 
 ### Flutter packages dev dependencies
 - [mockito: ^4.1.1](https://pub.dev/packages/mockito)

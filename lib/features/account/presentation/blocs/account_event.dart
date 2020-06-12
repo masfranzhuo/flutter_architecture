@@ -26,3 +26,5 @@ class GetUserProfileEvent extends AccountEvent {
   @override
   List<Object> get props => [id];
 }
+
+class AutoLoginEvent extends AccountEvent {}

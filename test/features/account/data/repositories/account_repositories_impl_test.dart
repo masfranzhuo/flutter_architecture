@@ -7,6 +7,7 @@ import 'package:flutter_architecture/core/error/failures/http_failure.dart';
 import 'package:flutter_architecture/features/account/data/data_sources/account_data_source.dart';
 import 'package:flutter_architecture/features/account/data/data_sources/firebase_auth_data_source.dart';
 import 'package:flutter_architecture/features/account/data/data_sources/firebase_messaging_data_source.dart';
+import 'package:flutter_architecture/features/account/data/data_sources/firebase_realtime_data_source.dart';
 import 'package:flutter_architecture/features/account/data/repositories/account_repository_impl.dart';
 import 'package:flutter_architecture/features/account/domain/entities/customer.dart';
 import 'package:flutter_architecture/features/account/domain/entities/staff.dart';
@@ -20,6 +21,9 @@ class MockFirebaseAuthDataSource extends Mock
 
 class MockFirebaseMessagingDataSource extends Mock
     implements FirebaseMessagingDataSource {}
+
+class MockFirebaseRealtimeDataSource extends Mock
+    implements FirebaseRealtimeDataSource {}
 
 class MockFirebaseUser extends Mock implements FirebaseUser {}
 
@@ -40,6 +44,7 @@ void main() {
   MockAccountDataSource mockAccountDataSource;
   MockFirebaseAuthDataSource mockFirebaseAuthDataSource;
   MockFirebaseMessagingDataSource mockFirebaseMessagingDataSource;
+  MockFirebaseRealtimeDataSource mockFirebaseRealtimeDataSource;
 
   MockFirebaseUser mockFirebaseUser;
   MockAppException mockAppException;
@@ -51,10 +56,12 @@ void main() {
     mockAccountDataSource = MockAccountDataSource();
     mockFirebaseAuthDataSource = MockFirebaseAuthDataSource();
     mockFirebaseMessagingDataSource = MockFirebaseMessagingDataSource();
+    mockFirebaseRealtimeDataSource = MockFirebaseRealtimeDataSource();
     repository = AccountRepositoryImpl(
       accountDataSource: mockAccountDataSource,
       firebaseAuthDataSource: mockFirebaseAuthDataSource,
       firebaseMessagingDataSource: mockFirebaseMessagingDataSource,
+      firebaseRealtimeDataSource: mockFirebaseRealtimeDataSource,
     );
 
     mockFirebaseUser = MockFirebaseUser();
@@ -617,6 +624,191 @@ void main() {
         )).thenThrow(mockAppException);
 
         final result = await repository.resetPassword(email: emailTest);
+
+        expect((result as Left).value, mockFailure);
+        expect((result as Left).value, isA<Failure>());
+      },
+    );
+  });
+
+  group('autoLogin', () {
+    final deviceTokenTest = 'token';
+
+    test('should get customer', () async {
+      when(mockFirebaseAuthDataSource.getCurrentUser()).thenAnswer(
+        (_) async => mockFirebaseUser,
+      );
+      when(mockFirebaseMessagingDataSource.getDeviceToken()).thenAnswer(
+        (_) async => deviceTokenTest,
+      );
+      when(mockAccountDataSource.getUserProfile(
+        id: anyNamed('id'),
+      )).thenAnswer((_) async => mockCustomer);
+
+      final result = await repository.autoLogin();
+
+      verifyInOrder([
+        mockFirebaseAuthDataSource.getCurrentUser(),
+        mockFirebaseMessagingDataSource.getDeviceToken(),
+        mockAccountDataSource.getUserProfile(id: anyNamed('id')),
+      ]);
+      expect(result, Right(mockCustomer));
+    });
+
+    test('should get staff', () async {
+      when(mockFirebaseAuthDataSource.getCurrentUser()).thenAnswer(
+        (_) async => mockFirebaseUser,
+      );
+      when(mockFirebaseMessagingDataSource.getDeviceToken()).thenAnswer(
+        (_) async => deviceTokenTest,
+      );
+      when(mockAccountDataSource.getUserProfile(
+        id: anyNamed('id'),
+      )).thenAnswer((_) async => mockStaff);
+
+      final result = await repository.autoLogin();
+
+      verifyInOrder([
+        mockFirebaseAuthDataSource.getCurrentUser(),
+        mockFirebaseMessagingDataSource.getDeviceToken(),
+        mockAccountDataSource.getUserProfile(id: anyNamed('id')),
+      ]);
+      expect(result, Right(mockStaff));
+    });
+
+    test('should return UnauthorizedFailure', () async {
+      when(mockFirebaseAuthDataSource.getCurrentUser()).thenAnswer(
+        (_) async => null,
+      );
+
+      final result = await repository.autoLogin();
+
+      expect((result as Left).value, isA<UnauthorizedFailure>());
+    });
+
+    test('should return UnauthorizedFailure', () async {
+      when(mockFirebaseAuthDataSource.getCurrentUser()).thenAnswer(
+        (_) async => mockFirebaseUser,
+      );
+      when(mockFirebaseMessagingDataSource.getDeviceToken()).thenAnswer(
+        (_) async => null,
+      );
+
+      final result = await repository.autoLogin();
+
+      expect((result as Left).value, isA<UnauthorizedFailure>());
+    });
+
+    test('should return UnexpectedFailure', () async {
+      when(mockFirebaseAuthDataSource.getCurrentUser()).thenAnswer(
+        (_) async => mockFirebaseUser,
+      );
+      when(mockFirebaseMessagingDataSource.getDeviceToken()).thenAnswer(
+        (_) async => deviceTokenTest,
+      );
+      when(mockAccountDataSource.getUserProfile(id: anyNamed('id'))).thenThrow(
+        UnexpectedException(),
+      );
+
+      final result = await repository.autoLogin();
+
+      expect((result as Left).value, isA<UnexpectedFailure>());
+    });
+
+    test(
+      'should call toFailure if exception is AppException',
+      () async {
+        when(mockAppException.toFailure()).thenReturn(mockFailure);
+        when(mockFirebaseAuthDataSource.getCurrentUser()).thenAnswer(
+          (_) async => mockFirebaseUser,
+        );
+        when(mockFirebaseMessagingDataSource.getDeviceToken()).thenAnswer(
+          (_) async => deviceTokenTest,
+        );
+        when(mockAccountDataSource.getUserProfile(
+          id: anyNamed('id'),
+        )).thenThrow(mockAppException);
+
+        final result = await repository.autoLogin();
+
+        expect((result as Left).value, mockFailure);
+        expect((result as Left).value, isA<Failure>());
+      },
+    );
+  });
+
+  group('getUsers', () {
+    final usersTest = [mockStaff, mockCustomer];
+    test('should get list of users', () async {
+      when(mockFirebaseRealtimeDataSource.getUsers()).thenAnswer(
+        (_) async => usersTest,
+      );
+
+      final result = await repository.getUsers();
+
+      verify(mockFirebaseRealtimeDataSource.getUsers());
+      expect(result, Right(usersTest));
+    });
+
+    test('should return UnexpectedFailure', () async {
+      when(mockFirebaseRealtimeDataSource.getUsers()).thenThrow(
+        UnexpectedException(),
+      );
+
+      final result = await repository.getUsers();
+
+      expect((result as Left).value, isA<UnexpectedFailure>());
+    });
+
+    test(
+      'should call toFailure if exception is AppException',
+      () async {
+        when(mockAppException.toFailure()).thenReturn(mockFailure);
+        when(mockFirebaseRealtimeDataSource.getUsers()).thenThrow(
+          mockAppException,
+        );
+
+        final result = await repository.getUsers();
+
+        expect((result as Left).value, mockFailure);
+        expect((result as Left).value, isA<Failure>());
+      },
+    );
+  });
+
+  group('getUsersData', () {
+    final usersDataTest = <Map<String, dynamic>>[{}, {}];
+
+    test('should get list of users data', () async {
+      when(mockFirebaseRealtimeDataSource.getUsersData()).thenAnswer(
+        (_) async => usersDataTest,
+      );
+
+      final result = await repository.getUsersData();
+
+      verify(mockFirebaseRealtimeDataSource.getUsersData());
+      expect(result, Right(usersDataTest));
+    });
+
+    test('should return UnexpectedFailure', () async {
+      when(mockFirebaseRealtimeDataSource.getUsersData()).thenThrow(
+        UnexpectedException(),
+      );
+
+      final result = await repository.getUsersData();
+
+      expect((result as Left).value, isA<UnexpectedFailure>());
+    });
+
+    test(
+      'should call toFailure if exception is AppException',
+      () async {
+        when(mockAppException.toFailure()).thenReturn(mockFailure);
+        when(mockFirebaseRealtimeDataSource.getUsersData()).thenThrow(
+          mockAppException,
+        );
+
+        final result = await repository.getUsersData();
 
         expect((result as Left).value, mockFailure);
         expect((result as Left).value, isA<Failure>());

@@ -80,8 +80,7 @@ class MenuDrawer extends StatelessWidget {
           _userAccount = UserAccountsDrawerHeader(
             accountName: Text(state.account?.name ?? 'Name'),
             accountEmail: Text(state.account?.email ?? 'Email'),
-            currentAccountPicture: ClipRRect(
-              borderRadius: BorderRadius.circular(32),
+            currentAccountPicture: ClipOval(
               child: state.account?.photoUrl != null
                   ? Image.network(state.account.photoUrl)
                   : CircleAvatar(child: Icon(Icons.person)),
@@ -114,6 +113,7 @@ class MenuDrawer extends StatelessWidget {
                 trailing: Icon(Icons.lock),
                 onTap: () => changePassword(context),
               ),
+              Divider(),
               ListTile(
                 title: Text('Logout'),
                 trailing: Icon(Icons.exit_to_app),

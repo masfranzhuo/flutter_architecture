@@ -33,7 +33,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     @required this.loginBloc,
     @required this.registerBloc,
     @required this.autoLogin,
-    this.getUserProfile,
+    @required this.getUserProfile,
   }) {
     loginBlocSubscription = loginBloc.listen((state) {
       if (state is LoginLoadedState) {

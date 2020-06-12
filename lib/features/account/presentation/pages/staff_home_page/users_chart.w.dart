@@ -59,6 +59,14 @@ class _$UsersChart extends StatelessWidget {
             style: Theme.of(context).textTheme.headline5,
           ),
         ),
+        CustomButton(
+          child: Text('GetUsersData'),
+          onPressed: () {
+            BlocProvider.of<AccountBloc>(context).add(
+              GetUserProfileEvent(id: 'GetUsersData'),
+            );
+          },
+        ),
         Container(
           padding: const EdgeInsets.all(32),
           height: 250,

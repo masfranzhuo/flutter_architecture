@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_architecture/core/platform/http_client.dart';
 import 'package:flutter_architecture/core/presentation/input_validators/validate_email.dart';
@@ -6,11 +7,14 @@ import 'package:flutter_architecture/core/presentation/input_validators/validate
 import 'package:flutter_architecture/features/account/data/data_sources/account_data_source.dart';
 import 'package:flutter_architecture/features/account/data/data_sources/firebase_auth_data_source.dart';
 import 'package:flutter_architecture/features/account/data/data_sources/firebase_messaging_data_source.dart';
+import 'package:flutter_architecture/features/account/data/data_sources/firebase_realtime_data_source.dart';
 import 'package:flutter_architecture/features/account/data/repositories/account_repository_impl.dart';
 import 'package:flutter_architecture/features/account/domain/repositories/account_repository.dart';
 import 'package:flutter_architecture/features/account/domain/use_cases/auto_login.dart';
 import 'package:flutter_architecture/features/account/domain/use_cases/change_password.dart';
 import 'package:flutter_architecture/features/account/domain/use_cases/get_user_profile.dart';
+import 'package:flutter_architecture/features/account/domain/use_cases/get_users.dart';
+import 'package:flutter_architecture/features/account/domain/use_cases/get_users_data.dart';
 import 'package:flutter_architecture/features/account/domain/use_cases/login_with_password.dart';
 import 'package:flutter_architecture/features/account/domain/use_cases/logout.dart';
 import 'package:flutter_architecture/features/account/domain/use_cases/register_with_password.dart';
@@ -72,6 +76,8 @@ void init() {
   GetIt.I.registerLazySingleton(() => GetUserProfile(repository: GetIt.I()));
   GetIt.I.registerLazySingleton(() => UpdateUserProfile(repository: GetIt.I()));
   GetIt.I.registerLazySingleton(() => AutoLogin(repository: GetIt.I()));
+  GetIt.I.registerLazySingleton(() => GetUsers(repository: GetIt.I()));
+  GetIt.I.registerLazySingleton(() => GetUsersData(repository: GetIt.I()));
 
   // Form validators
   GetIt.I.registerLazySingleton(
@@ -104,6 +110,7 @@ void init() {
       firebaseAuthDataSource: GetIt.I(),
       firebaseMessagingDataSource: GetIt.I(),
       accountDataSource: GetIt.I(),
+      firebaseRealtimeDataSource: GetIt.I(),
     ),
   );
 
@@ -117,6 +124,9 @@ void init() {
   GetIt.I.registerLazySingleton<AccountDataSource>(
     () => AccountDataSourceImpl(client: GetIt.I()),
   );
+  GetIt.I.registerLazySingleton<FirebaseRealtimeDataSource>(
+    () => FirebaseRealtimeDataSourceImpl(firebaseDatabase: GetIt.I()),
+  );
 
   // Core
   GetIt.I.registerLazySingleton(
@@ -126,4 +136,5 @@ void init() {
   // Firebase
   GetIt.I.registerLazySingleton(() => FirebaseAuth.instance);
   GetIt.I.registerLazySingleton(() => FirebaseMessaging());
+  GetIt.I.registerLazySingleton(() => FirebaseDatabase.instance);
 }

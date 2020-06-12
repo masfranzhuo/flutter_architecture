@@ -6,11 +6,11 @@ class _$LoginForm extends StatefulWidget {
 }
 
 class __$LoginFormState extends State<_$LoginForm> {
-  final emailController = TextEditingController(text: 'one@test.com');
-  final passwordController = TextEditingController(text: '123456');
+  // final emailController = TextEditingController(text: 'one@test.com');
+  // final passwordController = TextEditingController(text: '123456');
 
-  // final emailController = TextEditingController(text: 'admin@test.com');
-  // final passwordController = TextEditingController(text: 'qwerty');
+  final emailController = TextEditingController(text: 'admin@test.com');
+  final passwordController = TextEditingController(text: 'qwerty');
 
   // final emailController = TextEditingController();
   // final passwordController = TextEditingController();

@@ -7,6 +7,7 @@ import 'package:flutter_architecture/core/error/failures/http_failure.dart';
 import 'package:flutter_architecture/features/account/data/data_sources/account_data_source.dart';
 import 'package:flutter_architecture/features/account/data/data_sources/firebase_auth_data_source.dart';
 import 'package:flutter_architecture/features/account/data/data_sources/firebase_messaging_data_source.dart';
+import 'package:flutter_architecture/features/account/data/data_sources/firebase_realtime_data_source.dart';
 import 'package:flutter_architecture/features/account/domain/entities/account.dart';
 import 'package:flutter_architecture/features/account/domain/repositories/account_repository.dart';
 import 'package:meta/meta.dart';
@@ -15,11 +16,13 @@ class AccountRepositoryImpl extends AccountRepository {
   final FirebaseAuthDataSource firebaseAuthDataSource;
   final AccountDataSource accountDataSource;
   final FirebaseMessagingDataSource firebaseMessagingDataSource;
+  final FirebaseRealtimeDataSource firebaseRealtimeDataSource;
 
   AccountRepositoryImpl({
     @required this.firebaseAuthDataSource,
     @required this.accountDataSource,
     @required this.firebaseMessagingDataSource,
+    this.firebaseRealtimeDataSource,
   });
 
   @override
@@ -207,6 +210,30 @@ class AccountRepositoryImpl extends AccountRepository {
     try {
       await firebaseAuthDataSource.resetPassword(email: email);
       return Right(true);
+    } on AppException catch (e) {
+      return Left(e.toFailure());
+    } on Exception catch (e) {
+      return Left(UnexpectedFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Account>>> getUsers() async {
+    try {
+      final result = await firebaseRealtimeDataSource.getUsers();
+      return Right(result);
+    } on AppException catch (e) {
+      return Left(e.toFailure());
+    } on Exception catch (e) {
+      return Left(UnexpectedFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Map<String, dynamic>>>> getUsersData() async {
+    try {
+      final result = await firebaseRealtimeDataSource.getUsersData();
+      return Right(result);
     } on AppException catch (e) {
       return Left(e.toFailure());
     } on Exception catch (e) {

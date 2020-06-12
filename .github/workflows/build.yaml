@@ -4,7 +4,7 @@ on:
     tags:
       '*'
     branches:
-      - masterskip
+      - master
 jobs:
   build:
     runs-on: macos-latest

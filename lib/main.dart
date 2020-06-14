@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
               Locale('en', 'US'),
               Locale('id', 'ID'),
             ],
-            home: SplashScreenPage() ?? CustomPage(),
+            home: CustomPage() ?? SplashScreenPage() ?? CustomPage(),
           ),
         ),
       ),

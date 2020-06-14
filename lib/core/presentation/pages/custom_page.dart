@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_architecture/core/presentation/custom_page_route.dart';
 import 'package:flutter_architecture/core/presentation/pages/custom_widget.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_safe_area.dart';
-import 'package:flutter_architecture/core/presentation/widgets/custom_search_hint_delegate.dart';
+import 'package:flutter_architecture/core/presentation/widgets/custom_search_delegate.dart';
 
 class CustomPage extends StatelessWidget {
   static const routeName = PageType.custom;
@@ -19,7 +19,7 @@ class CustomPage extends StatelessWidget {
               onPressed: () {
                 showSearch(
                   context: context,
-                  delegate: CustomSearchHintDelegate(hintText: 'Search'),
+                  delegate: CustomSearchDelegate(hintText: 'Search'),
                 );
               },
             ),

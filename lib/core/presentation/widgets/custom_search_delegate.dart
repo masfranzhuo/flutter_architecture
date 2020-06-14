@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CustomSearchHintDelegate extends SearchDelegate {
-  CustomSearchHintDelegate({
+class CustomSearchDelegate extends SearchDelegate {
+  CustomSearchDelegate({
     String hintText,
   }) : super(
           searchFieldLabel: hintText ?? 'search',

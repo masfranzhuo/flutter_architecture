@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_architecture/core/presentation/widgets/custom_search_hint_delegate.dart';
+import 'package:flutter_architecture/core/presentation/widgets/custom_search_delegate.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_text_field.dart';
 
 class CustomSearchBar extends StatelessWidget {
@@ -12,7 +12,7 @@ class CustomSearchBar extends StatelessWidget {
     void onPressed(BuildContext context) {
       showSearch(
         context: context,
-        delegate: CustomSearchHintDelegate(hintText: hintText),
+        delegate: CustomSearchDelegate(hintText: hintText),
       );
     }
 

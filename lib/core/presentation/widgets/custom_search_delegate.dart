@@ -42,7 +42,22 @@ class CustomSearchDelegate extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context) {
     // TODO: implement buildResults
-    return Text('Result');
+    return ListView(
+      children: <Widget>[
+        ListTile(
+          title: Text('Result One'),
+          onTap: () {
+            close(context, 'Result One');
+          },
+        ),
+        ListTile(
+          title: Text('Result Two'),
+          onTap: () {
+            close(context, 'Result One');
+          },
+        ),
+      ],
+    );
   }
 
   @override
@@ -50,6 +65,6 @@ class CustomSearchDelegate extends SearchDelegate {
     // TODO: implement buildSuggestions
     // This method is called everytime the search term changes.
     // If you want to add search suggestions as the user enters their search term, this is the place to do that.
-    return Column();
+    return ListView();
   }
 }

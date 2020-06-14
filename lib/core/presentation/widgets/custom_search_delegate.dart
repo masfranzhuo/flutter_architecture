@@ -44,6 +44,14 @@ class CustomSearchDelegate extends SearchDelegate {
     // TODO: implement buildResults
     return ListView(
       children: <Widget>[
+        query != ''
+            ? ListTile(
+                title: Text(query),
+                onTap: () {
+                  close(context, query);
+                },
+              )
+            : SizedBox(),
         ListTile(
           title: Text('Result One'),
           onTap: () {
@@ -53,7 +61,7 @@ class CustomSearchDelegate extends SearchDelegate {
         ListTile(
           title: Text('Result Two'),
           onTap: () {
-            close(context, 'Result One');
+            close(context, 'Result Two');
           },
         ),
       ],

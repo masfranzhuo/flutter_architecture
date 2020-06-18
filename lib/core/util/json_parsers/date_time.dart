@@ -1,6 +1,6 @@
 /// Parse string date to DateTime object
 DateTime dateTimeFromJson(String date) =>
-    date != null && date.isNotEmpty ? DateTime.parse(date) : null;
+    date != null && date.isNotEmpty ? DateTime.parse(date).toLocal() : null;
 
 /// Parse DateTime object to String
 String dateTimeToJson(DateTime date) =>

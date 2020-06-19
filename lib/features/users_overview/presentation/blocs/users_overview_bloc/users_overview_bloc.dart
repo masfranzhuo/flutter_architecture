@@ -4,35 +4,35 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_architecture/core/error/failures/failure.dart';
 import 'package:flutter_architecture/core/util/use_case.dart';
-import 'package:flutter_architecture/features/account/domain/use_cases/get_users_data.dart';
+import 'package:flutter_architecture/features/users_overview/domain/use_cases/get_users_data.dart';
 import 'package:meta/meta.dart';
 
-part 'users_data_event.dart';
-part 'users_data_state.dart';
+part 'users_overview_event.dart';
+part 'users_overview_state.dart';
 part 'map_failure_to_error.u.dart';
 
-class UsersDataBloc extends Bloc<UsersDataEvent, UsersDataState> {
+class UsersOverviewBloc extends Bloc<UsersOverviewEvent, UsersOverviewState> {
   final GetUsersData getUsersData;
 
-  UsersDataBloc({
+  UsersOverviewBloc({
     @required this.getUsersData,
   });
 
   @override
-  UsersDataState get initialState => UsersDataInitialState();
+  UsersOverviewState get initialState => UsersOverviewInitialState();
 
   @override
-  Stream<UsersDataState> mapEventToState(
-    UsersDataEvent event,
+  Stream<UsersOverviewState> mapEventToState(
+    UsersOverviewEvent event,
   ) async* {
     if (event is GetUsersDataEvent) {
-      yield UsersDataLoadingState();
+      yield UsersOverviewLoadingState();
 
       final getUsersDataResult = await getUsersData(NoParams());
 
       yield getUsersDataResult.fold(
         (failure) => _$mapFailureToError(failure),
-        (usersData) => UsersDataLoadedState(usersData: usersData),
+        (usersData) => UsersOverviewLoadedState(usersData: usersData),
       );
     }
   }

@@ -9,29 +9,32 @@ abstract class UsersListState extends Equatable {
 
 class UsersListLoadedState extends UsersListState {
   final List<Account> users;
-  final bool isLoading;
+  
+  /// [isLoading] is for the whole page loading or first time loading in this case
+  /// [isLoadMore] is for loading when reach the bottom of list
+  final bool isLoading, isLoadMore;
 
   UsersListLoadedState({
     @required this.users,
-    @required this.isLoading,
+    this.isLoading = false,
+    this.isLoadMore = false,
   });
 
-  factory UsersListLoadedState.empty() => UsersListLoadedState(
-        users: [],
-        isLoading: false,
-      );
+  factory UsersListLoadedState.empty() => UsersListLoadedState(users: []);
 
   UsersListLoadedState copyWith({
     List<Account> users,
     bool isLoading,
+    bool isLoadMore,
   }) =>
       UsersListLoadedState(
         users: users ?? this.users,
         isLoading: isLoading ?? this.isLoading,
+        isLoadMore: isLoadMore ?? this.isLoadMore,
       );
 
   @override
-  List<Object> get props => [users, isLoading];
+  List<Object> get props => [users, isLoading, isLoadMore];
 }
 
 class UsersListErrorState extends UsersListState {

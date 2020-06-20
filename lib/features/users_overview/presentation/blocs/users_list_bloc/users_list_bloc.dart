@@ -25,16 +25,33 @@ class UsersListBloc extends Bloc<UsersListEvent, UsersListState> {
     UsersListEvent event,
   ) async* {
     if (event is GetUsersEvent) {
-      yield UsersListLoadedState.empty().copyWith(isLoading: true);
+      if (event.isFirstTime) {
+        yield UsersListLoadedState.empty();
+      }
+
+      final currentState = state as UsersListLoadedState;
+
+      /// [isLoading] is [true] for the first time fetch data
+      /// and [false] for fetch load more data
+      /// [isLoadMore] is [true] when fetch the data again
+      yield currentState.copyWith(
+        isLoading: currentState.users.isEmpty ? true : false,
+        isLoadMore: true,
+      );
 
       final getUsersDataResult = await getUsers(NoParams());
 
       yield getUsersDataResult.fold(
         (failure) => _$mapFailureToError(failure),
-        (users) => UsersListLoadedState(
-          users: users,
-          isLoading: false,
-        ),
+        (users) {
+          final newUsers = currentState.users + users;
+
+          return UsersListLoadedState(
+            users: newUsers,
+            isLoading: false,
+            isLoadMore: false,
+          );
+        },
       );
     }
   }

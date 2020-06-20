@@ -7,4 +7,11 @@ abstract class UsersListEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetUsersEvent extends UsersListEvent {}
+class GetUsersEvent extends UsersListEvent {
+  final bool isFirstTime;
+
+  GetUsersEvent({this.isFirstTime = false});
+
+  @override
+  List<Object> get props => [isFirstTime];
+}

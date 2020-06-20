@@ -3,7 +3,6 @@ import 'package:flutter_architecture/core/presentation/custom_page_route.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_safe_area.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_search_delegate.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_snack_bar.dart';
-import 'package:flutter_architecture/features/account/domain/entities/account.dart';
 import 'package:flutter_architecture/features/users_overview/presentation/blocs/users_list_bloc/users_list_bloc.dart';
 import 'package:flutter_architecture/features/users_overview/presentation/pages/user_detail/user_detail_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -56,13 +55,16 @@ class UsersListPage extends StatelessWidget {
           ));
         }
       },
-      child: Container(
-        width: constraints.maxWidth,
-        height: constraints.maxHeight,
-        child: ListView(
-          children: <Widget>[
-            _$list(),
-          ],
+      child: RefreshIndicator(
+        onRefresh: () async {
+          BlocProvider.of<UsersListBloc>(context).add(
+            GetUsersEvent(isFirstTime: true),
+          );
+        },
+        child: Container(
+          width: constraints.maxWidth,
+          height: constraints.maxHeight,
+          child: _$list(),
         ),
       ),
     );

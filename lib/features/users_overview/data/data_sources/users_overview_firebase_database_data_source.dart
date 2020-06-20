@@ -22,6 +22,9 @@ class UsersOverviewFirebaseDatabaseDataSourceImpl extends UsersOverviewFirebaseD
     final data = await firebaseDatabase
         .reference()
         .child(EndPoint.users)
+        .orderByKey()
+        // TODO: pagination with limits
+        .limitToFirst(8)
         .once()
         .then((snapshot) => snapshot.value);
 

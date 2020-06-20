@@ -50,12 +50,12 @@ class UsersChart extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(32),
               height: 250,
-              child: BarChart(series),
+              child: BarChart(series, animate: true),
             ),
             Container(
               padding: const EdgeInsets.all(32),
               height: 250,
-              child: PieChart(series),
+              child: PieChart(series, animate: true),
             )
           ],
         ),

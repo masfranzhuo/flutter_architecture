@@ -52,18 +52,6 @@ class CustomSearchDelegate extends SearchDelegate {
                 },
               )
             : SizedBox(),
-        ListTile(
-          title: Text('Result One'),
-          onTap: () {
-            close(context, 'Result One');
-          },
-        ),
-        ListTile(
-          title: Text('Result Two'),
-          onTap: () {
-            close(context, 'Result Two');
-          },
-        ),
       ],
     );
   }

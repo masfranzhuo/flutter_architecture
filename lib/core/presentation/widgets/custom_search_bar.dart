@@ -4,8 +4,15 @@ import 'package:flutter_architecture/core/presentation/widgets/custom_text_field
 
 class CustomSearchBar extends StatefulWidget {
   final String hintText;
+  final bool isSearchDelegate;
+  final Function(String) onSubmitted;
 
-  const CustomSearchBar({Key key, this.hintText}) : super(key: key);
+  const CustomSearchBar({
+    Key key,
+    this.hintText,
+    this.isSearchDelegate = false,
+    this.onSubmitted,
+  }) : super(key: key);
 
   @override
   _CustomSearchBarState createState() => _CustomSearchBarState();
@@ -15,11 +22,13 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
   final searchController = TextEditingController();
 
   void onPressed(BuildContext context) async {
-    final query = await showSearch(
-      context: context,
-      delegate: CustomSearchDelegate(hintText: widget.hintText),
-    );
-    searchController.text = query;
+    if (widget.isSearchDelegate) {
+      final query = await showSearch(
+        context: context,
+        delegate: CustomSearchDelegate(hintText: widget.hintText),
+      );
+      searchController.text = query;
+    }
   }
 
   void clear(BuildContext context) {
@@ -40,13 +49,15 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
           child: InkWell(
             onTap: () => onPressed(context),
             child: AbsorbPointer(
+              absorbing: widget.isSearchDelegate,
               child: CustomTextField(
                 context: context,
                 controller: searchController,
                 hintText: widget.hintText ?? 'search',
                 prefixIcon: Icon(Icons.search),
-                // suffixIcon: Icon(Icons.cancel),
-                readOnly: true,
+                readOnly: widget.isSearchDelegate,
+                onSubmitted:
+                    widget.isSearchDelegate ? null : widget.onSubmitted,
               ),
             ),
           ),

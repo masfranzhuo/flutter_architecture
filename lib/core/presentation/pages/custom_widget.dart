@@ -27,6 +27,7 @@ class _CustomWidgetState extends State<CustomWidget> {
   int selectedValue;
   String imageUrl;
   File file;
+  String searchQuery;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,16 @@ class _CustomWidgetState extends State<CustomWidget> {
           initiallyExpanded: true,
           title: Text('CustomSearchBar'),
           children: <Widget>[
-            CustomSearchBar(),
+            CustomSearchBar(
+              onSubmitted: (value) {
+                setState(() {
+                  searchQuery = value;
+                });
+                print('searchQuery: $searchQuery');
+              },
+            ),
+            SizedBox(height: 8),
+            CustomSearchBar(isSearchDelegate: true),
             SizedBox(height: 8),
           ],
         ),

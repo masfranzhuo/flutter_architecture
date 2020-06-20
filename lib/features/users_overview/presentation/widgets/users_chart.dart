@@ -1,23 +1,23 @@
 import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_snack_bar.dart';
-import 'package:flutter_architecture/features/users_overview/presentation/blocs/users_overview_bloc/users_overview_bloc.dart';
+import 'package:flutter_architecture/features/users_overview/presentation/blocs/users_chart_bloc/users_chart_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 class UsersChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<UsersOverviewBloc>(
+    return BlocProvider<UsersChartBloc>(
       create: (_) => GetIt.I()..add(GetUsersDataEvent()),
       child: Builder(builder: (context) => _buildBody(context)),
     );
   }
 
   Widget _buildBody(BuildContext context) {
-    return BlocConsumer<UsersOverviewBloc, UsersOverviewState>(
+    return BlocConsumer<UsersChartBloc, UsersChartState>(
         listener: (context, state) {
-      if (state is UsersOverviewErrorState) {
+      if (state is UsersChartErrorState) {
         Scaffold.of(context).showSnackBar(CustomSnackBar(
           message: state.message,
           mode: SnackBarMode.error,
@@ -25,7 +25,7 @@ class UsersChart extends StatelessWidget {
       }
     }, builder: (context, state) {
       List<Series<Map<String, dynamic>, String>> series = [];
-      if (state is UsersOverviewLoadedState) {
+      if (state is UsersChartLoadedState) {
         series = [
           Series(
             id: 'Account',

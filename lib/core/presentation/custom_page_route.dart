@@ -11,6 +11,8 @@ class PageType {
   static const userProfile = '/user-profile';
   static const changePassword = '/change-password';
   static const splashScreen = '/splash-screen';
+  static const usersList = '/users-list';
+  static const userDetail = '/user-detail';
 }
 
 enum PageFormType { create, read, update }

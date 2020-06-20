@@ -1,8 +1,8 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter_architecture/features/account/data/data_sources/firebase_realtime_data_source.dart';
 import 'package:flutter_architecture/features/account/domain/entities/account.dart';
 import 'package:flutter_architecture/features/account/domain/entities/customer.dart';
 import 'package:flutter_architecture/features/account/domain/entities/staff.dart';
+import 'package:flutter_architecture/features/users_overview/data/data_sources/users_overview_firebase_database_data_source.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
@@ -13,7 +13,7 @@ class MockDatabaseReference extends Mock implements DatabaseReference {}
 class MockDataSnapshot extends Mock implements DataSnapshot {}
 
 void main() {
-  FirebaseRealtimeDataSourceImpl dataSource;
+  UsersOverviewFirebaseDatabaseDataSourceImpl dataSource;
   MockFirebaseDatabase mockFirebaseDatabase;
 
   MockDatabaseReference mockDatabaseReference;
@@ -21,7 +21,7 @@ void main() {
 
   setUp(() {
     mockFirebaseDatabase = MockFirebaseDatabase();
-    dataSource = FirebaseRealtimeDataSourceImpl(
+    dataSource = UsersOverviewFirebaseDatabaseDataSourceImpl(
       firebaseDatabase: mockFirebaseDatabase,
     );
 

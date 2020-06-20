@@ -11,6 +11,7 @@ import 'package:flutter_architecture/core/presentation/widgets/custom_date_time_
 import 'package:flutter_architecture/core/presentation/widgets/custom_drop_down_button.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_image_picker.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_search_bar.dart';
+import 'package:flutter_architecture/core/presentation/widgets/custom_search_delegate.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_snack_bar.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_text_field.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_time_picker.dart';
@@ -27,6 +28,7 @@ class _CustomWidgetState extends State<CustomWidget> {
   int selectedValue;
   String imageUrl;
   File file;
+  String searchQuery;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +38,18 @@ class _CustomWidgetState extends State<CustomWidget> {
           initiallyExpanded: true,
           title: Text('CustomSearchBar'),
           children: <Widget>[
-            CustomSearchBar(),
+            CustomSearchBar(
+              onSubmitted: (value) {
+                setState(() {
+                  searchQuery = value;
+                });
+                print('searchQuery: $searchQuery');
+              },
+            ),
+            SizedBox(height: 8),
+            CustomSearchBar(
+              searchDelegate: CustomSearchDelegate(hintText: 'search'),
+            ),
             SizedBox(height: 8),
           ],
         ),

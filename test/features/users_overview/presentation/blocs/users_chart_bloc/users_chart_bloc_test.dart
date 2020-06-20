@@ -2,20 +2,20 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_architecture/core/error/failures/failure.dart';
 import 'package:flutter_architecture/features/account/domain/entities/account.dart';
-import 'package:flutter_architecture/features/account/domain/use_cases/get_users_data.dart';
-import 'package:flutter_architecture/features/account/presentation/blocs/users_data_bloc/users_data_bloc.dart';
+import 'package:flutter_architecture/features/users_overview/domain/use_cases/get_users_data.dart';
+import 'package:flutter_architecture/features/users_overview/presentation/blocs/users_chart_bloc/users_chart_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 class MockGetUsersData extends Mock implements GetUsersData {}
 
 void main() {
-  UsersDataBloc bloc;
+  UsersChartBloc bloc;
   MockGetUsersData mockGetUsersData;
 
   setUp(() {
     mockGetUsersData = MockGetUsersData();
-    bloc = UsersDataBloc(getUsersData: mockGetUsersData);
+    bloc = UsersChartBloc(getUsersData: mockGetUsersData);
   });
 
   tearDown(() {
@@ -26,7 +26,7 @@ void main() {
     'initial state should be initial',
     build: () async => bloc,
     skip: 0,
-    expect: [UsersDataInitialState()],
+    expect: [UsersChartInitialState()],
   );
 
   group('GetUsersData', () {
@@ -35,7 +35,7 @@ void main() {
       {'status': AccountStatus.inactive, 'count': 0}
     ];
     blocTest(
-      'should emit [UsersDataLoadingState, UsersDataLoadedState] when getUsersData is successful',
+      'should emit [UsersChartLoadingState, UsersChartLoadedState] when getUsersData is successful',
       build: () async {
         when(mockGetUsersData(any)).thenAnswer(
           (_) async => Right(usersDataTest),
@@ -44,13 +44,13 @@ void main() {
       },
       act: (bloc) => bloc.add(GetUsersDataEvent()),
       expect: [
-        UsersDataLoadingState(),
-        UsersDataLoadedState(usersData: usersDataTest),
+        UsersChartLoadingState(),
+        UsersChartLoadedState(usersData: usersDataTest),
       ],
     );
 
     blocTest(
-      'should emit [UsersDataLoadingState, UsersDataErrorState] when getUsersData failed',
+      'should emit [UsersChartLoadingState, UsersChartErrorState] when getUsersData failed',
       build: () async {
         when(mockGetUsersData(any)).thenAnswer(
           (_) async => Left(InvalidIdTokenFailure()),
@@ -59,8 +59,8 @@ void main() {
       },
       act: (bloc) => bloc.add(GetUsersDataEvent()),
       expect: [
-        UsersDataLoadingState(),
-        UsersDataErrorState(failure: InvalidIdTokenFailure()),
+        UsersChartLoadingState(),
+        UsersChartErrorState(failure: InvalidIdTokenFailure()),
       ],
     );
   });

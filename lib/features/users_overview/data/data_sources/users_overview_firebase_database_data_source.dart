@@ -5,17 +5,17 @@ import 'package:flutter_architecture/features/account/domain/entities/customer.d
 import 'package:flutter_architecture/features/account/domain/entities/staff.dart';
 import 'package:meta/meta.dart';
 
-abstract class FirebaseRealtimeDataSource {
+abstract class UsersOverviewFirebaseDatabaseDataSource {
   Future<List<Account>> getUsers();
 
   /// Currently get users data by status for showing in graph
   Future<List<Map<String, dynamic>>> getUsersData();
 }
 
-class FirebaseRealtimeDataSourceImpl extends FirebaseRealtimeDataSource {
+class UsersOverviewFirebaseDatabaseDataSourceImpl extends UsersOverviewFirebaseDatabaseDataSource {
   final FirebaseDatabase firebaseDatabase;
 
-  FirebaseRealtimeDataSourceImpl({@required this.firebaseDatabase});
+  UsersOverviewFirebaseDatabaseDataSourceImpl({@required this.firebaseDatabase});
 
   @override
   Future<List<Account>> getUsers() async {

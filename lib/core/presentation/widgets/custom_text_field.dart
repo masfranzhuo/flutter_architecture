@@ -18,6 +18,7 @@ class CustomTextField extends TextField {
     String suffixText,
     int maxLength,
     FocusNode focusNode,
+    Function onSubmitted,
   }) : super(
           key: key,
           readOnly: readOnly,
@@ -49,5 +50,6 @@ class CustomTextField extends TextField {
           ),
           maxLength: maxLength,
           focusNode: focusNode,
+          onSubmitted: onSubmitted,
         );
 }

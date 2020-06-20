@@ -6,6 +6,7 @@ import 'package:meta/meta.dart';
 class AccountStatus {
   static const active = 'ACTIVE';
   static const inactive = 'INACTIVE';
+  // TODO: can't use this yet, change it!
   static const accountStatusLabel = [
     {active: 'Active'},
     {inactive: 'Inactive'}

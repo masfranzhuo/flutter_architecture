@@ -4,6 +4,9 @@ abstract class UsersListState extends Equatable {
   const UsersListState();
 
   @override
+  bool get stringify => true;
+
+  @override
   List<Object> get props => [];
 }
 
@@ -15,12 +18,10 @@ class UsersListLoadedState extends UsersListState {
   final bool isLoading, isLoadMore;
 
   UsersListLoadedState({
-    @required this.users,
+    this.users = const [],
     this.isLoading = false,
     this.isLoadMore = false,
   });
-
-  factory UsersListLoadedState.empty() => UsersListLoadedState(users: []);
 
   UsersListLoadedState copyWith({
     List<Account> users,

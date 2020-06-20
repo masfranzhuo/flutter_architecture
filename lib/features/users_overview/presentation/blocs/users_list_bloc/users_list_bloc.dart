@@ -18,24 +18,25 @@ class UsersListBloc extends Bloc<UsersListEvent, UsersListState> {
   UsersListBloc({@required this.getUsers});
 
   @override
-  UsersListState get initialState => UsersListLoadedState.empty();
+  UsersListState get initialState => UsersListLoadedState();
 
   @override
   Stream<UsersListState> mapEventToState(
     UsersListEvent event,
   ) async* {
     if (event is GetUsersEvent) {
+      /// load empty [] list of data if the first time fetch data
+      /// [isLoading] is [true] for the first time fetch data
       if (event.isFirstTime) {
-        yield UsersListLoadedState.empty();
+        yield UsersListLoadedState().copyWith(
+          users: [],
+          isLoading: true,
+        );
       }
 
       final currentState = state as UsersListLoadedState;
 
-      /// [isLoading] is [true] for the first time fetch data
-      /// and [false] for fetch load more data
-      /// [isLoadMore] is [true] when fetch the data again
       yield currentState.copyWith(
-        isLoading: currentState.users.isEmpty ? true : false,
         isLoadMore: true,
       );
 

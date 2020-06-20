@@ -33,20 +33,6 @@ void main() {
     final usersTest = jsonFixtures
         .map((e) => Customer.fromJson(Map<String, dynamic>.from(e)))
         .toList();
-    blocTest(
-      'should emit [UsersListLoadingState, UsersListLoadedState] when getUsersData is successful',
-      build: () async {
-        when(mockGetUsers(any)).thenAnswer(
-          (_) async => Right(usersTest),
-        );
-        return bloc;
-      },
-      act: (bloc) => bloc.add(GetUsersEvent()),
-      expect: [
-        UsersListLoadedState.empty().copyWith(isLoading: true),
-        UsersListLoadedState(users: usersTest, isLoading: false),
-      ],
-    );
 
     blocTest(
       'should emit [UsersListLoadingState, UsersListErrorState] when getUsersData failed',
@@ -56,10 +42,134 @@ void main() {
         );
         return bloc;
       },
-      act: (bloc) => bloc.add(GetUsersEvent()),
+      act: (bloc) => bloc.add(GetUsersEvent(isFirstTime: true)),
       expect: [
-        UsersListLoadedState.empty().copyWith(isLoading: true),
+        UsersListLoadedState().copyWith(
+          users: [],
+          isLoading: true,
+          isLoadMore: false,
+        ),
+        UsersListLoadedState().copyWith(
+          users: [],
+          isLoading: true,
+          isLoadMore: true,
+        ),
         UsersListErrorState(failure: InvalidIdTokenFailure()),
+      ],
+    );
+
+    blocTest(
+      'should emit [UsersListLoadingState] when getUsersData for the first time',
+      build: () async {
+        when(mockGetUsers(any)).thenAnswer(
+          (_) async => Right(usersTest),
+        );
+        return bloc;
+      },
+      act: (bloc) => bloc.add(GetUsersEvent(isFirstTime: true)),
+      expect: [
+        UsersListLoadedState().copyWith(
+          users: [],
+          isLoading: true,
+          isLoadMore: false,
+        ),
+        UsersListLoadedState().copyWith(
+          users: [],
+          isLoading: true,
+          isLoadMore: true,
+        ),
+        UsersListLoadedState(
+          users: usersTest,
+          isLoading: false,
+          isLoadMore: false,
+        ),
+      ],
+    );
+
+    blocTest(
+      'should emit [UsersListLoadingState] when getUsersData refresh again',
+      build: () async {
+        when(mockGetUsers(any)).thenAnswer(
+          (_) async => Right(usersTest),
+        );
+        return bloc;
+      },
+      act: (bloc) async {
+        bloc.add(GetUsersEvent(isFirstTime: true));
+        bloc.add(GetUsersEvent(isFirstTime: true));
+      },
+      expect: [
+        UsersListLoadedState().copyWith(
+          users: [],
+          isLoading: true,
+          isLoadMore: false,
+        ),
+        UsersListLoadedState().copyWith(
+          users: [],
+          isLoading: true,
+          isLoadMore: true,
+        ),
+        UsersListLoadedState(
+          users: usersTest,
+          isLoading: false,
+          isLoadMore: false,
+        ),
+        UsersListLoadedState().copyWith(
+          users: [],
+          isLoading: true,
+          isLoadMore: false,
+        ),
+        UsersListLoadedState().copyWith(
+          users: [],
+          isLoading: true,
+          isLoadMore: true,
+        ),
+        UsersListLoadedState(
+          users: usersTest,
+          isLoading: false,
+          isLoadMore: false,
+        ),
+      ],
+    );
+
+    blocTest(
+      'should emit [UsersListLoadingState] when getUsersData isn\'t for the first time',
+      build: () async {
+        when(mockGetUsers(any)).thenAnswer(
+          (_) async => Right(usersTest),
+        );
+        return bloc;
+      },
+      act: (bloc) async {
+        bloc.add(GetUsersEvent(isFirstTime: true));
+        bloc.add(GetUsersEvent());
+      },
+      expect: [
+        UsersListLoadedState().copyWith(
+          users: [],
+          isLoading: true,
+          isLoadMore: false,
+        ),
+        UsersListLoadedState().copyWith(
+          users: [],
+          isLoading: true,
+          isLoadMore: true,
+        ),
+        UsersListLoadedState(
+          users: usersTest,
+          isLoading: false,
+          isLoadMore: false,
+        ),
+        UsersListLoadedState().copyWith(
+          users: usersTest,
+          isLoading: false,
+          isLoadMore: true,
+        ),
+        UsersListLoadedState(
+          users: usersTest + usersTest,
+          isLoading: false,
+          isLoadMore: false,
+        ),
       ],
     );
   });

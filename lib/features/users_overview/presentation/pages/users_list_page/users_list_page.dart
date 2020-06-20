@@ -16,7 +16,7 @@ class UsersListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<UsersListBloc>(
-      create: (_) => GetIt.I()..add(GetUsersEvent()),
+      create: (_) => GetIt.I()..add(GetUsersEvent(isFirstTime: true)),
       child: Builder(
         builder: (context) => BlocBuilder<UsersListBloc, UsersListState>(
           builder: (context, state) => CustomSafeArea(

@@ -17,7 +17,7 @@ void main() {
     final isLoadingTest = true;
 
     test('should copy correctly with new result', () {
-      final state = UsersListLoadedState.empty();
+      final state = UsersListLoadedState();
       final result = state.copyWith(
         users: usersTest,
         isLoading: isLoadingTest,

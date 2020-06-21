@@ -31,6 +31,9 @@ jobs:
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
           ALIAS_PASSWORD: ${{ secrets.ALIAS_PASSWORD }}
           GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        # run on macos-latest
+        # echo $KEY_JKS | base64 --decode > ./android/key.jks
+        # echo $GOOGLE_SERVICES_JSON | base64 --decode > ./android/app/google-services.json
         run: |
           echo $KEY_JKS | base64 -di > ./android/key.jks
           echo $GOOGLE_SERVICES_JSON | base64 -di > ./android/app/google-services.json
@@ -46,15 +49,15 @@ jobs:
           allowUpdates: true
           tag: "flutter"
           token: ${{ secrets.GH_TOKEN }}
-      - name: Upload artifact to Firebase App Distribution
-        # if: (github.base_ref == 'master' && github.event_name == 'pull_request')
-        uses: wzieba/Firebase-Distribution-Github-Action@v1.2.1
-        with:
-          appId: ${{secrets.FIREBASE_ANDROID_APPID}}
-          token: ${{secrets.FIREBASE_TOKEN}}
-          groups: Testers
-          release_notes: "a new version"
-          file: build/app/outputs/apk/release/app-release.apk
+      # - name: Upload artifact to Firebase App Distribution
+      #   # if: (github.base_ref == 'master' && github.event_name == 'pull_request')
+      #   uses: wzieba/Firebase-Distribution-Github-Action@v1.2.1
+      #   with:
+      #     appId: ${{secrets.FIREBASE_ANDROID_APPID}}
+      #     token: ${{secrets.FIREBASE_TOKEN}}
+      #     groups: Testers
+      #     release_notes: "a new version"
+      #     file: build/app/outputs/apk/release/app-release.apk
       # build Flutter web version
       - run: flutter  config --enable-web
       - run: flutter build web

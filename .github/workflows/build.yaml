@@ -7,7 +7,7 @@ on:
       - master
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: macos-latest
     #Identifies any jobs that must complete successfully before this job will run.
     steps:
       # The branch or tag ref that triggered the workflow will be checked out.

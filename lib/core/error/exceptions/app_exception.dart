@@ -25,7 +25,7 @@ class UnexpectedException extends AppException {
       : super(message: message, code: 'UNEXPECTED_ERROR');
 
   @override
-  Failure toFailure() => UnexpectedFailure();
+  Failure toFailure() => UnexpectedFailure(message: message, code: code);
 }
 
 class NetworkException extends AppException {
@@ -33,7 +33,7 @@ class NetworkException extends AppException {
       : super(message: message, code: 'NETWORK_ERROR');
 
   @override
-  Failure toFailure() => NetworkFailure();
+  Failure toFailure() => NetworkFailure(message: message, code: code);
 }
 
 class InvalidIdTokenException extends AppException {
@@ -41,5 +41,5 @@ class InvalidIdTokenException extends AppException {
       : super(message: message, code: 'INVALID_ID_TOKEN_ERROR');
 
   @override
-  Failure toFailure() => InvalidIdTokenFailure();
+  Failure toFailure() => InvalidIdTokenFailure(message: message, code: code);
 }

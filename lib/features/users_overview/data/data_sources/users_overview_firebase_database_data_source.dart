@@ -22,7 +22,6 @@ class UsersOverviewFirebaseDatabaseDataSourceImpl
 
   @override
   Future<List<Account>> getUsers({int pageSize, String nodeId}) async {
-    dynamic data;
     Query query =
         firebaseDatabase.reference().child(EndPoint.users).orderByKey();
 
@@ -32,28 +31,17 @@ class UsersOverviewFirebaseDatabaseDataSourceImpl
         /// add one [pageSize] and remove one later after sort
         /// because startAt is equal and need to remove later
         query = query.limitToFirst(pageSize + 1).startAt(nodeId);
-        data = await query.once().then((snapshot) => snapshot.value).catchError(
-          (e) {
-            throw UnexpectedException();
-          },
-        );
       } else {
         /// first time fetch data with pagination
         query = query.limitToFirst(pageSize);
-        data = await query.once().then((snapshot) => snapshot.value).catchError(
-          (e) {
-            throw UnexpectedException();
-          },
-        );
       }
-    } else {
-      /// fetch all data
-      data = await query.once().then((snapshot) => snapshot.value).catchError(
-        (e) {
-          throw UnexpectedException();
-        },
-      );
     }
+
+    final data =
+        await query.once().then((snapshot) => snapshot.value).catchError((e) {
+      // TODO: doesn't work, exception not catched
+      throw UnexpectedException(message: e.toString());
+    });
 
     List<Account> users = <Account>[];
     for (var value in data.values) {

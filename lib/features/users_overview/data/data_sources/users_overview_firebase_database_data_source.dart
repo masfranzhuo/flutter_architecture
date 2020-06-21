@@ -58,7 +58,9 @@ class UsersOverviewFirebaseDatabaseDataSourceImpl
 
     List<Account> users = <Account>[];
     for (var value in data.values) {
-      users.add(AccountFactory.accountFromJson(value));
+      users.add(AccountFactory.accountFromJson(
+        Map<String, dynamic>.from(value),
+      ));
     }
 
     users.sort((a, b) => a.id.compareTo(b.id));
@@ -73,13 +75,13 @@ class UsersOverviewFirebaseDatabaseDataSourceImpl
 
     final List<Map<String, dynamic>> result = [
       {
-        'status': AccountStatus.active,
+        'status': AccountStatus.accountStatusLabel[AccountStatus.active],
         'count': users
             .where((user) => user.accountStatus == AccountStatus.active)
             .length,
       },
       {
-        'status': AccountStatus.inactive,
+        'status': AccountStatus.accountStatusLabel[AccountStatus.inactive],
         'count': users
             .where((user) => user.accountStatus == AccountStatus.inactive)
             .length,

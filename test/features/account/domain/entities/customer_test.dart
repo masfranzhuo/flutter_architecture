@@ -86,4 +86,20 @@ void main() {
       expect(copiedCustomer.birthDate, customerTest.birthDate);
     });
   });
+
+  group('AccountStatus', () {
+    test('should return Active', () {
+      final result = AccountStatus.accountStatusLabel[AccountStatus.active];
+      expect(result, 'Active');
+    });
+
+    test('should return Inactive', () {
+      final result = AccountStatus.accountStatusLabel[AccountStatus.inactive];
+      expect(result, 'Inactive');
+
+      AccountStatus.accountStatusLabel.forEach((key, value) {
+        print('CustomDropdownItem(label: $value, value: $key)');
+      });
+    });
+  });
 }

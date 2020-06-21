@@ -8,10 +8,10 @@ part 'customer.g.dart';
 class Gender {
   static const male = 'MALE';
   static const female = 'FEMALE';
-  static const genderLabel = [
-    {male: 'Male'},
-    {female: 'Female'},
-  ];
+  static const genderLabel = {
+    male: 'Male',
+    female: 'Female',
+  };
 }
 
 @JsonSerializable()

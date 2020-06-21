@@ -94,8 +94,8 @@ void main() {
 
   group('getUsersData', () {
     final usersDataTest = <Map<String, dynamic>>[
-      {'status': AccountStatus.active, 'count': 2},
-      {'status': AccountStatus.inactive, 'count': 0}
+      {'status': AccountStatus.accountStatusLabel[AccountStatus.active], 'count': 2},
+      {'status': AccountStatus.accountStatusLabel[AccountStatus.inactive], 'count': 0}
     ];
     test('should return list of users data', () async {
       when(mockFirebaseDatabase.reference()).thenAnswer(

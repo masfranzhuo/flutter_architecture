@@ -7,10 +7,10 @@ part 'staff.g.dart';
 class StaffRole {
   static const admin = 'ADMIN';
   static const superAdmin = 'SUPER_ADMIN';
-  static const staffRoleLabel = [
-    {admin: 'Admin'},
-    {superAdmin: 'Super Admin'},
-  ];
+  static const staffRoleLabel = {
+    admin: 'Admin',
+    superAdmin: 'Super Admin',
+  };
 }
 
 @JsonSerializable()

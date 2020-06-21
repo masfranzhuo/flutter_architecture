@@ -45,6 +45,8 @@ A few resources to get you started if this is your first Flutter project:
 - ALIAS_PASSWORD: key.jks key password
 - GOOGLE_SERVICES_JSON: google-services.json file
 - GH_TOKEN: GitHub Access Token
+- FIREBASE_ANDROID_APPID: Firebase Android App Id
+- FIREBASE_TOKEN: Firebase Token
 
 ## Resources Documentation
 

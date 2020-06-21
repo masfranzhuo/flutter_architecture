@@ -16,7 +16,7 @@ class UsersListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<UsersListBloc>(
-      create: (_) => GetIt.I()..add(GetUsersEvent(isFirstTime: true)),
+      create: (_) => GetIt.I()..add(GetUsersEvent()),
       child: Builder(
         builder: (context) => BlocBuilder<UsersListBloc, UsersListState>(
           builder: (context, state) => CustomSafeArea(
@@ -54,11 +54,21 @@ class UsersListPage extends StatelessWidget {
             mode: SnackBarMode.error,
           ));
         }
+
+        if (state is UsersListLoadedState && state.hasReachMax) {
+          Scaffold.of(context)
+            ..removeCurrentSnackBar()
+            ..showSnackBar(
+              CustomSnackBar(
+                message: 'No more data available',
+              ),
+            );
+        }
       },
       child: RefreshIndicator(
         onRefresh: () async {
           BlocProvider.of<UsersListBloc>(context).add(
-            GetUsersEvent(isFirstTime: true),
+            GetUsersEvent(),
           );
         },
         child: Container(

@@ -27,6 +27,8 @@ void main() {
   });
 
   group('GetUsersEvent', () {
+    final pageSizeTest = 5;
+    final nodeIdTest = 'test01';
     final jsonFixtures = List<dynamic>.from(
       json.decode(fixture('fixtures/customers/collection.json')),
     );
@@ -42,7 +44,7 @@ void main() {
         );
         return bloc;
       },
-      act: (bloc) => bloc.add(GetUsersEvent(isFirstTime: true)),
+      act: (bloc) => bloc.add(GetUsersEvent(pageSize: pageSizeTest)),
       expect: [
         UsersListLoadedState().copyWith(
           users: [],
@@ -66,7 +68,7 @@ void main() {
         );
         return bloc;
       },
-      act: (bloc) => bloc.add(GetUsersEvent(isFirstTime: true)),
+      act: (bloc) => bloc.add(GetUsersEvent(pageSize: pageSizeTest)),
       expect: [
         UsersListLoadedState().copyWith(
           users: [],
@@ -95,8 +97,8 @@ void main() {
         return bloc;
       },
       act: (bloc) async {
-        bloc.add(GetUsersEvent(isFirstTime: true));
-        bloc.add(GetUsersEvent(isFirstTime: true));
+        bloc.add(GetUsersEvent(pageSize: pageSizeTest));
+        bloc.add(GetUsersEvent(pageSize: pageSizeTest));
       },
       expect: [
         UsersListLoadedState().copyWith(
@@ -141,9 +143,10 @@ void main() {
         return bloc;
       },
       act: (bloc) async {
-        bloc.add(GetUsersEvent(isFirstTime: true));
-        bloc.add(GetUsersEvent());
+        bloc.add(GetUsersEvent(pageSize: pageSizeTest));
+        bloc.add(GetUsersEvent(pageSize: pageSizeTest, nodeId: nodeIdTest));
       },
+      wait: const Duration(milliseconds: 1000),
       expect: [
         UsersListLoadedState().copyWith(
           users: [],

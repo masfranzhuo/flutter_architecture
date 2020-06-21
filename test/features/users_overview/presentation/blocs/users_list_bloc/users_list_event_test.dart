@@ -3,11 +3,12 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('GetUsersEvent', () {
-    test('props are [isFirstTime]', () {
-      final isFirstTimeTest = true;
+    test('props are [pageSize, nodeId]', () {
+      final pageSizeTest = 5;
+      final nodeIdTest = 'test01';
       expect(
-        GetUsersEvent(isFirstTime: isFirstTimeTest).props,
-        [isFirstTimeTest],
+        GetUsersEvent(pageSize: pageSizeTest, nodeId: nodeIdTest).props,
+        [pageSizeTest, nodeIdTest],
       );
     });
   });

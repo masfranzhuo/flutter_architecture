@@ -8,10 +8,11 @@ abstract class UsersListEvent extends Equatable {
 }
 
 class GetUsersEvent extends UsersListEvent {
-  final bool isFirstTime;
+  final int pageSize;
+  final String nodeId;
 
-  GetUsersEvent({this.isFirstTime = false});
+  GetUsersEvent({this.pageSize = 5, this.nodeId});
 
   @override
-  List<Object> get props => [isFirstTime];
+  List<Object> get props => [pageSize, nodeId];
 }

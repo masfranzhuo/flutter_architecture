@@ -12,9 +12,15 @@ class UsersOverviewRepositoryImpl extends UsersOverviewRepository {
   UsersOverviewRepositoryImpl({@required this.firebaseDatabaseDataSource});
 
   @override
-  Future<Either<Failure, List<Account>>> getUsers() async {
+  Future<Either<Failure, List<Account>>> getUsers({
+    int pageSize,
+    String nodeId,
+  }) async {
     try {
-      final result = await firebaseDatabaseDataSource.getUsers();
+      final result = await firebaseDatabaseDataSource.getUsers(
+        pageSize: pageSize,
+        nodeId: nodeId,
+      );
       return Right(result);
     } on AppException catch (e) {
       return Left(e.toFailure());

@@ -44,15 +44,26 @@ void main() {
     mockCustomer = MockCustomer();
   });
   group('getUsers', () {
+    final pageSizeTest = 5;
+    final nodeIdTest = 'test01';
     final usersTest = [mockStaff, mockCustomer];
     test('should get list of users', () async {
-      when(mockDataSource.getUsers()).thenAnswer(
+      when(mockDataSource.getUsers(
+        pageSize: anyNamed('pageSize'),
+        nodeId: anyNamed('nodeId'),
+      )).thenAnswer(
         (_) async => usersTest,
       );
 
-      final result = await repository.getUsers();
+      final result = await repository.getUsers(
+        pageSize: pageSizeTest,
+        nodeId: nodeIdTest,
+      );
 
-      verify(mockDataSource.getUsers());
+      verify(mockDataSource.getUsers(
+        pageSize: anyNamed('pageSize'),
+        nodeId: anyNamed('nodeId'),
+      ));
       expect(result, Right(usersTest));
     });
 

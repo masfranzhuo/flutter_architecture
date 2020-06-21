@@ -15,16 +15,22 @@ void main() {
         .map((e) => Customer.fromJson(Map<String, dynamic>.from(e)))
         .toList();
     final isLoadingTest = true;
+    final isLoadMoreTest = true;
+    final hasReachMaxTest = true;
 
     test('should copy correctly with new result', () {
       final state = UsersListLoadedState();
       final result = state.copyWith(
         users: usersTest,
         isLoading: isLoadingTest,
+        isLoadMore: isLoadMoreTest,
+        hasReachMax: hasReachMaxTest,
       );
 
       expect(result.users, usersTest);
       expect(result.isLoading, isLoadingTest);
+      expect(result.isLoadMore, isLoadMoreTest);
+      expect(result.hasReachMax, hasReachMaxTest);
     });
   });
 }

@@ -1,6 +1,7 @@
 import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_snack_bar.dart';
+import 'package:flutter_architecture/core/presentation/widgets/loading_indicator.dart';
 import 'package:flutter_architecture/features/users_overview/presentation/blocs/users_chart_bloc/users_chart_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -50,12 +51,16 @@ class UsersChart extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(32),
               height: 250,
-              child: BarChart(series, animate: true),
+              child: state is UsersChartLoadingState
+                  ? Center(child: LoadingIndicator())
+                  : BarChart(series),
             ),
             Container(
               padding: const EdgeInsets.all(32),
               height: 250,
-              child: PieChart(series, animate: true),
+              child: state is UsersChartLoadingState
+                  ? Center(child: LoadingIndicator())
+                  : PieChart(series),
             )
           ],
         ),

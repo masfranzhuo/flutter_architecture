@@ -4,34 +4,42 @@ abstract class UsersListState extends Equatable {
   const UsersListState();
 
   @override
+  bool get stringify => true;
+
+  @override
   List<Object> get props => [];
 }
 
 class UsersListLoadedState extends UsersListState {
   final List<Account> users;
-  final bool isLoading;
+
+  /// [isLoading] is for the whole page loading or first time loading in this case
+  /// [isLoadMore] is for loading when reach the bottom of list
+  /// [hasReachMax] [true] when no more data available
+  final bool isLoading, isLoadMore, hasReachMax;
 
   UsersListLoadedState({
-    @required this.users,
-    @required this.isLoading,
+    this.users = const [],
+    this.isLoading = false,
+    this.isLoadMore = false,
+    this.hasReachMax = false,
   });
-
-  factory UsersListLoadedState.empty() => UsersListLoadedState(
-        users: [],
-        isLoading: false,
-      );
 
   UsersListLoadedState copyWith({
     List<Account> users,
     bool isLoading,
+    bool isLoadMore,
+    bool hasReachMax,
   }) =>
       UsersListLoadedState(
         users: users ?? this.users,
         isLoading: isLoading ?? this.isLoading,
+        isLoadMore: isLoadMore ?? this.isLoadMore,
+        hasReachMax: hasReachMax ?? this.hasReachMax,
       );
 
   @override
-  List<Object> get props => [users, isLoading];
+  List<Object> get props => [users, isLoading, isLoadMore, hasReachMax];
 }
 
 class UsersListErrorState extends UsersListState {

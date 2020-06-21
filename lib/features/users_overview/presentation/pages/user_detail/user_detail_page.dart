@@ -61,9 +61,7 @@ class UserDetailPage extends StatelessWidget {
         ),
         ListTile(
           title: Text('Account Status'),
-          subtitle: Text(
-            AccountStatus.accountStatusLabel[0][user.accountStatus],
-          ),
+          subtitle: Text(AccountStatus.accountStatusLabel[user.accountStatus]),
         ),
       ],
     );

@@ -14,17 +14,23 @@ void main() {
     final usersTest = jsonFixtures
         .map((e) => Customer.fromJson(Map<String, dynamic>.from(e)))
         .toList();
-    final isLoading = true;
+    final isLoadingTest = true;
+    final isLoadMoreTest = true;
+    final hasReachMaxTest = true;
 
     test('should copy correctly with new result', () {
-      final state = UsersListLoadedState.empty();
+      final state = UsersListLoadedState();
       final result = state.copyWith(
         users: usersTest,
-        isLoading: isLoading,
+        isLoading: isLoadingTest,
+        isLoadMore: isLoadMoreTest,
+        hasReachMax: hasReachMaxTest,
       );
 
       expect(result.users, usersTest);
-      expect(result.isLoading, isLoading);
+      expect(result.isLoading, isLoadingTest);
+      expect(result.isLoadMore, isLoadMoreTest);
+      expect(result.hasReachMax, hasReachMaxTest);
     });
   });
 }

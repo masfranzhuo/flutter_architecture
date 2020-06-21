@@ -47,7 +47,7 @@ jobs:
           tag: "flutter"
           token: ${{ secrets.GH_TOKEN }}
       - name: Deploy
-        if: (github.base_ref == 'master' && github.event_name == 'pull_request')
+        # if: (github.base_ref == 'master' && github.event_name == 'pull_request')
         uses: wzieba/Firebase-Distribution-Github-Action@v1.2.1
         with:
           appId: ${{secrets.FIREBASE_ANDROID_APPID}}

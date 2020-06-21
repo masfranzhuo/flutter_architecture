@@ -50,21 +50,41 @@ void main() {
 
   // TODO: test error case
   group('getUsers', () {
+    final pageSizeTest = 5;
+    final nodeIdTest = 'test01';
+    usersTest.sort((a, b) => a.id.compareTo(b.id));
+    if (nodeIdTest != null) usersTest.removeAt(0);
+    
     test('should return list of users', () async {
       when(mockFirebaseDatabase.reference()).thenAnswer(
         (_) => mockDatabaseReference,
       );
       when(mockDatabaseReference.child(any)).thenReturn(mockDatabaseReference);
+      when(mockDatabaseReference.orderByKey()).thenReturn(
+        mockDatabaseReference,
+      );
+      when(mockDatabaseReference.limitToFirst(any)).thenReturn(
+        mockDatabaseReference,
+      );
+      when(mockDatabaseReference.startAt(any)).thenReturn(
+        mockDatabaseReference,
+      );
       when(mockDatabaseReference.once()).thenAnswer(
         (_) async => mockDataSnapshot,
       );
       when(mockDataSnapshot.value).thenReturn(dataSnapshotTest);
 
-      final result = await dataSource.getUsers();
+      final result = await dataSource.getUsers(
+        pageSize: pageSizeTest,
+        nodeId: nodeIdTest,
+      );
 
       verifyInOrder([
         mockFirebaseDatabase.reference(),
         mockDatabaseReference.child(any),
+        mockDatabaseReference.orderByKey(),
+        mockDatabaseReference.limitToFirst(any),
+        mockDatabaseReference.startAt(any),
         mockDatabaseReference.once(),
         mockDataSnapshot.value,
       ]);
@@ -74,14 +94,17 @@ void main() {
 
   group('getUsersData', () {
     final usersDataTest = <Map<String, dynamic>>[
-      {'status': AccountStatus.active, 'count': 2},
-      {'status': AccountStatus.inactive, 'count': 0}
+      {'status': AccountStatus.accountStatusLabel[AccountStatus.active], 'count': 2},
+      {'status': AccountStatus.accountStatusLabel[AccountStatus.inactive], 'count': 0}
     ];
     test('should return list of users data', () async {
       when(mockFirebaseDatabase.reference()).thenAnswer(
         (_) => mockDatabaseReference,
       );
       when(mockDatabaseReference.child(any)).thenReturn(mockDatabaseReference);
+      when(mockDatabaseReference.orderByKey()).thenReturn(
+        mockDatabaseReference,
+      );
       when(mockDatabaseReference.once()).thenAnswer(
         (_) async => mockDataSnapshot,
       );
@@ -92,6 +115,7 @@ void main() {
       verifyInOrder([
         mockFirebaseDatabase.reference(),
         mockDatabaseReference.child(any),
+        mockDatabaseReference.orderByKey(),
         mockDatabaseReference.once(),
         mockDataSnapshot.value,
       ]);

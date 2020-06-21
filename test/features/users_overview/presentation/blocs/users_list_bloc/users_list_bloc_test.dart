@@ -23,6 +23,6 @@ void main() {
     'initial state should be initial',
     build: () async => bloc,
     skip: 0,
-    expect: [UsersListLoadedState.empty()],
+    expect: [UsersListLoadedState()],
   );
 }

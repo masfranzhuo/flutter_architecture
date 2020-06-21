@@ -6,10 +6,14 @@ import 'package:meta/meta.dart';
 class AccountStatus {
   static const active = 'ACTIVE';
   static const inactive = 'INACTIVE';
-  static const accountStatusLabel = [
-    {active: 'Active'},
-    {inactive: 'Inactive'}
-  ];
+  /// sample how to use it in [CustomDropdown] widget
+  // AccountStatus.accountStatusLabel.forEach((key, value) {
+  //   print('CustomDropdownItem(label: $value, value: $key)');
+  // });
+  static const accountStatusLabel = {
+    active: 'Active',
+    inactive: 'Inactive',
+  };
 }
 
 abstract class Account extends Equatable {

@@ -1,8 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_architecture/core/platform/http_client.dart';
 import 'package:flutter_architecture/features/account/domain/entities/account.dart';
-import 'package:flutter_architecture/features/account/domain/entities/customer.dart';
-import 'package:flutter_architecture/features/account/domain/entities/staff.dart';
+import 'package:flutter_architecture/features/account/domain/factories/account_factory.dart';
 import 'package:meta/meta.dart';
 
 abstract class UsersOverviewFirebaseDatabaseDataSource {
@@ -59,18 +58,7 @@ class UsersOverviewFirebaseDatabaseDataSourceImpl
 
     List<Account> users = <Account>[];
     for (var value in data.values) {
-      // TODO: need factory design pattern here
-      if (value['role'] != null) {
-        final staff = Staff.fromJson(
-          Map<String, dynamic>.from(value),
-        );
-        users.add(staff);
-      } else {
-        final customer = Customer.fromJson(
-          Map<String, dynamic>.from(value),
-        );
-        users.add(customer);
-      }
+      users.add(AccountFactory.accountFromJson(value));
     }
 
     users.sort((a, b) => a.id.compareTo(b.id));

@@ -1,4 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter_architecture/core/error/exceptions/app_exception.dart';
 import 'package:flutter_architecture/core/platform/http_client.dart';
 import 'package:flutter_architecture/features/account/domain/entities/account.dart';
 import 'package:flutter_architecture/features/account/domain/factories/account_factory.dart';
@@ -22,38 +23,36 @@ class UsersOverviewFirebaseDatabaseDataSourceImpl
   @override
   Future<List<Account>> getUsers({int pageSize, String nodeId}) async {
     dynamic data;
+    Query query =
+        firebaseDatabase.reference().child(EndPoint.users).orderByKey();
+
     if (pageSize != null) {
       if (nodeId != null) {
         /// next time fetch data with pagination
-        data = await firebaseDatabase
-            .reference()
-            .child(EndPoint.users)
-            .orderByKey()
-
-            /// add one and remove one later after sort
-            /// because startAt is equal and need to remove later
-            .limitToFirst(pageSize + 1)
-            .startAt(nodeId)
-            .once()
-            .then((snapshot) => snapshot.value);
+        /// add one [pageSize] and remove one later after sort
+        /// because startAt is equal and need to remove later
+        query = query.limitToFirst(pageSize + 1).startAt(nodeId);
+        data = await query.once().then((snapshot) => snapshot.value).catchError(
+          (e) {
+            throw UnexpectedException();
+          },
+        );
       } else {
         /// first time fetch data with pagination
-        data = await firebaseDatabase
-            .reference()
-            .child(EndPoint.users)
-            .orderByKey()
-            .limitToFirst(pageSize)
-            .once()
-            .then((snapshot) => snapshot.value);
+        query = query.limitToFirst(pageSize);
+        data = await query.once().then((snapshot) => snapshot.value).catchError(
+          (e) {
+            throw UnexpectedException();
+          },
+        );
       }
     } else {
       /// fetch all data
-      data = await firebaseDatabase
-          .reference()
-          .child(EndPoint.users)
-          .orderByKey()
-          .once()
-          .then((snapshot) => snapshot.value);
+      data = await query.once().then((snapshot) => snapshot.value).catchError(
+        (e) {
+          throw UnexpectedException();
+        },
+      );
     }
 
     List<Account> users = <Account>[];

@@ -41,8 +41,6 @@ class UsersListBloc extends Bloc<UsersListEvent, UsersListState> {
     UsersListEvent event,
   ) async* {
     if (event is GetUsersEvent) {
-      print(event);
-
       /// load empty [] list of data if the first time fetch data
       /// [isLoading] is [true] for the first time fetch data
       if (event.nodeId == null) {

@@ -73,19 +73,19 @@ class FirebaseAuthDataSourceImpl extends FirebaseAuthDataSource {
     } on PlatformException catch (e) {
       switch (e.code) {
         case 'ERROR_INVALID_EMAIL':
-          throw InvalidEmailException(code: e.code);
+          throw InvalidEmailException(code: e.code, message: e.message);
         case 'ERROR_WRONG_PASSWORD':
-          throw WrongPasswordException(code: e.code);
+          throw WrongPasswordException(code: e.code, message: e.message);
         case 'ERROR_USER_NOT_FOUND':
-          throw UserNotFoundException(code: e.code);
+          throw UserNotFoundException(code: e.code, message: e.message);
         case 'ERROR_USER_DISABLED':
-          throw UserDisabledException(code: e.code);
+          throw UserDisabledException(code: e.code, message: e.message);
         case 'ERROR_TOO_MANY_REQUESTS':
-          throw TooManyRequestsException(code: e.code);
+          throw TooManyRequestsException(code: e.code, message: e.message);
         case 'ERROR_OPERATION_NOT_ALLOWED':
-          throw OperationNotAllowedException(code: e.code);
+          throw OperationNotAllowedException(code: e.code, message: e.message);
         default:
-          throw UndefinedFirebaseAuthException(code: e.code);
+          throw UndefinedFirebaseAuthException(code: e.code, message: e.message);
       }
     }
   }
@@ -111,17 +111,17 @@ class FirebaseAuthDataSourceImpl extends FirebaseAuthDataSource {
     } on PlatformException catch (e) {
       switch (e.code) {
         case 'ERROR_INVALID_CREDENTIAL':
-          throw InvalidCredentialException(code: e.code);
+          throw InvalidCredentialException(code: e.code, message: e.message);
         case 'ERROR_USER_DISABLED':
-          throw UserDisabledException(code: e.code);
+          throw UserDisabledException(code: e.code, message: e.message);
         case 'ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL':
-          throw AccountExistsWithDifferentCredentialException(code: e.code);
+          throw AccountExistsWithDifferentCredentialException(code: e.code, message: e.message);
         case 'ERROR_OPERATION_NOT_ALLOWED':
-          throw OperationNotAllowedException(code: e.code);
+          throw OperationNotAllowedException(code: e.code, message: e.message);
         case 'ERROR_INVALID_ACTION_CODE':
-          throw InvalidActionCodeException(code: e.code);
+          throw InvalidActionCodeException(code: e.code, message: e.message);
         default:
-          throw UndefinedFirebaseAuthException(code: e.code);
+          throw UndefinedFirebaseAuthException(code: e.code, message: e.message);
       }
     }
   }
@@ -142,13 +142,13 @@ class FirebaseAuthDataSourceImpl extends FirebaseAuthDataSource {
     } on PlatformException catch (e) {
       switch (e.code) {
         case 'ERROR_INVALID_EMAIL':
-          throw InvalidEmailException(code: e.code);
+          throw InvalidEmailException(code: e.code, message: e.message);
         case 'ERROR_WEAK_PASSWORD':
-          throw WeakPasswordException(code: e.code);
+          throw WeakPasswordException(code: e.code, message: e.message);
         case 'ERROR_EMAIL_ALREADY_IN_USE':
-          throw EmailAlreadyInUseException(code: e.code);
+          throw EmailAlreadyInUseException(code: e.code, message: e.message);
         default:
-          throw UndefinedFirebaseAuthException(code: e.code);
+          throw UndefinedFirebaseAuthException(code: e.code, message: e.message);
       }
     }
   }
@@ -161,11 +161,11 @@ class FirebaseAuthDataSourceImpl extends FirebaseAuthDataSource {
     } on PlatformException catch (e) {
       switch (e.code) {
         case 'ERROR_USER_DISABLED':
-          throw UserDisabledException(code: e.code);
+          throw UserDisabledException(code: e.code, message: e.message);
         case 'ERROR_USER_NOT_FOUND':
-          throw UserNotFoundException(code: e.code);
+          throw UserNotFoundException(code: e.code, message: e.message);
         default:
-          throw UndefinedFirebaseAuthException(code: e.code);
+          throw UndefinedFirebaseAuthException(code: e.code, message: e.message);
       }
     }
   }
@@ -205,17 +205,17 @@ class FirebaseAuthDataSourceImpl extends FirebaseAuthDataSource {
     } on PlatformException catch (e) {
       switch (e.code) {
         case 'ERROR_INVALID_CREDENTIAL':
-          throw InvalidCredentialException(code: e.code);
+          throw InvalidCredentialException(code: e.code, message: e.message);
         case 'ERROR_USER_DISABLED':
-          throw UserDisabledException(code: e.code);
+          throw UserDisabledException(code: e.code, message: e.message);
         case 'ERROR_USER_NOT_FOUND':
-          throw UserNotFoundException(code: e.code);
+          throw UserNotFoundException(code: e.code, message: e.message);
         case 'ERROR_WRONG_PASSWORD':
-          throw WrongPasswordException(code: e.code);
+          throw WrongPasswordException(code: e.code, message: e.message);
         case 'ERROR_OPERATION_NOT_ALLOWED':
-          throw OperationNotAllowedException(code: e.code);
+          throw OperationNotAllowedException(code: e.code, message: e.message);
         default:
-          throw UndefinedFirebaseAuthException(code: e.code);
+          throw UndefinedFirebaseAuthException(code: e.code, message: e.message);
       }
     }
   }
@@ -228,11 +228,11 @@ class FirebaseAuthDataSourceImpl extends FirebaseAuthDataSource {
     } on PlatformException catch (e) {
       switch (e.code) {
         case 'ERROR_USER_DISABLED':
-          throw UserDisabledException(code: e.code);
+          throw UserDisabledException(code: e.code, message: e.message);
         case 'ERROR_WEAK_PASSWORD':
-          throw WeakPasswordException(code: e.code);
+          throw WeakPasswordException(code: e.code, message: e.message);
         default:
-          throw UndefinedFirebaseAuthException(code: e.code);
+          throw UndefinedFirebaseAuthException(code: e.code, message: e.message);
       }
     }
   }

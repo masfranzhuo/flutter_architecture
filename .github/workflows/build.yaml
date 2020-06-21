@@ -7,16 +7,47 @@ on:
       - master
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
+    #Identifies any jobs that must complete successfully before this job will run.
     steps:
+      # The branch or tag ref that triggered the workflow will be checked out.
+      # https://github.com/actions/checkout
       - uses: actions/checkout@v1
-      - name: set up JDK 1.8
-        uses: actions/setup-java@v1
+      # This action sets up a java environment
+      # https://github.com/actions/setup-java
+      - uses: actions/setup-java@v1
         with:
-          java-version: 1.8
-      - name: build release 
-        run: ./gradlew assembleRelease
-      - name: upload artifact to Firebase App Distribution
+          java-version: '12.x'
+      # Setup a flutter environment.
+      # https://github.com/marketplace/actions/flutter-action
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '1.17.0-dev.0.0'
+          channel: 'dev'
+      # build Android version
+      - name: Run release app
+        env:
+          KEY_JKS: ${{ secrets.KEY_JKS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          ALIAS_PASSWORD: ${{ secrets.ALIAS_PASSWORD }}
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: |
+          echo $KEY_JKS | base64 -di > ./android/key.jks
+          echo $GOOGLE_SERVICES_JSON | base64 -di > ./android/app/google-services.json
+          flutter pub get
+          flutter build apk --release
+      # - run: flutter build appbundle --target-platform android-arm,android-arm64,android-x64
+      # This action will create a github release and optionally upload an artifact to it.
+      # https://github.com/ncipollo/release-action
+      - name: Run release artifact
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/app/outputs/apk/release/*.apk"
+          allowUpdates: true
+          tag: "flutter"
+          token: ${{ secrets.GH_TOKEN }}
+      - name: Upload artifact to Firebase App Distribution
+        # if: (github.base_ref == 'master' && github.event_name == 'pull_request')
         uses: wzieba/Firebase-Distribution-Github-Action@v1.2.1
         with:
           appId: ${{secrets.FIREBASE_ANDROID_APPID}}
@@ -24,61 +55,14 @@ jobs:
           groups: Testers
           release_notes: "a new version"
           file: build/app/outputs/apk/release/app-release.apk
-    #Identifies any jobs that must complete successfully before this job will run.
-    # steps:
-    #   # The branch or tag ref that triggered the workflow will be checked out.
-    #   # https://github.com/actions/checkout
-    #   - uses: actions/checkout@v1
-    #   # This action sets up a java environment
-    #   # https://github.com/actions/setup-java
-    #   - uses: actions/setup-java@v1
-    #     with:
-    #       java-version: '12.x'
-    #   # Setup a flutter environment.
-    #   # https://github.com/marketplace/actions/flutter-action
-    #   - uses: subosito/flutter-action@v1
-    #     with:
-    #       flutter-version: '1.17.0-dev.0.0'
-    #       channel: 'dev'
-    #   # build Android version
-    #   - name: Run release app
-    #     env:
-    #       KEY_JKS: ${{ secrets.KEY_JKS }}
-    #       KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-    #       ALIAS_PASSWORD: ${{ secrets.ALIAS_PASSWORD }}
-    #       GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
-    #     run: |
-    #       echo $KEY_JKS | base64 -di > ./android/key.jks
-    #       echo $GOOGLE_SERVICES_JSON | base64 -di > ./android/app/google-services.json
-    #       flutter pub get
-    #       flutter build apk --release
-    #   # - run: flutter build appbundle --target-platform android-arm,android-arm64,android-x64
-    #   # This action will create a github release and optionally upload an artifact to it.
-    #   # https://github.com/ncipollo/release-action
-    #   - name: Run release artifact
-    #     uses: ncipollo/release-action@v1
-    #     with:
-    #       artifacts: "build/app/outputs/apk/release/*.apk"
-    #       allowUpdates: true
-    #       tag: "flutter"
-    #       token: ${{ secrets.GH_TOKEN }}
-    #   - name: Upload artifact to Firebase App Distribution
-    #     # if: (github.base_ref == 'master' && github.event_name == 'pull_request')
-    #     uses: wzieba/Firebase-Distribution-Github-Action@v1.2.1
-    #     with:
-    #       appId: ${{secrets.FIREBASE_ANDROID_APPID}}
-    #       token: ${{secrets.FIREBASE_TOKEN}}
-    #       groups: Testers
-    #       release_notes: "a new version"
-    #       file: build/app/outputs/apk/release/app-release.apk
-      # # build Flutter web version
-      # - run: flutter  config --enable-web
-      # - run: flutter build web
-      # # Handle the deploy process of your project to GitHub Pages.
-      # # https://github.com/JamesIves/github-pages-deploy-action
-      # - uses: JamesIves/github-pages-deploy-action@releases/v3
-      #   with:
-      #     GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-      #     BASE_BRANCH: master
-      #     BRANCH: gh-pages
-      #     FOLDER: build/web
+      # build Flutter web version
+      - run: flutter  config --enable-web
+      - run: flutter build web
+      # Handle the deploy process of your project to GitHub Pages.
+      # https://github.com/JamesIves/github-pages-deploy-action
+      - uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          BASE_BRANCH: master
+          BRANCH: gh-pages
+          FOLDER: build/web

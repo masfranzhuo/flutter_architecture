@@ -53,9 +53,41 @@ void main() {
     final pageSizeTest = 5;
     final nodeIdTest = 'test01';
     usersTest.sort((a, b) => a.id.compareTo(b.id));
-    if (nodeIdTest != null) usersTest.removeAt(0);
-    
+
+    test('should return list of users when first time fetch data', () async {
+      when(mockFirebaseDatabase.reference()).thenAnswer(
+        (_) => mockDatabaseReference,
+      );
+      when(mockDatabaseReference.child(any)).thenReturn(mockDatabaseReference);
+      when(mockDatabaseReference.orderByKey()).thenReturn(
+        mockDatabaseReference,
+      );
+      when(mockDatabaseReference.limitToFirst(any)).thenReturn(
+        mockDatabaseReference,
+      );
+      when(mockDatabaseReference.once()).thenAnswer(
+        (_) async => mockDataSnapshot,
+      );
+      when(mockDataSnapshot.value).thenReturn(dataSnapshotTest);
+
+      final result = await dataSource.getUsers(
+        pageSize: pageSizeTest,
+      );
+
+      verifyInOrder([
+        mockFirebaseDatabase.reference(),
+        mockDatabaseReference.child(any),
+        mockDatabaseReference.orderByKey(),
+        mockDatabaseReference.limitToFirst(any),
+        mockDatabaseReference.once(),
+        mockDataSnapshot.value,
+      ]);
+      expect(result, usersTest);
+    });
+
     test('should return list of users', () async {
+      if (nodeIdTest != null) usersTest.removeAt(0);
+
       when(mockFirebaseDatabase.reference()).thenAnswer(
         (_) => mockDatabaseReference,
       );
@@ -94,8 +126,14 @@ void main() {
 
   group('getUsersData', () {
     final usersDataTest = <Map<String, dynamic>>[
-      {'status': AccountStatus.accountStatusLabel[AccountStatus.active], 'count': 2},
-      {'status': AccountStatus.accountStatusLabel[AccountStatus.inactive], 'count': 0}
+      {
+        'status': AccountStatus.accountStatusLabel[AccountStatus.active],
+        'count': 2
+      },
+      {
+        'status': AccountStatus.accountStatusLabel[AccountStatus.inactive],
+        'count': 0
+      }
     ];
     test('should return list of users data', () async {
       when(mockFirebaseDatabase.reference()).thenAnswer(

@@ -46,9 +46,9 @@ jobs:
           allowUpdates: true
           tag: "flutter"
           token: ${{ secrets.GH_TOKEN }}
-      - name: Deploy
+      - name: Upload artifact to Firebase App Distribution
         # if: (github.base_ref == 'master' && github.event_name == 'pull_request')
-        uses: wzieba/Firebase-Distribution-Github-Action@v1.0.0
+        uses: wzieba/Firebase-Distribution-Github-Action@v1.2.1
         with:
           appId: ${{secrets.FIREBASE_ANDROID_APPID}}
           token: ${{secrets.FIREBASE_TOKEN}}

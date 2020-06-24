@@ -39,7 +39,7 @@ class UsersOverviewFirebaseDatabaseDataSourceImpl
 
     final data =
         await query.once().then((snapshot) => snapshot.value).catchError((e) {
-      // TODO: doesn't work, exception not catched
+      // TODO: doesn't work, exception not caught
       throw UnexpectedException(message: e.toString());
     });
 

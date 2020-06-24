@@ -7,19 +7,37 @@ void main() {
     test('should return UnexpectedFailure', () {
       final exceptionTest = UnexpectedException();
 
-      expect(exceptionTest.toFailure(), UnexpectedFailure());
+      expect(
+        exceptionTest.toFailure(),
+        UnexpectedFailure(
+          message: exceptionTest.message,
+          code: exceptionTest.code,
+        ),
+      );
     });
 
     test('should return NetworkFailure', () {
       final exceptionTest = NetworkException();
 
-      expect(exceptionTest.toFailure(), NetworkFailure());
+      expect(
+        exceptionTest.toFailure(),
+        NetworkFailure(
+          message: exceptionTest.message,
+          code: exceptionTest.code,
+        ),
+      );
     });
 
     test('should return InvalidIdTokenFailure', () {
       final exceptionTest = InvalidIdTokenException();
 
-      expect(exceptionTest.toFailure(), InvalidIdTokenFailure());
+      expect(
+        exceptionTest.toFailure(),
+        InvalidIdTokenFailure(
+          message: exceptionTest.message,
+          code: exceptionTest.code,
+        ),
+      );
     });
   });
 }

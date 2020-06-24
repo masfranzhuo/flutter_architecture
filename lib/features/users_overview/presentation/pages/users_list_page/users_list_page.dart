@@ -3,6 +3,7 @@ import 'package:flutter_architecture/core/presentation/custom_page_route.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_safe_area.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_search_delegate.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_snack_bar.dart';
+import 'package:flutter_architecture/features/storage/presentation/blocs/storage_bloc/storage_bloc.dart';
 import 'package:flutter_architecture/features/users_overview/presentation/blocs/users_list_bloc/users_list_bloc.dart';
 import 'package:flutter_architecture/features/users_overview/presentation/pages/user_detail/user_detail_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -70,12 +71,26 @@ class UsersListPage extends StatelessWidget {
           BlocProvider.of<UsersListBloc>(context).add(
             GetUsersEvent(),
           );
+          BlocProvider.of<StorageBloc>(context)
+              .add(DeleteImageEvent(url: 'http://save.com/sa.jpg'));
         },
-        child: Container(
-          width: constraints.maxWidth,
-          height: constraints.maxHeight,
-          child: _$list(),
-        ),
+        child: BlocListener<StorageBloc, StorageState>(
+            listener: (context, stateS) {
+              if (stateS is StorageErrorState) {
+                Scaffold.of(context)
+                  ..removeCurrentSnackBar()
+                  ..showSnackBar(
+                    CustomSnackBar(
+                      message: stateS.message,
+                    ),
+                  );
+              }
+            },
+            child: Container(
+              width: constraints.maxWidth,
+              height: constraints.maxHeight,
+              child: _$list(),
+            )),
       ),
     );
   }

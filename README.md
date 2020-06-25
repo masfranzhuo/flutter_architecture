@@ -12,6 +12,10 @@ This project is a starting point for a Flutter application.
 
 A few resources to get you started if this is your first Flutter project:
 
+## Website
+- [GitHub Pages](https://masfranzhuo.github.io/flutter_architecture)
+- [Firebase Hosting](https://flutter-architecture-b8cfd.firebaseapp.com)
+
 ### Flutter packages dependencies
 - [flutter_bloc: ^4.0.0](https://pub.dev/packages/flutter_bloc)
 - [dartz: ^0.9.1](https://pub.dev/packages/dartz)
@@ -58,11 +62,14 @@ Below is the source of this Flutter achitecture project boilerplate
 ### Localization
 - [Internationalizing Flutter apps](https://flutter.dev/docs/development/accessibility-and-localization/internationalization)
 
+### Clean Architecture
+- [Reso Coder Youtube Playlist](https://www.youtube.com/watch?v=KjE2IDphA_U&list=PLB6lc7nQ1n4iYGE_khpXRdJkJEp9WOech)
+- [Reso Coder Website](https://resocoder.com/category/tutorials/flutter/tdd-clean-architecture/)
+
 ### GitHub Actions
 - [Article 01](https://levelup.gitconnected.com/ci-cd-for-flutter-apps-3a56e3fc6d8e)
 - [Article 02](https://medium.com/better-programming/ci-cd-for-flutter-apps-using-github-actions-b833f8f7aac)
 - [Article 03](https://medium.com/@danieln.llewellyn/flutter-github-actions-for-a-signed-apk-fcdf9878f660)
 
-### Clean Architecture
-- [Reso Coder Youtube Playlist](https://www.youtube.com/watch?v=KjE2IDphA_U&list=PLB6lc7nQ1n4iYGE_khpXRdJkJEp9WOech)
-- [Reso Coder Website](https://resocoder.com/category/tutorials/flutter/tdd-clean-architecture/)
+### Firebase Hosting
+- [Article](https://myracledesign.de/blog/flutter-web-to-firebase-hosting/)

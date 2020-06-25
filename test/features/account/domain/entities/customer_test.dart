@@ -98,4 +98,10 @@ void main() {
       expect(result, 'Inactive');
     });
   });
+
+  group('Stringify', () {
+    test('stringify should be true', () {
+      expect(customer.stringify, true);
+    });
+  });
 }

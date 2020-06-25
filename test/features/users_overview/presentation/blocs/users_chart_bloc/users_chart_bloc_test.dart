@@ -34,6 +34,11 @@ void main() {
       {'status': AccountStatus.active, 'count': 2},
       {'status': AccountStatus.inactive, 'count': 0}
     ];
+
+    test('props are []', () {
+      expect(GetUsersDataEvent().props, []);
+    });
+
     blocTest(
       'should emit [UsersChartLoadingState, UsersChartLoadedState] when getUsersData is successful',
       build: () async {

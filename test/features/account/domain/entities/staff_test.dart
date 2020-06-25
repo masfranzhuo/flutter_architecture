@@ -78,4 +78,10 @@ void main() {
       expect(copiedStaff.photoUrl, staffTest.photoUrl);
     });
   });
+
+  group('Stringify', () {
+    test('stringify should be true', () {
+      expect(staff.stringify, true);
+    });
+  });
 }

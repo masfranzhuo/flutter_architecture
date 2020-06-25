@@ -2,6 +2,12 @@ import 'package:flutter_architecture/features/account/presentation/blocs/registe
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  group('RegisterResetStateEvent  ', () {
+    test('props are []', () {
+      expect(RegisterResetStateEvent().props, []);
+    });
+  });
+
   group('RegisterWithPasswordEvent  ', () {
     test('props are [name, email, password, retypedPassword]', () {
       final nameTest = 'John Doe';

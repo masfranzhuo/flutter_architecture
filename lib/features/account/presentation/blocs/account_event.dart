@@ -4,7 +4,7 @@ abstract class AccountEvent extends Equatable {
   const AccountEvent();
 
   @override
-  List<Object> get props => null;
+  List<Object> get props => [];
 }
 
 class LogoutEvent extends AccountEvent {}

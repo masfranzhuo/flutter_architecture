@@ -4,7 +4,7 @@ abstract class StorageEvent extends Equatable {
   const StorageEvent();
 
   @override
-  List<Object> get props => null;
+  List<Object> get props => [];
 }
 
 class UploadImageEvent extends StorageEvent {

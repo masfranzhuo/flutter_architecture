@@ -2,6 +2,12 @@ import 'package:flutter_architecture/features/account/presentation/blocs/login_b
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  group('LoginResetStateEvent   ', () {
+    test('props are []', () {
+      expect(LoginResetStateEvent().props, []);
+    });
+  });
+
   group('LoginWithPasswordEvent  ', () {
     test('props are [email, password]', () {
       final emailTest = 'john@doe.com';

@@ -3,6 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_architecture/core/error/failures/failure.dart';
 import 'package:flutter_architecture/features/account/domain/entities/account.dart';
 import 'package:flutter_architecture/features/account/domain/entities/customer.dart';
+import 'package:flutter_architecture/features/account/domain/entities/staff.dart';
 import 'package:flutter_architecture/features/account/domain/use_cases/update_user_profile.dart'
     as uup;
 import 'package:flutter_architecture/features/account/presentation/blocs/user_profile_form_bloc/user_profile_form_bloc.dart';
@@ -46,6 +47,13 @@ void main() {
       birthPlace: 'Indonesia',
       birthDate: DateTime.now(),
     );
+    final staff = Staff(
+      id: 'fake_id',
+      name: 'John Doe',
+      email: 'john@doe.com',
+      accountStatus: AccountStatus.active,
+      role: StaffRole.admin,
+    );
     final photoUrlTest = 'https://fakeimage.com/image.jpg';
 
     void setUpSuccessfulUpdate() {
@@ -68,7 +76,7 @@ void main() {
     );
 
     blocTest(
-      'should emit [UserProfileFormLoadingState,UserProfileFormLoadedState] when UpdateUserProfile is successful',
+      'should emit [UserProfileFormLoadingState,UserProfileFormLoadedState] when UpdateUserProfile customer is successful',
       build: () async {
         setUpSuccessfulUpdate();
         return bloc;
@@ -80,6 +88,22 @@ void main() {
       expect: [
         UserProfileFormLoadingState(),
         UserProfileFormLoadedState(account: customer),
+      ],
+    );
+
+    blocTest(
+      'should emit [UserProfileFormLoadingState,UserProfileFormLoadedState] when UpdateUserProfile staff is successful',
+      build: () async {
+        when(mockUpdateUserProfile(any)).thenAnswer((_) async => Right(staff));
+        return bloc;
+      },
+      act: (bloc) => bloc.add(UpdateUserProfileImageEvent(
+        account: staff,
+        photoUrl: photoUrlTest,
+      )),
+      expect: [
+        UserProfileFormLoadingState(),
+        UserProfileFormLoadedState(account: staff),
       ],
     );
 

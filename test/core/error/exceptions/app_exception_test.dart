@@ -3,6 +3,16 @@ import 'package:flutter_architecture/core/error/failures/failure.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  group('AppException', () {
+    final messageTest = 'message';
+    final exceptionTest = UnexpectedException(message: messageTest);
+    test('should return stringify true', () {
+      expect(exceptionTest.stringify, true);
+    });
+    test('should return props [message, code]', () {
+      expect(exceptionTest.props, [messageTest, exceptionTest.code]);
+    });
+  });
   group('toFailure', () {
     test('should return UnexpectedFailure', () {
       final exceptionTest = UnexpectedException();

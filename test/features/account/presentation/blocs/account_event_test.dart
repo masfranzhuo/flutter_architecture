@@ -4,8 +4,8 @@ import 'package:flutter_architecture/features/account/presentation/blocs/account
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  group('LogouttEvent', () {
-    test('props are null', () {
+  group('LogoutEvent', () {
+    test('props are []', () {
       expect(LogoutEvent().props, []);
     });
   });

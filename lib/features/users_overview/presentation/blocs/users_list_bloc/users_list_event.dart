@@ -4,6 +4,9 @@ abstract class UsersListEvent extends Equatable {
   const UsersListEvent();
 
   @override
+  bool get stringify => true;
+
+  @override
   List<Object> get props => [];
 }
 

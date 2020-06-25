@@ -17,9 +17,9 @@ void main() {
     final isLoadingTest = true;
     final isLoadMoreTest = true;
     final hasReachMaxTest = true;
+    final state = UsersListLoadedState();
 
     test('should copy correctly with new result', () {
-      final state = UsersListLoadedState();
       final result = state.copyWith(
         users: usersTest,
         isLoading: isLoadingTest,
@@ -31,6 +31,11 @@ void main() {
       expect(result.isLoading, isLoadingTest);
       expect(result.isLoadMore, isLoadMoreTest);
       expect(result.hasReachMax, hasReachMaxTest);
+    });
+
+    test('state stringify should be true', () {
+      final state = UsersListLoadedState();
+      expect(state.stringify, true);
     });
   });
 }

@@ -71,8 +71,6 @@ class UsersListPage extends StatelessWidget {
           BlocProvider.of<UsersListBloc>(context).add(
             GetUsersEvent(),
           );
-          BlocProvider.of<StorageBloc>(context)
-              .add(DeleteImageEvent(url: 'http://save.com/sa.jpg'));
         },
         child: BlocListener<StorageBloc, StorageState>(
             listener: (context, stateS) {

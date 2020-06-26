@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_architecture/core/localization/locale/app_localization.dart';
 import 'package:flutter_architecture/core/presentation/custom_page_route.dart';
 import 'package:flutter_architecture/core/presentation/pages/custom_page.dart';
+import 'package:flutter_architecture/core/presentation/pages/full_screen_image_page.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_button.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_date_picker.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_date_range.dart';
@@ -15,6 +16,7 @@ import 'package:flutter_architecture/core/presentation/widgets/custom_search_del
 import 'package:flutter_architecture/core/presentation/widgets/custom_snack_bar.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_text_field.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_time_picker.dart';
+import 'package:flutter_architecture/core/presentation/widgets/image_dialog.dart';
 import 'package:flutter_architecture/features/storage/presentation/pages/image_picker_page/image_picker_page.dart';
 
 class CustomWidget extends StatefulWidget {
@@ -49,6 +51,37 @@ class _CustomWidgetState extends State<CustomWidget> {
             SizedBox(height: 8),
             CustomSearchBar(
               searchDelegate: CustomSearchDelegate(hintText: 'search'),
+            ),
+            SizedBox(height: 8),
+          ],
+        ),
+        ExpansionTile(
+          title: Text('ImageDialog & FullScreenImage'),
+          children: <Widget>[
+            InkWell(
+              child: Image.network(
+                'https://cdn.pixabay.com/photo/2020/02/17/15/05/fair-4856748_960_720.jpg',
+              ),
+              onTap: () {
+                Navigator.of(context).push(CustomPageRoute.slide(
+                  page: FullScreenImagePage(
+                    child: Image.network(
+                      'https://cdn.pixabay.com/photo/2020/02/17/15/05/fair-4856748_960_720.jpg',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  pageType: PageType.fullScreenImage,
+                ));
+              },
+            ),
+            SizedBox(height: 8),
+            ImageDialog(
+              child: Image.network(
+                'https://via.placeholder.com/${MediaQuery.of(context).size.width.toInt()}x256.png?text=Image dialog',
+              ),
+              image: Image.network(
+                'https://via.placeholder.com/${MediaQuery.of(context).size.width.toInt()}x${MediaQuery.of(context).size.height.toInt()}.png?text=Full screen image',
+              ),
             ),
             SizedBox(height: 8),
           ],

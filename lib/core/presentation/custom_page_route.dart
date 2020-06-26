@@ -13,6 +13,7 @@ class PageType {
   static const splashScreen = '/splash-screen';
   static const usersList = '/users-list';
   static const userDetail = '/user-detail';
+  static const fullScreenImage = '/full-screen-image';
 }
 
 enum PageFormType { create, read, update }

@@ -19,10 +19,19 @@ void main() {
     getUsers = GetUsers(repository: mockUsersOverviewRepository);
   });
 
-  test('should return list of users', () async {
-    final pageSizeTest = 5;
-    final nodeIdTest = 'test01';
+  final pageSizeTest = 5;
+  final nodeIdTest = 'test01';
 
+  group('Params', () {
+    test('props are [pageSize, nodeId]', () {
+      expect(
+        Params(pageSize: pageSizeTest, nodeId: nodeIdTest).props,
+        [pageSizeTest, nodeIdTest],
+      );
+    });
+  });
+
+  test('should return list of users', () async {
     final staffTest = Staff(
       id: 'fake_id',
       name: 'John Doe',

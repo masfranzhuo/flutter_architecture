@@ -2,9 +2,6 @@ part of 'user_profile_form_bloc.dart';
 
 abstract class UserProfileFormEvent extends Equatable {
   const UserProfileFormEvent();
-
-  @override
-  List<Object> get props => [];
 }
 
 class UpdateUserProfileEvent extends UserProfileFormEvent {

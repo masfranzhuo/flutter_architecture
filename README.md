@@ -12,10 +12,6 @@ This project is a starting point for a Flutter application.
 
 A few resources to get you started if this is your first Flutter project:
 
-## Website
-- [GitHub Pages](https://masfranzhuo.github.io/flutter_architecture)
-- [Firebase Hosting](https://flutter-architecture-b8cfd.firebaseapp.com)
-
 ### Flutter packages dependencies
 - [flutter_bloc: ^4.0.0](https://pub.dev/packages/flutter_bloc)
 - [dartz: ^0.9.1](https://pub.dev/packages/dartz)
@@ -51,6 +47,10 @@ A few resources to get you started if this is your first Flutter project:
 - GH_TOKEN: GitHub Access Token
 - FIREBASE_ANDROID_APPID: Firebase Android App Id
 - FIREBASE_TOKEN: Firebase Token
+
+## Website
+- [GitHub Pages](https://masfranzhuo.github.io/flutter_architecture)
+- [Firebase Hosting](https://flutter-architecture-b8cfd.firebaseapp.com)
 
 ## Resources Documentation
 

@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_architecture/core/presentation/widgets/custom_text_field.dart';
 
 class CustomSearchBar extends StatefulWidget {
-  final String hintText;
   final Function(String) onSubmitted;
+  final String hintText;
   final SearchDelegate searchDelegate;
 
   const CustomSearchBar({
     Key key,
+    @required this.onSubmitted,
     this.hintText,
-    this.onSubmitted,
     this.searchDelegate,
   }) : super(key: key);
 

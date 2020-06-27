@@ -28,14 +28,13 @@ class UsersListPage extends StatelessWidget {
                 actions: <Widget>[
                   IconButton(
                     icon: Icon(Icons.search),
-                    onPressed: () {
-                      showSearch(
+                    onPressed: () async {
+                      final query = await showSearch(
                         context: context,
-                        delegate: CustomSearchDelegate(
-                          hintText: 'Search',
-                          useSuggestion: true,
-                        ),
+                        delegate: CustomSearchDelegate(hintText: 'Search'),
                       );
+                      // TODO: add search params into event
+                      print(query);
                     },
                   ),
                 ],

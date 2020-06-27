@@ -16,14 +16,15 @@ class CustomPage extends StatelessWidget {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.search),
-              onPressed: () {
-                showSearch(
+              onPressed: () async {
+                final query = await showSearch(
                   context: context,
                   delegate: CustomSearchDelegate(
                     hintText: 'Search',
                     useSuggestion: true,
                   ),
                 );
+                print(query);
               },
             ),
           ],

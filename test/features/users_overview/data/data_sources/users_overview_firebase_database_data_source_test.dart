@@ -52,6 +52,7 @@ void main() {
   group('getUsers', () {
     final pageSizeTest = 5;
     final nodeIdTest = 'test01';
+    final queryTest = 'query';
     usersTest.sort((a, b) => a.id.compareTo(b.id));
 
     test('should return list of users when first time fetch data', () async {
@@ -101,6 +102,9 @@ void main() {
       when(mockDatabaseReference.startAt(any)).thenReturn(
         mockDatabaseReference,
       );
+      when(mockDatabaseReference.equalTo(any)).thenReturn(
+        mockDatabaseReference,
+      );
       when(mockDatabaseReference.once()).thenAnswer(
         (_) async => mockDataSnapshot,
       );
@@ -109,6 +113,7 @@ void main() {
       final result = await dataSource.getUsers(
         pageSize: pageSizeTest,
         nodeId: nodeIdTest,
+        query: queryTest,
       );
 
       verifyInOrder([
@@ -117,6 +122,7 @@ void main() {
         mockDatabaseReference.orderByKey(),
         mockDatabaseReference.limitToFirst(any),
         mockDatabaseReference.startAt(any),
+        mockDatabaseReference.equalTo(any),
         mockDatabaseReference.once(),
         mockDataSnapshot.value,
       ]);

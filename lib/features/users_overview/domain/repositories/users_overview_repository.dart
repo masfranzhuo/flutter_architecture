@@ -6,6 +6,7 @@ abstract class UsersOverviewRepository {
   Future<Either<Failure, List<Account>>> getUsers({
     int pageSize,
     String nodeId,
+    String query,
   });
 
   Future<Either<Failure, List<Map<String, dynamic>>>> getUsersData();

@@ -15,16 +15,17 @@ class GetUsers extends UseCase<List<Account>, Params> {
     return await repository.getUsers(
       pageSize: params.pageSize,
       nodeId: params.nodeId,
+      query: params.query,
     );
   }
 }
 
 class Params extends Equatable {
   final int pageSize;
-  final String nodeId;
+  final String nodeId, query;
 
-  Params({this.pageSize, this.nodeId});
+  Params({this.pageSize, this.nodeId, this.query});
 
   @override
-  List<Object> get props => [pageSize, nodeId];
+  List<Object> get props => [pageSize, nodeId, query];
 }

@@ -46,11 +46,13 @@ void main() {
   group('getUsers', () {
     final pageSizeTest = 5;
     final nodeIdTest = 'test01';
+    final queryTest = 'query';
     final usersTest = [mockStaff, mockCustomer];
     test('should get list of users', () async {
       when(mockDataSource.getUsers(
         pageSize: anyNamed('pageSize'),
         nodeId: anyNamed('nodeId'),
+        query: anyNamed('query'),
       )).thenAnswer(
         (_) async => usersTest,
       );
@@ -58,11 +60,13 @@ void main() {
       final result = await repository.getUsers(
         pageSize: pageSizeTest,
         nodeId: nodeIdTest,
+        query: queryTest,
       );
 
       verify(mockDataSource.getUsers(
         pageSize: anyNamed('pageSize'),
         nodeId: anyNamed('nodeId'),
+        query: anyNamed('query'),
       ));
       expect(result, Right(usersTest));
     });

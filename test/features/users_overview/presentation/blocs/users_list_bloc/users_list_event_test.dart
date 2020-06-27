@@ -5,10 +5,15 @@ void main() {
   group('GetUsersEvent', () {
     final pageSizeTest = 5;
     final nodeIdTest = 'test01';
-    test('props are [pageSize, nodeId]', () {
+    final queryTest = 'query';
+    test('props are [pageSize, nodeId, query]', () {
       expect(
-        GetUsersEvent(pageSize: pageSizeTest, nodeId: nodeIdTest).props,
-        [pageSizeTest, nodeIdTest],
+        GetUsersEvent(
+          pageSize: pageSizeTest,
+          nodeId: nodeIdTest,
+          query: queryTest,
+        ).props,
+        [pageSizeTest, nodeIdTest, queryTest],
       );
     });
 

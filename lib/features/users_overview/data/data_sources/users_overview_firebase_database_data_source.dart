@@ -6,7 +6,7 @@ import 'package:flutter_architecture/features/account/domain/factories/account_f
 import 'package:meta/meta.dart';
 
 abstract class UsersOverviewFirebaseDatabaseDataSource {
-  Future<List<Account>> getUsers({int pageSize, String nodeId});
+  Future<List<Account>> getUsers({int pageSize, String nodeId, String query});
 
   /// Currently get users data by status for showing in graph
   Future<List<Map<String, dynamic>>> getUsersData();
@@ -21,37 +21,57 @@ class UsersOverviewFirebaseDatabaseDataSourceImpl
   });
 
   @override
-  Future<List<Account>> getUsers({int pageSize, String nodeId}) async {
-    Query query =
-        firebaseDatabase.reference().child(EndPoint.users).orderByKey();
+  Future<List<Account>> getUsers({
+    int pageSize,
+    String nodeId,
+    String query,
+  }) async {
+    Query firebaseQuery = firebaseDatabase.reference().child(EndPoint.users);
+
+    if (query != null) {
+      /// TODO: query condition
+      /// test case the bloc
+      /// only search query by [name] key
+      firebaseQuery = firebaseQuery
+          .orderByChild('name')
+          .startAt(query)
+          .endAt('$query \uf8ff');
+    } else {
+      firebaseQuery = firebaseQuery.orderByKey();
+    }
 
     if (pageSize != null) {
       if (nodeId != null) {
         /// next time fetch data with pagination
         /// add one [pageSize] and remove one later after sort
         /// because startAt is equal and need to remove later
-        query = query.limitToFirst(pageSize + 1).startAt(nodeId);
+        firebaseQuery =
+            firebaseQuery.startAt(nodeId).limitToFirst(pageSize + 1);
       } else {
         /// first time fetch data with pagination
-        query = query.limitToFirst(pageSize);
+        firebaseQuery = firebaseQuery.limitToFirst(pageSize);
       }
     }
 
-    final data =
-        await query.once().then((snapshot) => snapshot.value).catchError((e) {
+    final data = await firebaseQuery
+        .once()
+        .then((snapshot) => snapshot.value)
+        .catchError((e) {
       // TODO: doesn't work, exception not caught
       throw UnexpectedException(message: e.toString());
     });
 
     List<Account> users = <Account>[];
-    for (var value in data.values) {
-      users.add(AccountFactory.accountFromJson(
-        Map<String, dynamic>.from(value),
-      ));
-    }
+    if (data != null) {
+      for (var value in data.values) {
+        users.add(AccountFactory.accountFromJson(
+          Map<String, dynamic>.from(value),
+        ));
+      }
 
-    users.sort((a, b) => a.id.compareTo(b.id));
-    if (nodeId != null) users.removeAt(0);
+      users.sort((a, b) => a.id.compareTo(b.id));
+      if (nodeId != null) users.removeAt(0);
+    }
 
     return users;
   }

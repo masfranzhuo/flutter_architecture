@@ -59,6 +59,7 @@ class UsersListBloc extends Bloc<UsersListEvent, UsersListState> {
       final getUsersDataResult = await getUsers(Params(
         pageSize: event.pageSize,
         nodeId: event.nodeId,
+        query: event.query,
       ));
 
       yield getUsersDataResult.fold(

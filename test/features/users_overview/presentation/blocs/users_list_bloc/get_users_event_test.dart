@@ -29,6 +29,7 @@ void main() {
   group('GetUsersEvent', () {
     final pageSizeTest = 5;
     final nodeIdTest = 'test01';
+    final queryTest = 'query';
     final jsonFixtures = List<dynamic>.from(
       json.decode(fixture('fixtures/customers/collection.json')),
     );
@@ -144,7 +145,11 @@ void main() {
       },
       act: (bloc) async {
         bloc.add(GetUsersEvent(pageSize: pageSizeTest));
-        bloc.add(GetUsersEvent(pageSize: pageSizeTest, nodeId: nodeIdTest));
+        bloc.add(GetUsersEvent(
+          pageSize: pageSizeTest,
+          nodeId: nodeIdTest,
+          query: queryTest,
+        ));
       },
       wait: const Duration(milliseconds: 1000),
       expect: [

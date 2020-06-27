@@ -33,8 +33,11 @@ class UsersListPage extends StatelessWidget {
                         context: context,
                         delegate: CustomSearchDelegate(hintText: 'Search'),
                       );
-                      // TODO: add search params into event
-                      print(query);
+                      if (query != null) {
+                        BlocProvider.of<UsersListBloc>(context).add(
+                          GetUsersEvent(query: query),
+                        );
+                      }
                     },
                   ),
                 ],
@@ -59,13 +62,23 @@ class UsersListPage extends StatelessWidget {
         }
 
         if (state is UsersListLoadedState && state.hasReachMax) {
-          Scaffold.of(context)
-            ..removeCurrentSnackBar()
-            ..showSnackBar(
-              CustomSnackBar(
-                message: 'No more data available',
-              ),
-            );
+          if (state.users.isNotEmpty) {
+            Scaffold.of(context)
+              ..removeCurrentSnackBar()
+              ..showSnackBar(
+                CustomSnackBar(
+                  message: 'No more data available',
+                ),
+              );
+          } else {
+            Scaffold.of(context)
+              ..removeCurrentSnackBar()
+              ..showSnackBar(
+                CustomSnackBar(
+                  message: 'No data found',
+                ),
+              );
+          }
         }
       },
       child: RefreshIndicator(

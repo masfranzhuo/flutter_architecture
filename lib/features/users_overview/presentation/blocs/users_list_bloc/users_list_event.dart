@@ -10,9 +10,10 @@ abstract class UsersListEvent extends Equatable {
 class GetUsersEvent extends UsersListEvent {
   final int pageSize;
   final String nodeId;
+  final String query;
 
-  GetUsersEvent({this.pageSize = 5, this.nodeId});
+  GetUsersEvent({this.pageSize = 5, this.nodeId, this.query});
 
   @override
-  List<Object> get props => [pageSize, nodeId];
+  List<Object> get props => [pageSize, nodeId, query];
 }

@@ -21,12 +21,17 @@ void main() {
 
   final pageSizeTest = 5;
   final nodeIdTest = 'test01';
+  final queryTest = 'query';
 
   group('Params', () {
     test('props are [pageSize, nodeId]', () {
       expect(
-        Params(pageSize: pageSizeTest, nodeId: nodeIdTest).props,
-        [pageSizeTest, nodeIdTest],
+        Params(
+          pageSize: pageSizeTest,
+          nodeId: nodeIdTest,
+          query: queryTest,
+        ).props,
+        [pageSizeTest, nodeIdTest, queryTest],
       );
     });
   });
@@ -50,12 +55,14 @@ void main() {
     when(mockUsersOverviewRepository.getUsers(
       pageSize: anyNamed('pageSize'),
       nodeId: anyNamed('nodeId'),
+      query: anyNamed('query'),
     )).thenAnswer(
       (_) async => Right(usersTest),
     );
     final result = await getUsers(Params(
       pageSize: pageSizeTest,
       nodeId: nodeIdTest,
+      query: queryTest,
     ));
     expect(result, Right(usersTest));
   });

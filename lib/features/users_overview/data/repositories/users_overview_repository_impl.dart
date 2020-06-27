@@ -15,11 +15,13 @@ class UsersOverviewRepositoryImpl extends UsersOverviewRepository {
   Future<Either<Failure, List<Account>>> getUsers({
     int pageSize,
     String nodeId,
+    String query,
   }) async {
     try {
       final result = await firebaseDatabaseDataSource.getUsers(
         pageSize: pageSize,
         nodeId: nodeId,
+        query: query,
       );
       return Right(result);
     } on AppException catch (e) {

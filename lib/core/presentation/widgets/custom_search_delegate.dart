@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 
 class CustomSearchDelegate extends SearchDelegate {
+  final String hintText;
+  final bool useSuggestion;
+
   CustomSearchDelegate({
-    String hintText,
+    this.hintText,
+    this.useSuggestion = false,
   }) : super(
           searchFieldLabel: hintText ?? 'search',
           keyboardType: TextInputType.text,
@@ -15,6 +19,11 @@ class CustomSearchDelegate extends SearchDelegate {
     final ThemeData theme = Theme.of(context);
     assert(theme != null);
     return theme;
+  }
+
+  @override
+  void showResults(BuildContext context) {
+    useSuggestion ? super.showResults(context) : close(context, query);
   }
 
   @override

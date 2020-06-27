@@ -51,6 +51,12 @@ class _CustomWidgetState extends State<CustomWidget> {
             SizedBox(height: 8),
             CustomSearchBar(
               searchDelegate: CustomSearchDelegate(hintText: 'search'),
+              onSubmitted: (value) {
+                setState(() {
+                  searchQuery = value;
+                });
+                print('searchQuery: $searchQuery');
+              },
             ),
             SizedBox(height: 8),
           ],

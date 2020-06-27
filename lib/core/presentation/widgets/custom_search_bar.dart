@@ -29,11 +29,13 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
         delegate: widget.searchDelegate,
       );
       searchController.text = query;
+      widget.onSubmitted(query);
     }
   }
 
   void clear(BuildContext context) {
     searchController.text = '';
+    widget.onSubmitted(searchController.text);
   }
 
   @override

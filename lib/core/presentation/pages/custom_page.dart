@@ -19,7 +19,10 @@ class CustomPage extends StatelessWidget {
               onPressed: () {
                 showSearch(
                   context: context,
-                  delegate: CustomSearchDelegate(hintText: 'Search'),
+                  delegate: CustomSearchDelegate(
+                    hintText: 'Search',
+                    useSuggestion: true,
+                  ),
                 );
               },
             ),

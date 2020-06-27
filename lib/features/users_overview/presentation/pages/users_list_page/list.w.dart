@@ -14,7 +14,7 @@ class __$listState extends State<_$list> {
     scrollController.addListener(() {
       final maxScroll = scrollController.position.maxScrollExtent;
       final currentScroll = scrollController.position.pixels;
-      if (maxScroll == currentScroll) {
+      if (maxScroll <= currentScroll) {
         BlocProvider.of<UsersListBloc>(context).add(
           GetUsersEvent(nodeId: lastNodeId),
         );

@@ -14,16 +14,18 @@ abstract class Failure extends Equatable {
 }
 
 class UnexpectedFailure extends Failure {
-  UnexpectedFailure({String message = '', String code})
+  UnexpectedFailure({String message = '', String code = 'UNEXPECTED_ERROR'})
       : super(message: message, code: code);
 }
 
 class NetworkFailure extends Failure {
-  NetworkFailure({String message = '', String code})
+  NetworkFailure({String message = '', String code = 'NETWORK_ERROR'})
       : super(message: message, code: code);
 }
 
 class InvalidIdTokenFailure extends Failure {
-  InvalidIdTokenFailure({String message = '', String code})
-      : super(message: message, code: code);
+  InvalidIdTokenFailure({
+    String message = '',
+    String code = 'INVALID_ID_TOKEN_ERROR',
+  }) : super(message: message, code: code);
 }

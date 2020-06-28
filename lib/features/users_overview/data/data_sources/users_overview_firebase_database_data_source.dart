@@ -1,5 +1,4 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter_architecture/core/error/exceptions/app_exception.dart';
 import 'package:flutter_architecture/core/platform/http_client.dart';
 import 'package:flutter_architecture/features/account/domain/entities/account.dart';
 import 'package:flutter_architecture/features/account/domain/factories/account_factory.dart';
@@ -29,13 +28,8 @@ class UsersOverviewFirebaseDatabaseDataSourceImpl
     Query firebaseQuery = firebaseDatabase.reference().child(EndPoint.users);
 
     if (query != null) {
-      /// TODO: query condition
-      /// test case the bloc
-      /// only search query by [name] key
-      firebaseQuery = firebaseQuery
-          .orderByChild('name')
-          .startAt(query)
-          .endAt('$query \uf8ff');
+      /// only query the [name] key
+      firebaseQuery = firebaseQuery.orderByChild('name').equalTo(query);
     } else {
       firebaseQuery = firebaseQuery.orderByKey();
     }
@@ -53,13 +47,7 @@ class UsersOverviewFirebaseDatabaseDataSourceImpl
       }
     }
 
-    final data = await firebaseQuery
-        .once()
-        .then((snapshot) => snapshot.value)
-        .catchError((e) {
-      // TODO: doesn't work, exception not caught
-      throw UnexpectedException(message: e.toString());
-    });
+    final data = await firebaseQuery.once().then((snapshot) => snapshot.value);
 
     List<Account> users = <Account>[];
     if (data != null) {

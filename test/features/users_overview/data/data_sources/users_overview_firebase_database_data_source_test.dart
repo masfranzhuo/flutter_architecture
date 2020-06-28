@@ -48,7 +48,6 @@ void main() {
     customerTest.id: customerTest.toJson(),
   };
 
-  // TODO: test error case
   group('getUsers', () {
     final pageSizeTest = 5;
     final nodeIdTest = 'test01';
@@ -93,16 +92,16 @@ void main() {
         (_) => mockDatabaseReference,
       );
       when(mockDatabaseReference.child(any)).thenReturn(mockDatabaseReference);
-      when(mockDatabaseReference.orderByKey()).thenReturn(
+      when(mockDatabaseReference.orderByChild(any)).thenReturn(
+        mockDatabaseReference,
+      );
+      when(mockDatabaseReference.equalTo(any)).thenReturn(
         mockDatabaseReference,
       );
       when(mockDatabaseReference.limitToFirst(any)).thenReturn(
         mockDatabaseReference,
       );
       when(mockDatabaseReference.startAt(any)).thenReturn(
-        mockDatabaseReference,
-      );
-      when(mockDatabaseReference.equalTo(any)).thenReturn(
         mockDatabaseReference,
       );
       when(mockDatabaseReference.once()).thenAnswer(
@@ -119,10 +118,10 @@ void main() {
       verifyInOrder([
         mockFirebaseDatabase.reference(),
         mockDatabaseReference.child(any),
-        mockDatabaseReference.orderByKey(),
-        mockDatabaseReference.limitToFirst(any),
-        mockDatabaseReference.startAt(any),
+        mockDatabaseReference.orderByChild(any),
         mockDatabaseReference.equalTo(any),
+        mockDatabaseReference.limitToFirst(any),
+        // mockDatabaseReference.startAt(any),
         mockDatabaseReference.once(),
         mockDataSnapshot.value,
       ]);

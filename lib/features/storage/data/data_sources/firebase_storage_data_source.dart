@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter_architecture/core/error/exceptions/app_exception.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart';
 
@@ -34,9 +33,7 @@ class FirebaseStorageDataSourceImpl extends FirebaseStorageDataSource {
     StorageUploadTask uploadTask = storageReference.putFile(file);
     await uploadTask.onComplete;
 
-    String fileUrl = await storageReference.getDownloadURL().catchError((e) {
-      throw UnexpectedException(message: e.message);
-    });
+    String fileUrl = await storageReference.getDownloadURL();
     return fileUrl;
   }
 
@@ -46,9 +43,7 @@ class FirebaseStorageDataSourceImpl extends FirebaseStorageDataSource {
     String fileType,
   }) async {
     StorageReference storageReference =
-        await firebaseStorageInstance.getReferenceFromUrl(url).catchError((e) {
-      throw UnexpectedException(message: e.message);
-    });
+        await firebaseStorageInstance.getReferenceFromUrl(url);
 
     return await storageReference.delete();
   }
